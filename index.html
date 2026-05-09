@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Epicenter Theater</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e2c97e;
+    --bg: #0e0e10;
+    --surface: #18181c;
+    --surface2: #212126;
+    --text: #f0ede6;
+    --text-muted: #888;
+    --radius: 12px;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Georgia', serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px 14px;
+    border-bottom: 1px solid #222;
+  }
+  .logo { font-size: 1.7rem; font-weight: 700; color: var(--gold); letter-spacing: -0.5px; font-style: italic; }
+  .sub  { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; font-family: 'Helvetica Neue', sans-serif; }
+  .price-badge { background: var(--surface2); border: 1px solid #333; border-radius: 999px; padding: 5px 14px; font-size: 0.8rem; color: var(--gold); font-family: 'Helvetica Neue', sans-serif; }
+
+  /* ── Date scroller ── */
+  .date-scroller-wrap { padding: 16px 0 0; border-bottom: 1px solid #222; }
+  .date-scroller { display: flex; gap: 10px; overflow-x: auto; padding: 0 20px 14px; scrollbar-width: none; }
+  .date-scroller::-webkit-scrollbar { display: none; }
+  .date-btn {
+    flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 54px; height: 64px; border-radius: 12px; background: var(--surface);
+    border: 1.5px solid transparent; cursor: pointer; transition: all 0.15s; font-family: 'Helvetica Neue', sans-serif;
+  }
+  .date-btn:active { transform: scale(0.94); }
+  .date-btn.active { background: var(--gold); border-color: var(--gold); }
+  .date-btn .dow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); font-weight: 600; }
+  .date-btn.active .dow { color: #3a2d00; }
+  .date-btn .dom { font-size: 1.35rem; font-weight: 700; color: var(--text); margin-top: 2px; }
+  .date-btn.active .dom { color: #1a1000; }
+
+  /* ── Main ── */
+  .main { padding: 22px 20px 40px; max-width: 600px; margin: 0 auto; }
+  .day-heading { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 18px; font-family: 'Helvetica Neue', sans-serif; font-weight: 400; letter-spacing: 0.03em; }
+
+  /* ── Show cards ── */
+  .show-card {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--surface); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 12px;
+    border: 1px solid #252525; animation: fadeUp 0.25s ease both;
+    transition: border-color 0.18s, background 0.18s; -webkit-tap-highlight-color: transparent;
+  }
+  .show-card:hover { border-color: rgba(201,168,76,0.2); background: #1c1c1f; }
+  .show-card:active { transform: scale(0.98); }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .time-block { text-align: center; min-width: 44px; font-family: 'Helvetica Neue', sans-serif; }
+  .time-num   { font-size: 1.25rem; font-weight: 700; color: var(--gold); line-height: 1; }
+  .time-period{ font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .vline      { width: 1px; height: 40px; background: #333; flex-shrink: 0; }
+  .movie-block{ flex: 1; min-width: 0; }
+  .movie-title{ font-size: 1rem; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 6px; font-family: Georgia, serif; }
+  .movie-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-family: 'Helvetica Neue', sans-serif; }
+  .runtime    { font-size: 0.75rem; color: var(--text-muted); }
+  .rating-badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; background: #2a2a2a; border: 1px solid #444; border-radius: 4px; padding: 1px 6px; color: #bbb; text-transform: uppercase; }
+  .free-tag   { font-size: 0.7rem; font-weight: 700; color: #4caf88; background: rgba(76,175,136,0.12); border-radius: 999px; padding: 2px 9px; }
+  .price      { font-size: 0.72rem; color: var(--text-muted); }
+  .advance-tag{ font-size: 0.65rem; font-weight: 700; color: var(--gold); background: rgba(201,168,76,0.12); border-radius: 999px; padding: 2px 9px; }
+
+  /* ── Card action buttons ── */
+  .card-actions { display: flex; flex-direction: row; gap: 8px; flex-shrink: 0; align-items: center; }
+  .trailer-btn, .info-btn {
+    flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; text-decoration: none; transition: background 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .trailer-btn { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.28); }
+  .trailer-btn:hover { background: rgba(201,168,76,0.22); }
+  .trailer-btn svg { width: 14px; height: 14px; fill: var(--gold); margin-left: 2px; }
+  .info-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); font-family: Georgia, serif; font-style: italic; font-size: 1.1rem; font-weight: 700; color: var(--text-muted); line-height: 1; }
+  .info-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: var(--text); }
+
+  /* ── Footer ── */
+  .status-msg { text-align: center; color: var(--text-muted); padding: 40px 0; font-family: 'Helvetica Neue', sans-serif; }
+  .footer { text-align: center; padding: 0 20px 30px; font-size: 0.72rem; color: #444; font-family: 'Helvetica Neue', sans-serif; }
+  .footer a { color: #555; text-decoration: underline; }
+
+  /* ── Modal overlay ── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    display: flex; align-items: flex-end; justify-content: center;
+    z-index: 100; opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  /* ── Modal sheet ── */
+  .modal-sheet {
+    background: var(--surface);
+    border-radius: 20px 20px 0 0;
+    width: 100%; max-width: 600px;
+    max-height: 88vh;
+    overflow-y: auto;
+    transform: translateY(40px);
+    transition: transform 0.3s cubic-bezier(.32,1,.45,1);
+    scrollbar-width: none;
+  }
+  .modal-sheet::-webkit-scrollbar { display: none; }
+  .modal-overlay.open .modal-sheet { transform: translateY(0); }
+
+  /* drag handle */
+  .modal-handle { width: 40px; height: 4px; background: #444; border-radius: 99px; margin: 14px auto 0; }
+
+  /* poster + gradient header */
+  .modal-hero {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: var(--surface2);
+  }
+  .modal-hero img {
+    width: 100%; height: auto; display: block;
+    display: block;
+  }
+  .modal-hero-fallback {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+  }
+  .modal-hero::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--surface));
+  }
+  .modal-hero-title {
+    position: absolute; bottom: 12px; left: 20px; right: 20px; z-index: 2;
+    font-size: 1.4rem; font-weight: 700; font-family: Georgia, serif;
+    color: var(--text); line-height: 1.2;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  }
+
+  /* modal close button */
+  .modal-close {
+    position: absolute; top: 14px; right: 14px; z-index: 3;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(0,0,0,0.5); border: none; color: #ccc;
+    font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    line-height: 1;
+  }
+
+  /* modal body */
+  .modal-body { padding: 6px 20px 36px; }
+
+  .modal-chips {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; margin-top: 4px;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+  .chip {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--surface2); border: 1px solid #333; border-radius: 999px;
+    padding: 4px 12px; color: var(--text-muted);
+  }
+  .chip.gold { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.3); color: var(--gold); }
+  .chip.green { background: rgba(76,175,136,0.12); border-color: rgba(76,175,136,0.3); color: #4caf88; }
+
+  .modal-section-label {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px; margin-top: 20px;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+  .modal-synopsis {
+    font-size: 0.92rem; line-height: 1.65; color: #ccc;
+    font-family: Georgia, serif;
+  }
+  .modal-cast {
+    font-size: 0.85rem; color: var(--text-muted); line-height: 1.7;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+
+  /* Showtimes in modal */
+  .modal-showtimes { display: flex; gap: 8px; flex-wrap: wrap; }
+  .modal-showtime-pill {
+    background: var(--surface2); border: 1px solid #333; border-radius: 999px;
+    padding: 6px 14px; font-size: 0.8rem; font-family: 'Helvetica Neue', sans-serif;
+    color: var(--text);
+  }
+  .modal-showtime-pill span { color: var(--gold); font-weight: 700; margin-right: 4px; }
+  .modal-showtime-pill.past { opacity: 0.38; text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(255,255,255,0.6); }
+  .modal-showtime-pill.past span { color: var(--text-muted); }
+  .ended-label { font-style: normal; font-size: 0.68rem; color: var(--text-muted); margin-left: 4px; text-decoration: none; display: inline-block; }
+
+  /* Trailer button in modal */
+  .modal-trailer-btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; margin-top: 24px; padding: 14px;
+    background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+    border-radius: var(--radius); color: var(--gold);
+    font-family: 'Helvetica Neue', sans-serif; font-size: 0.9rem; font-weight: 600;
+    text-decoration: none; letter-spacing: 0.03em;
+    transition: background 0.15s;
+  }
+  .modal-trailer-btn:hover { background: rgba(201,168,76,0.18); }
+  .modal-trailer-btn svg { width: 12px; height: 12px; fill: var(--gold); }
+
+  .modal-divider { border: none; border-top: 1px solid #2a2a2a; margin: 20px 0 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="logo">Epicenter</div>
+    <div class="sub">NS Great Lakes · Bldg. 525</div>
+  </div>
+  <div class="price-badge">Mil $5.25 · Kids $3.25</div>
+</div>
+
+<div class="date-scroller-wrap">
+  <div class="date-scroller" id="dateScroll"></div>
+</div>
+
+<div class="main">
+  <div class="day-heading" id="dayHeading"></div>
+  <div id="showList"></div>
+</div>
+
+<div class="footer">
+  Schedule updated May 9, 2026 &nbsp;·&nbsp;
+  <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
+</div>
+
+<!-- Info Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal-sheet" id="modalSheet">
+    <div class="modal-handle"></div>
+    <div class="modal-hero" id="modalHero">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modalPoster"></div>
+      <div class="modal-hero-title" id="modalTitle"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-chips" id="modalChips"></div>
+      <div class="modal-section-label">Synopsis</div>
+      <div class="modal-synopsis" id="modalSynopsis"></div>
+      <div id="modalCastSection">
+        <div class="modal-section-label">Cast</div>
+        <div class="modal-cast" id="modalCast"></div>
+      </div>
+      <hr class="modal-divider">
+      <div class="modal-section-label" style="margin-top:20px">Upcoming Showtimes</div>
+      <div class="modal-showtimes" id="modalShowtimes"></div>
+      <a class="modal-trailer-btn" id="modalTrailerBtn" href="#" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg>
+        Watch Official Trailer
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+const PLAY_ICON = `<svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L10 6 L0 12 Z"/></svg>`;
+
+const MOVIE_INFO = {
+  "The Super Mario Galaxy Movie": {
+    poster: "https://www.navymwr.org/nmps-image/3E996249F1CF7339E4437C18C950A08743664948.jpg",
+    rating: "PG", runtime: "1h 38m", genre: "Animation · Adventure · Comedy",
+    studio: "Universal", released: "Apr 1, 2026",
+    synopsis: "Mario ventures into space, exploring cosmic worlds and tackling galactic challenges far from the familiar Mushroom Kingdom.",
+    cast: "Chris Pratt, Anya Taylor-Joy, Jack Black, Brie Larson, Benny Safdie",
+    trailer: "https://www.youtube.com/watch?v=GuCejewteF8"
+  },
+  "That Time I Got Reincarnated as a Slime the Movie: Tears of the Azure": {
+    poster: "https://www.navymwr.org/nmps-image/84B4CAE3CEAD14FACB055715CDCC7F78E3EF34E4.jpg",
+    rating: "PG-13", runtime: "1h 44m", genre: "Animation · Fantasy · Adventure",
+    studio: "Crunchyroll", released: "May 1, 2026",
+    synopsis: "Rimuru and friends venture to a new realm where they face powerful new enemies in this standalone side story from the beloved anime series.",
+    cast: "Miho Okasaki, Tia Lynn Ballard, Marianne Bray",
+    trailer: "https://www.youtube.com/watch?v=qnFfPdaZJO4"
+  },
+  "The Drama": {
+    poster: "https://www.navymwr.org/nmps-image/B2462D5E4EB8624ADC372192DAE48B3990AE42F0.jpg",
+    rating: "R", runtime: "1h 45m", genre: "Thriller · Drama",
+    studio: "A24", released: "Apr 3, 2026",
+    synopsis: "Days before their wedding, a couple's relationship is shaken when one partner discovers unsettling truths about the other in this psychological thriller from director Kristoffer Borgli.",
+    cast: "Zendaya, Robert Pattinson, Mamoudou Athie",
+    trailer: "https://www.youtube.com/watch?v=6zmKcUa4Xxk"
+  },
+  "You, Me and Tuscany": {
+    poster: "https://www.navymwr.org/nmps-image/37B9906EBE55339EB76BBE628026BAD8A6E5A8B7.jpg",
+    rating: "PG-13", runtime: "1h 45m", genre: "Romance · Comedy",
+    studio: "Universal", released: "Apr 10, 2026",
+    synopsis: "Anna impulsively jets off to Tuscany to crash at a stranger's villa for one night — a plan that spirals when she finds herself posing as his fiancée and falling for his dangerously charming cousin.",
+    cast: "Halle Bailey, Regé-Jean Page, Aziza Scott, Isabella Ferrari, Nia Vardalos",
+    trailer: "https://www.youtube.com/watch?v=SxmiwUY916U"
+  },
+  "In the Grey": {
+    poster: "https://www.navymwr.org/nmps-image/0B121A5DF802509748C332D72928768CF69569EE.jpg",
+    rating: "R", runtime: "1h 38m", genre: "Action · Thriller",
+    studio: "Black Bear", released: "May 15, 2026",
+    synopsis: "When billions get stolen, a covert team of elite operatives — as comfortable wielding power and influence as automatic weapons — are the pros who steal it back.",
+    cast: "Jake Gyllenhaal, Henry Cavill, Eiza González, Rosamund Pike",
+    trailer: "https://www.youtube.com/watch?v=M6cXMu816p8"
+  },
+  "Lee Cronin's The Mummy": {
+    poster: "https://www.navymwr.org/nmps-image/6128B80F7D63A63B7A958AB34872F4356E9DFB23.jpg",
+    rating: "R", runtime: "2h 14m", genre: "Horror · Thriller",
+    studio: "Blumhouse", released: "Apr 17, 2026",
+    synopsis: "The young daughter of a journalist disappears without a trace in the desert, setting her mother on a terrifying search that unearths an ancient evil. From the director of Evil Dead Rise.",
+    cast: "Jack Reynor",
+    trailer: "https://www.youtube.com/watch?v=svRqrNZy8ww"
+  },
+  "Michael": {
+    poster: "https://www.navymwr.org/nmps-image/FD35D1041EC84EAC6EA132553E0AB5A78B87D2CD.jpg",
+    rating: "PG-13", runtime: "2h 7m", genre: "Biography · Drama · Music",
+    studio: "Lionsgate", released: "Apr 24, 2026",
+    synopsis: "The cinematic portrayal of the life and legacy of Michael Jackson — one of the most influential artists the world has ever known — as told through his own story.",
+    cast: "Jaafar Jackson, Nia Long, Laura Harrier, Miles Teller, Colman Domingo",
+    trailer: "https://www.youtube.com/watch?v=mbtgEE6rkxw"
+  },
+  "Tom Clancy's Jack Ryan: Ghost War": {
+    poster: "https://www.navymwr.org/nmps-image/34AD28161D63EADE447D4D10B3DBF6E9F05D4007.jpg",
+    rating: "R", runtime: "1h 45m", genre: "Action · Thriller · Spy",
+    studio: "Amazon Prime", released: "May 20, 2026",
+    synopsis: "Jack Ryan is pulled out from behind the desk and into a deadly global conspiracy in this explosive return of the CIA analyst franchise.",
+    cast: "",
+    trailer: "https://www.youtube.com/watch?v=XiQVGIveo9k"
+  }
+};
+
+const schedule = [
+  { date: "Sat, May 9",  dom: "9",  dow: "Sat", month: 5, shows: [
+    { time: "4:00", period: "PM", title: "The Super Mario Galaxy Movie", runtime: "1h 38m", rating: "PG", free: false },
+    { time: "6:00", period: "PM", title: "That Time I Got Reincarnated as a Slime the Movie: Tears of the Azure", runtime: "1h 44m", rating: "PG-13", free: false },
+    { time: "8:30", period: "PM", title: "The Drama", runtime: "1h 45m", rating: "R", free: false }
+  ]},
+  { date: "Sun, May 10", dom: "10", dow: "Sun", month: 5, shows: [
+    { time: "4:00", period: "PM", title: "You, Me and Tuscany", runtime: "1h 45m", rating: "PG-13", free: false },
+    { time: "6:30", period: "PM", title: "The Drama", runtime: "1h 45m", rating: "R", free: false }
+  ]},
+  { date: "Tue, May 12", dom: "12", dow: "Tue", month: 5, shows: [
+    { time: "6:00", period: "PM", title: "You, Me and Tuscany", runtime: "1h 45m", rating: "PG-13", free: false }
+  ]},
+  { date: "Wed, May 13", dom: "13", dow: "Wed", month: 5, shows: [
+    { time: "6:00", period: "PM", title: "The Super Mario Galaxy Movie", runtime: "1h 38m", rating: "PG", free: false }
+  ]},
+  { date: "Thu, May 14", dom: "14", dow: "Thu", month: 5, shows: [
+    { time: "6:00", period: "PM", title: "That Time I Got Reincarnated as a Slime the Movie: Tears of the Azure", runtime: "1h 44m", rating: "PG-13", free: false }
+  ]},
+  { date: "Fri, May 15", dom: "15", dow: "Fri", month: 5, shows: [
+    { time: "6:00", period: "PM", title: "In the Grey", runtime: "1h 38m", rating: "R", free: false },
+    { time: "8:00", period: "PM", title: "Lee Cronin's The Mummy", runtime: "2h 14m", rating: "R", free: false }
+  ]},
+  { date: "Sat, May 16", dom: "16", dow: "Sat", month: 5, shows: [
+    { time: "4:00", period: "PM", title: "The Super Mario Galaxy Movie", runtime: "1h 38m", rating: "PG", free: false },
+    { time: "6:00", period: "PM", title: "You, Me and Tuscany", runtime: "1h 45m", rating: "PG-13", free: false },
+    { time: "8:10", period: "PM", title: "Lee Cronin's The Mummy", runtime: "2h 14m", rating: "R", free: false }
+  ]},
+  { date: "Sun, May 17", dom: "17", dow: "Sun", month: 5, shows: [
+    { time: "4:30", period: "PM", title: "Tom Clancy's Jack Ryan: Ghost War", runtime: "1h 45m", rating: "R", free: true, advance: true },
+    { time: "7:00", period: "PM", title: "That Time I Got Reincarnated as a Slime the Movie: Tears of the Azure", runtime: "1h 44m", rating: "PG-13", free: false }
+  ]},
+  { date: "Tue, May 19", dom: "19", dow: "Tue", month: 5, shows: [
+    { time: "6:00", period: "PM", title: "In the Grey", runtime: "1h 38m", rating: "R", free: false }
+  ]},
+  { date: "Wed, May 20", dom: "20", dow: "Wed", month: 5, shows: [
+    { time: "6:00", period: "PM", title: "The Drama", runtime: "1h 45m", rating: "R", free: false }
+  ]},
+  { date: "Thu, May 21", dom: "21", dow: "Thu", month: 5, shows: [
+    { time: "6:00", period: "PM", title: "Lee Cronin's The Mummy", runtime: "2h 14m", rating: "R", free: false }
+  ]},
+  { date: "Fri, May 22", dom: "22", dow: "Fri", month: 5, shows: [
+    { time: "6:00", period: "PM", title: "Michael", runtime: "2h 7m", rating: "PG-13", free: false },
+    { time: "8:30", period: "PM", title: "That Time I Got Reincarnated as a Slime the Movie: Tears of the Azure", runtime: "1h 44m", rating: "PG-13", free: false }
+  ]},
+  { date: "Sat, May 23", dom: "23", dow: "Sat", month: 5, shows: [
+    { time: "4:00", period: "PM", title: "Michael", runtime: "2h 7m", rating: "PG-13", free: false },
+    { time: "6:30", period: "PM", title: "The Drama", runtime: "1h 45m", rating: "R", free: false },
+    { time: "8:40", period: "PM", title: "That Time I Got Reincarnated as a Slime the Movie: Tears of the Azure", runtime: "1h 44m", rating: "PG-13", free: false }
+  ]},
+  { date: "Sun, May 24", dom: "24", dow: "Sun", month: 5, shows: [
+    { time: "4:00", period: "PM", title: "Michael", runtime: "2h 7m", rating: "PG-13", free: false },
+    { time: "6:30", period: "PM", title: "In the Grey", runtime: "1h 38m", rating: "R", free: false }
+  ]}
+];
+
+let selected = 0;
+
+/* ── Modal logic ── */
+function openModal(title) {
+  const info = MOVIE_INFO[title];
+  if (!info) return;
+
+  // Poster
+  const posterEl = document.getElementById('modalPoster');
+  if (info.poster) {
+    posterEl.innerHTML = `<img src="${info.poster}" alt="${title} poster" onerror="this.parentElement.innerHTML='<div class=\\'modal-hero-fallback\\'>🎬</div>'">`;
+  } else {
+    posterEl.innerHTML = `<div class="modal-hero-fallback">🎬</div>`;
+  }
+  document.getElementById('modalTitle').textContent = title;
+
+  // Chips
+  const chips = document.getElementById('modalChips');
+  const freeInfo = getFreeInfo(title);
+  chips.innerHTML = `
+    <span class="chip gold">${info.rating}</span>
+    <span class="chip">${info.runtime}</span>
+    <span class="chip">${info.genre}</span>
+    <span class="chip">${info.studio}</span>
+    ${freeInfo ? `<span class="chip green">${freeInfo}</span>` : ''}
+  `;
+
+  // Synopsis
+  document.getElementById('modalSynopsis').textContent = info.synopsis;
+
+  // Cast
+  const castSection = document.getElementById('modalCastSection');
+  if (info.cast) {
+    document.getElementById('modalCast').textContent = info.cast;
+    castSection.style.display = '';
+  } else {
+    castSection.style.display = 'none';
+  }
+
+  // Showtimes — today's grayed if past, full days hidden after midnight
+  const now = new Date();
+  const showPills = document.getElementById('modalShowtimes');
+  const pills = [];
+  schedule.forEach(day => {
+    const endOfDay = new Date(2026, day.month - 1, parseInt(day.dom), 23, 59, 59);
+    if (endOfDay < now) return;
+    day.shows.forEach(s => {
+      if (s.title !== title) return;
+      const [rawHour, rawMin] = s.time.split(':').map(Number);
+      const hour24 = (s.period === 'PM' && rawHour !== 12) ? rawHour + 12 : (s.period === 'AM' && rawHour === 12 ? 0 : rawHour);
+      const showDate = new Date(2026, day.month - 1, parseInt(day.dom), hour24, rawMin);
+      const past = showDate < now;
+      pills.push(`<div class="modal-showtime-pill${past ? ' past' : ''}"><span>${s.time}</span>${s.period} · ${day.date}${past ? ' <em class="ended-label">ended</em>' : ''}</div>`);
+    });
+  });
+  showPills.innerHTML = pills.length
+    ? pills.join('')
+    : '<div style="color:var(--text-muted);font-size:0.85rem;font-family:\'Helvetica Neue\',sans-serif">No upcoming showtimes.</div>';
+
+  // Trailer button
+  const trailerBtn = document.getElementById('modalTrailerBtn');
+  if (info.trailer) {
+    trailerBtn.href = info.trailer;
+    trailerBtn.style.display = 'flex';
+  } else {
+    trailerBtn.style.display = 'none';
+  }
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function getFreeInfo(title) {
+  for (const day of schedule) {
+    for (const s of day.shows) {
+      if (s.title === title && s.free) return s.advance ? 'Free · Advance Screening' : 'Free';
+    }
+  }
+  return null;
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ── Schedule render ── */
+function init() {
+  const today = new Date();
+  const todayMonth = today.getMonth() + 1;
+  const todayDom = today.getDate();
+  let defaultIdx = 0, found = false;
+  schedule.forEach((d, i) => {
+    if (!found && (d.month > todayMonth || (d.month === todayMonth && parseInt(d.dom) >= todayDom))) {
+      defaultIdx = i; found = true;
+    }
+  });
+  selected = defaultIdx;
+  render();
+}
+
+function render() {
+  const scroll = document.getElementById('dateScroll');
+  scroll.innerHTML = '';
+  schedule.forEach((d, i) => {
+    const btn = document.createElement('div');
+    btn.className = 'date-btn' + (i === selected ? ' active' : '');
+    btn.innerHTML = `<span class="dow">${d.dow}</span><span class="dom">${d.dom}</span>`;
+    btn.onclick = () => { selected = i; render(); };
+    scroll.appendChild(btn);
+    if (i === selected) setTimeout(() => btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }), 50);
+  });
+
+  const day = schedule[selected];
+  document.getElementById('dayHeading').textContent = day.date;
+  const list = document.getElementById('showList');
+  list.innerHTML = '';
+
+  if (!day.shows || !day.shows.length) {
+    list.innerHTML = '<div class="status-msg">No shows scheduled.</div>';
+    return;
+  }
+
+  day.shows.forEach((s, idx) => {
+    const info = MOVIE_INFO[s.title];
+    const trailerUrl = info ? info.trailer : null;
+
+    const card = document.createElement('div');
+    card.className = 'show-card';
+    card.style.animationDelay = (idx * 0.06) + 's';
+
+    const metaRight = s.free
+      ? (s.advance ? '<span class="advance-tag">Advance Screening</span><span class="free-tag">Free</span>' : '<span class="free-tag">Free</span>')
+      : '<span class="price">$5.25 mil</span>';
+
+    const trailerBtnHtml = trailerUrl
+      ? `<a class="trailer-btn" href="${trailerUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${PLAY_ICON}</a>` : '';
+
+    const infoBtnHtml = info
+      ? `<button class="info-btn" onclick="event.stopPropagation(); openModal('${s.title.replace(/'/g, "\\'")}')">i</button>` : '';
+
+    const actionsHtml = (trailerBtnHtml || infoBtnHtml)
+      ? `<div class="card-actions">${trailerBtnHtml}${infoBtnHtml}</div>` : '';
+
+    card.innerHTML = `
+      <div class="time-block">
+        <div class="time-num">${s.time}</div>
+        <div class="time-period">${s.period}</div>
+      </div>
+      <div class="vline"></div>
+      <div class="movie-block">
+        <div class="movie-title">${s.title}</div>
+        <div class="movie-meta">
+          <span class="runtime">${s.runtime}</span>
+          <span class="rating-badge">${s.rating}</span>
+          ${metaRight}
+        </div>
+      </div>
+      ${actionsHtml}`;
+
+    list.appendChild(card);
+  });
+}
+
+init();
+</script>
+</body>
+</html>
