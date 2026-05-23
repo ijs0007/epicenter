@@ -126,7 +126,7 @@
   <div id="showList"></div>
 </div>
 <div class="footer">
-  Schedule updated May 16, 2026 &nbsp;·&nbsp;
+  Schedule updated May 23, 2026 &nbsp;·&nbsp;
   <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -248,32 +248,46 @@ const MOVIE_INFO = {
     cast: "Andrew Scott, Brendan Fraser, Kerry Condon, Chris Messina, Damian Lewis",
     trailer: "https://www.youtube.com/watch?v=0bKEvstBoXc",
     audience: null
+  },
+  "Masters of the Universe": {
+    poster: "https://www.navymwr.org/nmps-image/8990D321088F54C010CABF0CD6F55560D86C3ACB.jpg",
+    rating: "PG-13", runtime: "2h 12m", genre: "Action · Adventure · Fantasy · Sci-Fi",
+    studio: "TSI", released: "Jun 5, 2026",
+    synopsis: "A young man on Earth discovers a fabulous secret legacy as the prince of an alien planet and must recover a magic sword and return home to protect his kingdom.",
+    cast: "Nicholas Galitzine, Camila Mendes, Idris Elba, Jared Leto, Johannes Haukur Johannesson",
+    trailer: "https://www.youtube.com/watch?v=X21JsHLHnY8",
+    audience: null
+  },
+  "Mother Mary": {
+    poster: "https://www.navymwr.org/nmps-image/819F1E21B51C9620D0A9901511B062D43AF02E3A.jpg",
+    rating: "R", runtime: "1h 52m", genre: "Drama · Music · Thriller",
+    studio: "Anuvu", released: "Apr 24, 2026",
+    synopsis: "Long-buried wounds rise to the surface when iconic pop star Mother Mary reunites with her estranged best friend and former costume designer, Sam Anselm, on the eve of her comeback performance.",
+    cast: "Anne Hathaway, Michaela Coel, Hunter Schafer, Sian Clifford, Atheena Frizzell",
+    trailer: "https://www.youtube.com/watch?v=iV4Vwqo2FOo",
+    audience: null
+  },
+  "Mortal Kombat II": {
+    poster: "https://www.navymwr.org/nmps-image/68F30DE3EB79B4F72739CF8B6E556589C1AA9890.jpg",
+    rating: "R", runtime: "1h 56m", genre: "Action · Adventure · Fantasy",
+    studio: "Warner Brothers", released: "May 8, 2026",
+    synopsis: "The fan-favorite champions — now joined by Johnny Cage himself — are pitted against one another in the ultimate battle to defeat the dark rule of Shao Kahn that threatens the very existence of the Earthrealm and its defenders.",
+    cast: "Karl Urban, Ludi Lin, Jessica McNamee, Joe Taslim, Hiroyuki Sanada",
+    trailer: "https://www.youtube.com/watch?v=ZdC5mFHPldg",
+    audience: 89
+  },
+  "The Sheep Detectives": {
+    poster: "https://www.navymwr.org/nmps-image/AA5B1A3991005EFC8C6B03AE666296EFD0283241.jpg",
+    rating: "PG", runtime: "1h 49m", genre: "Action · Comedy · Family · Mystery",
+    studio: "TSI", released: "May 8, 2026",
+    synopsis: "Every night a shepherd reads aloud a murder mystery, pretending his sheep can understand. When he is found dead, the sheep realize at once that it was a murder and think they know everything about how to go about solving it.",
+    cast: "Hugh Jackman, Brett Goldstein, Patrick Stewart, Regina Hall, Bella Ramsey",
+    trailer: "https://www.youtube.com/watch?v=pyZI5oM6hWk",
+    audience: null
   }
 };
 
 const schedule = [
-  { date: "Sat, May 16", dom: "16", dow: "Sat", month: 5, shows: [
-    { time: "4:00", period: "PM", title: "The Super Mario Galaxy Movie", runtime: "1h 38m", rating: "PG", free: false },
-    { time: "6:00", period: "PM", title: "You, Me and Tuscany", runtime: "1h 45m", rating: "PG-13", free: false },
-    { time: "8:10", period: "PM", title: "Lee Cronin's The Mummy", runtime: "2h 14m", rating: "R", free: false }
-  ]},
-  { date: "Sun, May 17", dom: "17", dow: "Sun", month: 5, shows: [
-    { time: "4:30", period: "PM", title: "Tom Clancy's Jack Ryan: Ghost War", runtime: "1h 45m", rating: "R", free: true, advance: true },
-    { time: "7:00", period: "PM", title: "That Time I Got Reincarnated as a Slime the Movie: Tears of the Azure", runtime: "1h 44m", rating: "PG-13", free: false }
-  ]},
-  { date: "Tue, May 19", dom: "19", dow: "Tue", month: 5, shows: [
-    { time: "6:00", period: "PM", title: "In the Grey", runtime: "1h 38m", rating: "R", free: false }
-  ]},
-  { date: "Wed, May 20", dom: "20", dow: "Wed", month: 5, shows: [
-    { time: "6:00", period: "PM", title: "The Drama", runtime: "1h 45m", rating: "R", free: false }
-  ]},
-  { date: "Thu, May 21", dom: "21", dow: "Thu", month: 5, shows: [
-    { time: "6:00", period: "PM", title: "Lee Cronin's The Mummy", runtime: "2h 14m", rating: "R", free: false }
-  ]},
-  { date: "Fri, May 22", dom: "22", dow: "Fri", month: 5, shows: [
-    { time: "6:00", period: "PM", title: "Michael", runtime: "2h 7m", rating: "PG-13", free: false },
-    { time: "8:30", period: "PM", title: "That Time I Got Reincarnated as a Slime the Movie: Tears of the Azure", runtime: "1h 44m", rating: "PG-13", free: false }
-  ]},
   { date: "Sat, May 23", dom: "23", dow: "Sat", month: 5, shows: [
     { time: "4:00", period: "PM", title: "Michael", runtime: "2h 7m", rating: "PG-13", free: false },
     { time: "6:30", period: "PM", title: "The Drama", runtime: "1h 45m", rating: "R", free: false },
@@ -299,10 +313,33 @@ const schedule = [
   { date: "Sat, May 30", dom: "30", dow: "Sat", month: 5, shows: [
     { time: "4:00", period: "PM", title: "The Devil Wears Prada 2", runtime: "2h 0m", rating: "PG-13", free: false },
     { time: "6:30", period: "PM", title: "Michael", runtime: "2h 7m", rating: "PG-13", free: false },
-    { time: "9:00", period: "PM", title: "Pressure", runtime: "1h 40m", rating: "PG-13", free: false }
+    { time: "9:10", period: "PM", title: "Pressure", runtime: "1h 40m", rating: "PG-13", free: false }
   ]},
   { date: "Sun, May 31", dom: "31", dow: "Sun", month: 5, shows: [
-    { time: "7:00", period: "PM", title: "Pressure", runtime: "1h 40m", rating: "PG-13", free: false }
+    { time: "4:30", period: "PM", title: "Masters of the Universe", runtime: "2h 12m", rating: "PG-13", free: true, advance: true },
+    { time: "7:30", period: "PM", title: "The Devil Wears Prada 2", runtime: "2h 0m", rating: "PG-13", free: false }
+  ]},
+  { date: "Tue, Jun 2", dom: "2", dow: "Tue", month: 6, shows: [
+    { time: "6:00", period: "PM", title: "The Devil Wears Prada 2", runtime: "2h 0m", rating: "PG-13", free: false }
+  ]},
+  { date: "Wed, Jun 3", dom: "3", dow: "Wed", month: 6, shows: [
+    { time: "6:00", period: "PM", title: "Michael", runtime: "2h 7m", rating: "PG-13", free: false }
+  ]},
+  { date: "Thu, Jun 4", dom: "4", dow: "Thu", month: 6, shows: [
+    { time: "6:00", period: "PM", title: "Lee Cronin's The Mummy", runtime: "2h 14m", rating: "R", free: false }
+  ]},
+  { date: "Fri, Jun 5", dom: "5", dow: "Fri", month: 6, shows: [
+    { time: "6:00", period: "PM", title: "Mother Mary", runtime: "1h 52m", rating: "R", free: false },
+    { time: "8:30", period: "PM", title: "Mortal Kombat II", runtime: "1h 56m", rating: "R", free: false }
+  ]},
+  { date: "Sat, Jun 6", dom: "6", dow: "Sat", month: 6, shows: [
+    { time: "4:00", period: "PM", title: "The Sheep Detectives", runtime: "1h 49m", rating: "PG", free: false },
+    { time: "6:30", period: "PM", title: "Mortal Kombat II", runtime: "1h 56m", rating: "R", free: false },
+    { time: "9:00", period: "PM", title: "Pressure", runtime: "1h 40m", rating: "PG-13", free: false }
+  ]},
+  { date: "Sun, Jun 7", dom: "7", dow: "Sun", month: 6, shows: [
+    { time: "4:00", period: "PM", title: "The Sheep Detectives", runtime: "1h 49m", rating: "PG", free: false },
+    { time: "6:30", period: "PM", title: "Mortal Kombat II", runtime: "1h 56m", rating: "R", free: false }
   ]}
 ];
 
