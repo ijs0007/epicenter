@@ -481,7 +481,7 @@ function render() {
       : '<span class="price">$5.25 mil</span>';
     const audienceHtml = (info && info.audience !== null) ? `<span class="audience-score">🍿 ${info.audience}%</span>` : '';
     const trailerBtnHtml = trailerUrl ? `<a class="trailer-btn" href="${trailerUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${PLAY_ICON}</a>` : '';
-    const infoBtnHtml = info ? `<button class="info-btn" onclick="event.stopPropagation(); openModal('${s.title.replace(/'/g, "\\'")}')">ℹ</button>` : '';
+    const infoBtnHtml = info ? `<button class="info-btn" onclick="event.stopPropagation(); openModal('${s.title.replace(/'/g, "\\'")}')">i</button>` : '';
     const actionsHtml = (trailerBtnHtml || infoBtnHtml) ? `<div class="card-actions">${trailerBtnHtml}${infoBtnHtml}</div>` : '';
     card.innerHTML = `
       <div class="time-block"><div class="time-num">${s.time}</div><div class="time-period">${s.period}</div></div>
