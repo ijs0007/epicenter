@@ -148,7 +148,7 @@
   <div id="showList"></div>
 </div>
 <div class="footer">
-  Schedule updated Jun 5, 2026 &nbsp;·&nbsp;
+  Schedule updated Jun 20, 2026 &nbsp;·&nbsp;
   <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -181,113 +181,32 @@
 const PLAY_ICON = `<svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L10 6 L0 12 Z"/></svg>`;
 
 const MOVIE_INFO = {
-  "The Super Mario Galaxy Movie": {
-    poster: "https://www.navymwr.org/nmps-image/3E996249F1CF7339E4437C18C950A08743664948.jpg",
-    rating: "PG", runtime: "1h 38m", genre: "Animation · Adventure · Comedy",
-    studio: "Universal", released: "Apr 1, 2026",
-    synopsis: "Mario ventures into space, exploring cosmic worlds and tackling galactic challenges far from the familiar Mushroom Kingdom.",
-    cast: "Chris Pratt, Anya Taylor-Joy, Jack Black, Brie Larson, Benny Safdie",
-    trailer: "https://www.youtube.com/watch?v=GuCejewteF8",
-    audience: 88
+  "Star Wars The Mandalorian and Grogu": {
+    poster: "https://www.navymwr.org/nmps-image/86C78B71DF88D76E36B9D0597EB77636B97D4012.jpg",
+    rating: "PG-13", runtime: "2h 12m", genre: "Action · Adventure · Sci-Fi",
+    studio: "Buena Vista", released: "May 22, 2026",
+    synopsis: "Once a lone bounty hunter, Mandalorian Din Djarin and his apprentice Grogu embark on an exciting new Star Wars adventure to hunt Imperial war criminals and protect a hard-won peace.",
+    cast: "Pedro Pascal, Sigourney Weaver, Jeremy Allen White, Steve Blum",
+    trailer: "https://www.youtube.com/watch?v=_pa1KLXuW0Y",
+    audience: 89
   },
-  "That Time I Got Reincarnated as a Slime the Movie: Tears of the Azure": {
-    poster: "https://www.navymwr.org/nmps-image/84B4CAE3CEAD14FACB055715CDCC7F78E3EF34E4.jpg",
-    rating: "PG-13", runtime: "1h 44m", genre: "Animation · Fantasy · Adventure",
-    studio: "Sony", released: "May 1, 2026",
-    synopsis: "Rimuru and friends visit Celestial Emperor Hermesia's resort island. During their vacation, they encounter a mysterious woman, leading to a new incident by the azure sea.",
-    cast: "Tia Lynn Ballard, Marianne Bray, Allegra Clark, Amber Lee Connors, Lucien Dodge",
-    trailer: "https://www.youtube.com/watch?v=zSykY2ClIxw",
-    audience: 90
-  },
-  "The Drama": {
-    poster: "https://www.navymwr.org/nmps-image/B2462D5E4EB8624ADC372192DAE48B3990AE42F0.jpg",
-    rating: "R", runtime: "1h 45m", genre: "Thriller · Drama",
-    studio: "A24", released: "Apr 3, 2026",
-    synopsis: "Days before their wedding, a couple's relationship is shaken when one partner discovers unsettling truths about the other in this psychological thriller from director Kristoffer Borgli.",
-    cast: "Zendaya, Robert Pattinson, Mamoudou Athie",
-    trailer: "https://www.youtube.com/watch?v=6zmKcUa4Xxk",
-    audience: 78
-  },
-  "You, Me and Tuscany": {
-    poster: "https://www.navymwr.org/nmps-image/37B9906EBE55339EB76BBE628026BAD8A6E5A8B7.jpg",
-    rating: "PG-13", runtime: "1h 45m", genre: "Romance · Comedy",
-    studio: "Universal", released: "Apr 10, 2026",
-    synopsis: "Anna impulsively jets off to Tuscany to crash at a stranger's villa for one night — a plan that spirals when she finds herself posing as his fiancée and falling for his dangerously charming cousin.",
-    cast: "Halle Bailey, Regé-Jean Page, Aziza Scott, Isabella Ferrari, Nia Vardalos",
-    trailer: "https://www.youtube.com/watch?v=SxmiwUY916U",
-    audience: 92
-  },
-  "In the Grey": {
-    poster: "https://www.navymwr.org/nmps-image/0B121A5DF802509748C332D72928768CF69569EE.jpg",
-    rating: "R", runtime: "1h 38m", genre: "Action · Thriller",
-    studio: "Black Bear", released: "May 15, 2026",
-    synopsis: "When billions get stolen, a covert team of elite operatives — as comfortable wielding power and influence as automatic weapons — are the pros who steal it back.",
-    cast: "Jake Gyllenhaal, Henry Cavill, Eiza González, Rosamund Pike",
-    trailer: "https://www.youtube.com/watch?v=M6cXMu816p8",
-    audience: 84
-  },
-  "Lee Cronin's The Mummy": {
-    poster: "https://www.navymwr.org/nmps-image/6128B80F7D63A63B7A958AB34872F4356E9DFB23.jpg",
-    rating: "R", runtime: "2h 14m", genre: "Horror · Thriller",
-    studio: "Warner Brothers", released: "Apr 17, 2026",
-    synopsis: "The young daughter of a journalist disappears without a trace in the desert, setting her mother on a terrifying search that unearths an ancient evil. From the director of Evil Dead Rise.",
-    cast: "Jack Reynor, Laia Costa, May Calamawy, Natalie Grace",
-    trailer: "https://www.youtube.com/watch?v=svRqrNZy8ww",
-    audience: 74
-  },
-  "Michael": {
-    poster: "https://www.navymwr.org/nmps-image/FD35D1041EC84EAC6EA132553E0AB5A78B87D2CD.jpg",
-    rating: "PG-13", runtime: "2h 7m", genre: "Biography · Drama · Music",
-    studio: "Lionsgate", released: "Apr 24, 2026",
-    synopsis: "The cinematic portrayal of the life and legacy of Michael Jackson — one of the most influential artists the world has ever known — as told through his own story.",
-    cast: "Jaafar Jackson, Nia Long, Laura Harrier, Miles Teller, Colman Domingo",
-    trailer: "https://www.youtube.com/watch?v=mbtgEE6rkxw",
-    audience: 97
-  },
-  "Tom Clancy's Jack Ryan: Ghost War": {
-    poster: "https://www.navymwr.org/nmps-image/34AD28161D63EADE447D4D10B3DBF6E9F05D4007.jpg",
-    rating: "R", runtime: "1h 45m", genre: "Action · Thriller · Spy",
-    studio: "Amazon Prime", released: "May 20, 2026",
-    synopsis: "Jack Ryan is pulled out from behind the desk and into a deadly global conspiracy in this explosive return of the CIA analyst franchise.",
-    cast: "John Krasinski, Sienna Miller, Michael Kelly",
-    trailer: "https://www.youtube.com/watch?v=FTscH6Nus1c",
+  "Passenger": {
+    poster: "https://www.navymwr.org/nmps-image/71F865009183F98692127ECA23CF73B40296E356.jpg",
+    rating: "R", runtime: "1h 34m", genre: "Horror · Thriller",
+    studio: "Paramount", released: "May 22, 2026",
+    synopsis: "After a young couple witnesses a gruesome highway accident, they soon realize they did not leave the crash scene alone, as a demonic presence won't stop until it claims them both.",
+    cast: "Jacob Scipio, Lou Llobell, Melissa Leo, Joseph Lopez, Miles Fowler",
+    trailer: "https://www.youtube.com/watch?v=FrPEZEkZBHY",
     audience: null
   },
-  "The Devil Wears Prada 2": {
-    poster: "https://www.navymwr.org/nmps-image/3AE51B60223EAFB1E7A99CDC3FE50C81833487F9.jpg",
-    rating: "PG-13", runtime: "2h 0m", genre: "Comedy · Drama",
-    studio: "Buena Vista", released: "May 1, 2026",
-    synopsis: "As Miranda Priestly nears retirement, she reunites with Andy Sachs to face off against her former assistant turned rival: Emily Charlton.",
-    cast: "Meryl Streep, Anne Hathaway, Emily Blunt, Simone Ashley, Stanley Tucci",
-    trailer: "https://www.youtube.com/watch?v=e9HXmMnUEdE",
-    audience: 88
-  },
-  "Pressure": {
-    poster: "https://www.navymwr.org/nmps-image/53147FD2AFA7F1A872ECC03209B8EDA84B7933B5.jpg",
-    rating: "PG-13", runtime: "1h 40m", genre: "Drama · History · War",
-    studio: "Universal", released: "May 29, 2026",
-    synopsis: "In the tense 72 hours before D-Day, General Dwight D. Eisenhower and Captain James Stagg face an impossible choice — launch the most dangerous seaborne invasion in history or risk losing the war altogether.",
-    cast: "Andrew Scott, Brendan Fraser, Kerry Condon, Chris Messina, Damian Lewis",
-    trailer: "https://www.youtube.com/watch?v=0bKEvstBoXc",
-    audience: null
-  },
-  "Masters of the Universe": {
-    poster: "https://www.navymwr.org/nmps-image/8990D321088F54C010CABF0CD6F55560D86C3ACB.jpg",
-    rating: "PG-13", runtime: "2h 12m", genre: "Action · Adventure · Fantasy",
-    studio: "TSI", released: "Jun 5, 2026",
-    synopsis: "A young man on Earth discovers a fabulous secret legacy as the prince of an alien planet and must recover a magic sword and return home to protect his kingdom.",
-    cast: "Nicholas Galitzine, Camila Mendes, Idris Elba, Jared Leto, Johannes Haukur Johannesson",
-    trailer: "https://www.youtube.com/watch?v=X21JsHLHnY8",
-    audience: null
-  },
-  "Mother Mary": {
-    poster: "https://www.navymwr.org/nmps-image/819F1E21B51C9620D0A9901511B062D43AF02E3A.jpg",
-    rating: "R", runtime: "1h 52m", genre: "Drama · Music · Thriller",
-    studio: "Anuvu", released: "Apr 24, 2026",
-    synopsis: "Long-buried wounds rise to the surface when iconic pop star Mother Mary reunites with her estranged best friend and former costume designer on the eve of her comeback performance.",
-    cast: "Anne Hathaway, Michaela Coel, Hunter Schafer, Sian Clifford, Atheena Frizzell",
-    trailer: "https://www.youtube.com/watch?v=iV4Vwqo2FOo",
-    audience: null
+  "Obsession": {
+    poster: "https://www.navymwr.org/nmps-image/043BD22B3840010844D0FA90E79DBD8F52A90EB4.jpg",
+    rating: "R", runtime: "1h 49m", genre: "Horror · Thriller",
+    studio: "Universal", released: "May 15, 2026",
+    synopsis: "After breaking the mysterious One Wish Willow to win his crush's heart, a hopeless romantic finds himself getting exactly what he asked for but soon discovers that some desires come at a dark, sinister price.",
+    cast: "Michael Johnston, Inde Navarrette, Cooper Tomlinson, Megan Lawless, Andy Richter",
+    trailer: "https://www.youtube.com/watch?v=gMC8kkwbIQQ",
+    audience: 89
   },
   "Mortal Kombat II": {
     poster: "https://www.navymwr.org/nmps-image/68F30DE3EB79B4F72739CF8B6E556589C1AA9890.jpg",
@@ -307,14 +226,23 @@ const MOVIE_INFO = {
     trailer: "https://www.youtube.com/watch?v=pyZI5oM6hWk",
     audience: null
   },
-  "Obsession": {
-    poster: "https://www.navymwr.org/nmps-image/043BD22B3840010844D0FA90E79DBD8F52A90EB4.jpg",
-    rating: "R", runtime: "1h 49m", genre: "Horror · Thriller",
-    studio: "Universal", released: "May 15, 2026",
-    synopsis: "After breaking the mysterious One Wish Willow to win his crush's heart, a hopeless romantic finds himself getting exactly what he asked for but soon discovers that some desires come at a dark, sinister price.",
-    cast: "Michael Johnston, Inde Navarrette, Cooper Tomlinson, Megan Lawless, Andy Richter",
-    trailer: "https://www.youtube.com/watch?v=gMC8kkwbIQQ",
+  "Pressure": {
+    poster: "https://www.navymwr.org/nmps-image/53147FD2AFA7F1A872ECC03209B8EDA84B7933B5.jpg",
+    rating: "PG-13", runtime: "1h 40m", genre: "Drama · History · War",
+    studio: "Universal", released: "May 29, 2026",
+    synopsis: "In the tense 72 hours before D-Day, General Dwight D. Eisenhower and Captain James Stagg face an impossible choice — launch the most dangerous seaborne invasion in history or risk losing the war altogether.",
+    cast: "Andrew Scott, Brendan Fraser, Kerry Condon, Chris Messina, Damian Lewis",
+    trailer: "https://www.youtube.com/watch?v=0bKEvstBoXc",
     audience: null
+  },
+  "Michael": {
+    poster: "https://www.navymwr.org/nmps-image/FD35D1041EC84EAC6EA132553E0AB5A78B87D2CD.jpg",
+    rating: "PG-13", runtime: "2h 7m", genre: "Biography · Drama · Music",
+    studio: "Lionsgate", released: "Apr 24, 2026",
+    synopsis: "The cinematic portrayal of the life and legacy of Michael Jackson — one of the most influential artists the world has ever known — as told through his own story.",
+    cast: "Jaafar Jackson, Nia Long, Laura Harrier, Miles Teller, Colman Domingo",
+    trailer: "https://www.youtube.com/watch?v=mbtgEE6rkxw",
+    audience: 97
   },
   "The Breadwinner": {
     poster: "https://www.navymwr.org/nmps-image/B5D0B216E8D9E398D4D88FD1AA328FE6DA2042B4.jpg",
@@ -325,75 +253,45 @@ const MOVIE_INFO = {
     trailer: "https://www.youtube.com/watch?v=19PLc6hpTvA",
     audience: null
   },
-  "Star Wars The Mandalorian and Grogu": {
-    poster: "https://www.navymwr.org/nmps-image/86C78B71DF88D76E36B9D0597EB77636B97D4012.jpg",
-    rating: "PG-13", runtime: "2h 12m", genre: "Action · Adventure · Sci-Fi",
-    studio: "Buena Vista", released: "May 22, 2026",
-    synopsis: "Once a lone bounty hunter, Mandalorian Din Djarin and his apprentice Grogu embark on an exciting new Star Wars adventure to hunt Imperial war criminals and protect a hard-won peace.",
-    cast: "Pedro Pascal, Sigourney Weaver, Jeremy Allen White, Steve Blum",
-    trailer: "https://www.youtube.com/watch?v=_pa1KLXuW0Y",
-    audience: 89
+  "Lucky Strike": {
+    poster: "https://www.navymwr.org/nmps-image/04644453ACCB5605EFE573F2E52C5F2DB87561FD.jpg",
+    rating: "R", runtime: "1h 43m", genre: "Action · Drama · War",
+    studio: "Horizon", released: "Jun 26, 2026",
+    synopsis: "A wounded American soldier is trapped behind German lines during the Battle of the Bulge, using his wits and a backpack radio to evade an advancing Panzer army and find his way home.",
+    cast: "Scott Eastwood, Colin Hanks, Aunjanue Ellis-Taylor, Lorne MacFadyen, Taylor John Smith",
+    trailer: "https://www.youtube.com/watch?v=cReg-YOaWkU",
+    audience: null
   },
-  "Passenger": {
-    poster: "https://www.navymwr.org/nmps-image/71F865009183F98692127ECA23CF73B40296E356.jpg",
-    rating: "R", runtime: "1h 34m", genre: "Horror · Thriller",
-    studio: "Paramount", released: "May 22, 2026",
-    synopsis: "After a young couple witnesses a gruesome highway accident, they soon realize they did not leave the crash scene alone, as a demonic presence won't stop until it claims them both.",
-    cast: "Jacob Scipio, Lou Llobell, Melissa Leo, Joseph Lopez, Miles Fowler",
-    trailer: "https://www.youtube.com/watch?v=FrPEZEkZBHY",
+  "Scary Movie": {
+    poster: "https://www.navymwr.org/nmps-image/2B164D01F27B16773A483BDE3D4E97593C3C5D7C.jpg",
+    rating: "R", runtime: "1h 36m", genre: "Comedy · Horror",
+    studio: "Paramount", released: "Jun 5, 2026",
+    synopsis: "Two friends find themselves caught up in mayhem involving killers, monsters and supernatural creatures once again, as the Wayans family reclaims the spoof franchise they built.",
+    cast: "Marlon Wayans, Shawn Wayans, Anna Faris, Regina Hall, Teyana Taylor",
+    trailer: "https://www.youtube.com/watch?v=0fZ58S-7QP0",
+    audience: 71
+  },
+  "Masters of the Universe": {
+    poster: "https://www.navymwr.org/nmps-image/8990D321088F54C010CABF0CD6F55560D86C3ACB.jpg",
+    rating: "PG-13", runtime: "2h 12m", genre: "Action · Adventure · Fantasy",
+    studio: "TSI", released: "Jun 5, 2026",
+    synopsis: "A young man on Earth discovers a fabulous secret legacy as the prince of an alien planet and must recover a magic sword and return home to protect his kingdom from Skeletor.",
+    cast: "Nicholas Galitzine, Camila Mendes, Idris Elba, Jared Leto, Alison Brie",
+    trailer: "https://www.youtube.com/watch?v=X21JsHLHnY8",
+    audience: 88
+  },
+  "Young Washington": {
+    poster: "https://www.navymwr.org/nmps-image/DDB996802099EC3D35D5FB40211A34103D257747.jpg",
+    rating: "PG-13", runtime: "2h 5m", genre: "Biography · Drama · War",
+    studio: "Angel Studios", released: "Jul 3, 2026",
+    synopsis: "Before he led a nation, George Washington was a young soldier thrown into a global conflict. With alliances crumbling and war closing in, he must choose who to trust and confront the leader he's becoming.",
+    cast: "Andy Serkis, Ben Kingsley, Mary-Louise Parker, Kelsey Grammer, William Franklyn-Miller",
+    trailer: "https://www.youtube.com/watch?v=F4ByHK8yKS8",
     audience: null
   }
 };
 
 const schedule = [
-  { date: "Fri, Jun 5", dom: "5", dow: "Fri", month: 6, shows: [
-    { time: "6:00", period: "PM", title: "Mother Mary", runtime: "1h 52m", rating: "R", free: false },
-    { time: "8:30", period: "PM", title: "Mortal Kombat II", runtime: "1h 56m", rating: "R", free: false }
-  ]},
-  { date: "Sat, Jun 6", dom: "6", dow: "Sat", month: 6, shows: [
-    { time: "4:00", period: "PM", title: "The Sheep Detectives", runtime: "1h 49m", rating: "PG", free: false },
-    { time: "6:30", period: "PM", title: "Mortal Kombat II", runtime: "1h 56m", rating: "R", free: false },
-    { time: "9:00", period: "PM", title: "Pressure", runtime: "1h 40m", rating: "PG-13", free: false }
-  ]},
-  { date: "Sun, Jun 7", dom: "7", dow: "Sun", month: 6, shows: [
-    { time: "4:00", period: "PM", title: "The Sheep Detectives", runtime: "1h 49m", rating: "PG", free: false },
-    { time: "6:30", period: "PM", title: "Mortal Kombat II", runtime: "1h 56m", rating: "R", free: false }
-  ]},
-  { date: "Tue, Jun 9", dom: "9", dow: "Tue", month: 6, shows: [
-    { time: "6:00", period: "PM", title: "Mortal Kombat II", runtime: "1h 56m", rating: "R", free: false }
-  ]},
-  { date: "Wed, Jun 10", dom: "10", dow: "Wed", month: 6, shows: [
-    { time: "6:00", period: "PM", title: "Pressure", runtime: "1h 40m", rating: "PG-13", free: false }
-  ]},
-  { date: "Thu, Jun 11", dom: "11", dow: "Thu", month: 6, shows: [
-    { time: "6:00", period: "PM", title: "Michael", runtime: "2h 7m", rating: "PG-13", free: false }
-  ]},
-  { date: "Fri, Jun 12", dom: "12", dow: "Fri", month: 6, shows: [
-    { time: "6:00", period: "PM", title: "Mortal Kombat II", runtime: "1h 56m", rating: "R", free: false },
-    { time: "8:30", period: "PM", title: "Obsession", runtime: "1h 49m", rating: "R", free: false }
-  ]},
-  { date: "Sat, Jun 13", dom: "13", dow: "Sat", month: 6, shows: [
-    { time: "4:00", period: "PM", title: "The Sheep Detectives", runtime: "1h 49m", rating: "PG", free: false },
-    { time: "6:30", period: "PM", title: "Obsession", runtime: "1h 49m", rating: "R", free: false },
-    { time: "9:00", period: "PM", title: "Pressure", runtime: "1h 40m", rating: "PG-13", free: false }
-  ]},
-  { date: "Sun, Jun 14", dom: "14", dow: "Sun", month: 6, shows: [
-    { time: "4:00", period: "PM", title: "The Sheep Detectives", runtime: "1h 49m", rating: "PG", free: false },
-    { time: "6:30", period: "PM", title: "The Breadwinner", runtime: "1h 35m", rating: "PG", free: false }
-  ]},
-  { date: "Tue, Jun 16", dom: "16", dow: "Tue", month: 6, shows: [
-    { time: "6:00", period: "PM", title: "Mortal Kombat II", runtime: "1h 56m", rating: "R", free: false }
-  ]},
-  { date: "Wed, Jun 17", dom: "17", dow: "Wed", month: 6, shows: [
-    { time: "6:00", period: "PM", title: "The Breadwinner", runtime: "1h 35m", rating: "PG", free: false }
-  ]},
-  { date: "Thu, Jun 18", dom: "18", dow: "Thu", month: 6, shows: [
-    { time: "6:00", period: "PM", title: "Pressure", runtime: "1h 40m", rating: "PG-13", free: false }
-  ]},
-  { date: "Fri, Jun 19", dom: "19", dow: "Fri", month: 6, shows: [
-    { time: "6:00", period: "PM", title: "The Breadwinner", runtime: "1h 35m", rating: "PG", free: false },
-    { time: "8:10", period: "PM", title: "Star Wars The Mandalorian and Grogu", runtime: "2h 12m", rating: "PG-13", free: false }
-  ]},
   { date: "Sat, Jun 20", dom: "20", dow: "Sat", month: 6, shows: [
     { time: "4:00", period: "PM", title: "The Sheep Detectives", runtime: "1h 49m", rating: "PG", free: false },
     { time: "6:30", period: "PM", title: "Star Wars The Mandalorian and Grogu", runtime: "2h 12m", rating: "PG-13", free: false },
@@ -402,6 +300,50 @@ const schedule = [
   { date: "Sun, Jun 21", dom: "21", dow: "Sun", month: 6, shows: [
     { time: "4:00", period: "PM", title: "Star Wars The Mandalorian and Grogu", runtime: "2h 12m", rating: "PG-13", free: false },
     { time: "6:40", period: "PM", title: "Passenger", runtime: "1h 34m", rating: "R", free: false }
+  ]},
+  { date: "Tue, Jun 23", dom: "23", dow: "Tue", month: 6, shows: [
+    { time: "6:00", period: "PM", title: "Obsession", runtime: "1h 49m", rating: "R", free: false }
+  ]},
+  { date: "Wed, Jun 24", dom: "24", dow: "Wed", month: 6, shows: [
+    { time: "6:00", period: "PM", title: "Star Wars The Mandalorian and Grogu", runtime: "2h 12m", rating: "PG-13", free: false }
+  ]},
+  { date: "Thu, Jun 25", dom: "25", dow: "Thu", month: 6, shows: [
+    { time: "6:00", period: "PM", title: "Mortal Kombat II", runtime: "1h 56m", rating: "R", free: false }
+  ]},
+  { date: "Fri, Jun 26", dom: "26", dow: "Fri", month: 6, shows: [
+    { time: "6:00", period: "PM", title: "Lucky Strike", runtime: "1h 43m", rating: "R", free: false },
+    { time: "8:20", period: "PM", title: "Obsession", runtime: "1h 49m", rating: "R", free: false }
+  ]},
+  { date: "Sat, Jun 27", dom: "27", dow: "Sat", month: 6, shows: [
+    { time: "4:00", period: "PM", title: "The Breadwinner", runtime: "1h 35m", rating: "PG", free: false },
+    { time: "6:00", period: "PM", title: "Obsession", runtime: "1h 49m", rating: "R", free: false },
+    { time: "8:20", period: "PM", title: "Star Wars The Mandalorian and Grogu", runtime: "2h 12m", rating: "PG-13", free: false }
+  ]},
+  { date: "Sun, Jun 28", dom: "28", dow: "Sun", month: 6, shows: [
+    { time: "4:00", period: "PM", title: "Star Wars The Mandalorian and Grogu", runtime: "2h 12m", rating: "PG-13", free: false },
+    { time: "6:40", period: "PM", title: "Lucky Strike", runtime: "1h 43m", rating: "R", free: false }
+  ]},
+  { date: "Tue, Jun 30", dom: "30", dow: "Tue", month: 6, shows: [
+    { time: "6:00", period: "PM", title: "The Breadwinner", runtime: "1h 35m", rating: "PG", free: false }
+  ]},
+  { date: "Wed, Jul 1", dom: "1", dow: "Wed", month: 7, shows: [
+    { time: "6:00", period: "PM", title: "Lucky Strike", runtime: "1h 43m", rating: "R", free: false }
+  ]},
+  { date: "Thu, Jul 2", dom: "2", dow: "Thu", month: 7, shows: [
+    { time: "6:00", period: "PM", title: "Star Wars The Mandalorian and Grogu", runtime: "2h 12m", rating: "PG-13", free: false }
+  ]},
+  { date: "Fri, Jul 3", dom: "3", dow: "Fri", month: 7, shows: [
+    { time: "6:00", period: "PM", title: "Masters of the Universe", runtime: "2h 12m", rating: "PG-13", free: false },
+    { time: "8:30", period: "PM", title: "Scary Movie", runtime: "1h 36m", rating: "R", free: false }
+  ]},
+  { date: "Sat, Jul 4", dom: "4", dow: "Sat", month: 7, shows: [
+    { time: "4:00", period: "PM", title: "Masters of the Universe", runtime: "2h 12m", rating: "PG-13", free: false },
+    { time: "6:30", period: "PM", title: "Young Washington", runtime: "2h 5m", rating: "PG-13", free: false },
+    { time: "9:00", period: "PM", title: "Scary Movie", runtime: "1h 36m", rating: "R", free: false }
+  ]},
+  { date: "Sun, Jul 5", dom: "5", dow: "Sun", month: 7, shows: [
+    { time: "4:00", period: "PM", title: "Young Washington", runtime: "2h 5m", rating: "PG-13", free: false },
+    { time: "6:30", period: "PM", title: "Masters of the Universe", runtime: "2h 12m", rating: "PG-13", free: false }
   ]}
 ];
 
