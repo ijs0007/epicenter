@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Epicenter Theater — weekly schedule auto-updater (v2).
+Epicenter Theater — weekly schedule auto-updater (v2.1).
 
 v2 additions:
   * Auto-resolves REAL YouTube trailer links for new movies (scrapes YouTube
@@ -11,6 +11,10 @@ v2 additions:
     keeps settling scores current.
   * Upgrades any placeholder "youtube.com/results?search_query=" trailer
     links left by earlier runs to real watch links when it can find one.
+  * v2.1 FIX: each day's shows are now anchored to that day's own listings
+    table (time + movie link pairs). The old position-based guess shifted
+    every day by one on the live page. A new cross-check gate aborts if
+    tables and metadata blocks ever disagree.
 
 Safety rules (unchanged from v1):
   * Bad schedule parse -> ABORT, index.html untouched, workflow fails loudly.
@@ -74,54 +78,87 @@ def _norm(s):
 # ──────────────────────── MWR schedule parse ───────────────────────
 
 def parse_schedule(page):
+    """Parse the MWR showtimes page (raw HTML).
+
+    v2.1: day association is anchored to each day's own listings table —
+    the rows pairing a showtime with a motion-pictures?id= link that sit
+    directly under each date header. The floating metadata blocks are used
+    only as a lookup for title/type/rating/runtime, never for day placement.
+    """
     text = html.unescape(page)
+
     date_pat = re.compile(
         r"(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\s*-\s*"
         r"(January|February|March|April|May|June|July|August|September|October|November|December)"
         r"\s+(\d{1,2}),\s+(\d{4})")
     dates = [(m.start(), m) for m in date_pat.finditer(text)]
+    if len(dates) < 3:
+        sys.exit(f"ABORT: only {len(dates)} date headers found - MWR layout may "
+                 "have changed. index.html NOT modified.")
 
-    show_pat = re.compile(
-        r'\{Key:\s*"id",\s*Value:\s*"([0-9a-fA-F-]{36})"\}.{0,400}?'
-        r'\{Key:\s*"title",\s*Value:\s*"(.*?)"\}.{0,400}?'
-        r'\{Key:\s*"type",\s*Value:\s*"(.*?)"\}.{0,400}?'
-        r'\{Key:\s*"showTime",\s*Value:\s*"(.*?)"\}.{0,400}?'
-        r'\{Key:\s*"rating",\s*Value:\s*"(.*?)"\}.{0,400}?'
+    meta_pat = re.compile(
+        r'\{Key:\s*"id",\s*Value:\s*"([0-9a-fA-F-]{36})"\}.{0,600}?'
+        r'\{Key:\s*"title",\s*Value:\s*"(.*?)"\}.{0,600}?'
+        r'\{Key:\s*"type",\s*Value:\s*"(.*?)"\}.{0,600}?'
+        r'\{Key:\s*"showTime",\s*Value:\s*"(.*?)"\}.{0,600}?'
+        r'\{Key:\s*"rating",\s*Value:\s*"(.*?)"\}.{0,600}?'
         r'\{Key:\s*"runningTime",\s*Value:\s*"(\d+)"\}', re.S)
-    shows = [(m.start(), m) for m in show_pat.finditer(text)]
-
-    if len(dates) < 3 or len(shows) < 4:
-        sys.exit(f"ABORT: parser found only {len(dates)} dates / {len(shows)} shows — "
-                 "MWR page layout may have changed. index.html NOT modified.")
-
-    days, order = {}, []
-    for spos, sm in shows:
-        nxt = next((dm for dpos, dm in dates if dpos > spos), None)
-        if nxt is None:
-            continue
-        key = nxt.start()
-        if key not in days:
-            dow, mon, dom, yr = nxt.group(1), nxt.group(2), int(nxt.group(3)), int(nxt.group(4))
-            days[key] = {"date_obj": date(yr, MONTHS[mon], dom), "dow": dow[:3],
-                         "dom": str(dom), "month": MONTHS[mon], "shows": []}
-            order.append(key)
-        mid, title, stype, showtime, rating, run_min = (sm.group(i) for i in range(1, 7))
+    meta = {}
+    for m in meta_pat.finditer(text):
+        mid, title, stype, showtime, rating, run_min = m.groups()
         t = re.match(r"(\d{1,2}:\d{2})\s*(AM|PM)", showtime.strip(), re.I)
-        if not t:
-            continue
-        su = stype.upper()
-        days[key]["shows"].append({
-            "id": mid, "title": title.strip(),
-            "time": t.group(1), "period": t.group(2).upper(),
-            "rating": RATING_MAP.get(rating.lower(), rating.upper()),
-            "runtime": minutes_to_runtime(run_min),
-            "free": ("FREE" in su) or ("NDVD" in su) or ("ADVANCE" in su),
-            "advance": "ADVANCE" in su,
-        })
+        if t:
+            meta[(mid.lower(), t.group(1), t.group(2).upper())] = {
+                "title": title.strip(), "stype": stype,
+                "rating": rating, "run_min": run_min}
 
-    result = [days[k] for k in order if days[k]["shows"]]
-    if len(result) < 3:
-        sys.exit("ABORT: fewer than 3 populated dates after parsing. index.html NOT modified.")
+    row_pat = re.compile(
+        r'(\d{1,2}:\d{2})\s*(AM|PM).{0,600}?'
+        r'motion-pictures\?id=([0-9a-fA-F-]{36})[^>]*>\s*([^<]{0,150})', re.S)
+
+    days = []
+    for idx, (dpos, dm) in enumerate(dates):
+        seg_end = dates[idx + 1][0] if idx + 1 < len(dates) else len(text)
+        seg = text[dm.end():seg_end]
+        dow, mon, dom, yr = dm.group(1), dm.group(2), int(dm.group(3)), int(dm.group(4))
+        day = {"date_obj": date(yr, MONTHS[mon], dom), "dow": dow[:3],
+               "dom": str(dom), "month": MONTHS[mon], "shows": []}
+        for rm in row_pat.finditer(seg):
+            hhmm, ap = rm.group(1), rm.group(2).upper()
+            mid, anchor_title = rm.group(3).lower(), (rm.group(4) or "").strip()
+            mm = meta.get((mid, hhmm, ap))
+            if mm:
+                title, stype = mm["title"], mm["stype"]
+                rating, run_min = mm["rating"], mm["run_min"]
+            else:
+                if not anchor_title:
+                    continue
+                title, stype = anchor_title, ""
+                window = seg[rm.start():rm.end() + 300]
+                rmt = re.search(r'ico-([a-z0-9]+)\.png', window)
+                rating = rmt.group(1) if rmt else ""
+                mmin = re.search(r'(\d{2,3})\s*min', window)
+                run_min = mmin.group(1) if mmin else "120"
+            su = stype.upper()
+            day["shows"].append({
+                "id": mid, "title": title,
+                "time": hhmm, "period": ap,
+                "rating": RATING_MAP.get(rating.lower(), rating.upper()),
+                "runtime": minutes_to_runtime(run_min),
+                "free": ("FREE" in su) or ("NDVD" in su) or ("ADVANCE" in su),
+                "advance": "ADVANCE" in su,
+            })
+        days.append(day)
+
+    result = [d for d in days if d["shows"]]
+    total = sum(len(d["shows"]) for d in result)
+    if len(result) < 3 or total < 4:
+        sys.exit(f"ABORT: parsed only {len(result)} dates / {total} shows. "
+                 "index.html NOT modified.")
+    if len(meta) >= 4 and total < len(meta) / 2:
+        sys.exit(f"ABORT: listing tables and metadata blocks disagree "
+                 f"({total} rows vs {len(meta)} meta blocks) - layout change? "
+                 "index.html NOT modified.")
     for d in result:
         seen, uniq = set(), []
         for s in sorted(d["shows"], key=lambda s: datetime.strptime(s["time"] + s["period"], "%I:%M%p")):
