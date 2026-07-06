@@ -148,7 +148,7 @@
   <div id="showList"></div>
 </div>
 <div class="footer">
-  Schedule updated Jul 3, 2026 &nbsp;·&nbsp;
+  Schedule updated Jul 6, 2026 &nbsp;·&nbsp;
   <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -181,33 +181,6 @@
 const PLAY_ICON = `<svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L10 6 L0 12 Z"/></svg>`;
 
 const MOVIE_INFO = {
-  "Masters of the Universe": {
-    poster: "https://www.navymwr.org/nmps-image/8990D321088F54C010CABF0CD6F55560D86C3ACB.jpg",
-    rating: "PG-13", runtime: "2h 12m", genre: "Action · Adventure · Fantasy",
-    studio: "TSI", released: "Jun 5, 2026",
-    synopsis: "A young man on Earth discovers a fabulous secret legacy as the prince of an alien planet and must recover a magic sword and return home to protect his kingdom from Skeletor.",
-    cast: "Nicholas Galitzine, Camila Mendes, Idris Elba, Jared Leto, Alison Brie",
-    trailer: "https://www.youtube.com/watch?v=X21JsHLHnY8",
-    audience: 86
-  },
-  "Scary Movie": {
-    poster: "https://www.navymwr.org/nmps-image/2B164D01F27B16773A483BDE3D4E97593C3C5D7C.jpg",
-    rating: "R", runtime: "1h 36m", genre: "Comedy · Horror",
-    studio: "Paramount", released: "Jun 5, 2026",
-    synopsis: "Two friends find themselves caught up in mayhem involving killers, monsters and supernatural creatures once again, as the Wayans family reclaims the spoof franchise they built.",
-    cast: "Marlon Wayans, Shawn Wayans, Anna Faris, Regina Hall, Teyana Taylor",
-    trailer: "https://www.youtube.com/watch?v=0fZ58S-7QP0",
-    audience: 65
-  },
-  "Young Washington": {
-    poster: "https://www.navymwr.org/nmps-image/DDB996802099EC3D35D5FB40211A34103D257747.jpg",
-    rating: "PG-13", runtime: "2h 5m", genre: "Biography · Drama · War",
-    studio: "Angel Studios", released: "Jul 3, 2026",
-    synopsis: "Before he led a nation, George Washington was a young soldier thrown into a global conflict. With alliances crumbling and war closing in, he must choose who to trust and confront the leader he’s becoming.",
-    cast: "Andy Serkis, Ben Kingsley, Mary-Louise Parker, Kelsey Grammer, William Franklyn-Miller",
-    trailer: "https://www.youtube.com/watch?v=F4ByHK8yKS8",
-    audience: null
-  },
   "Obsession": {
     poster: "https://www.navymwr.org/nmps-image/043BD22B3840010844D0FA90E79DBD8F52A90EB4.jpg",
     rating: "R", runtime: "1h 48m", genre: "Horror · Thriller",
@@ -226,6 +199,15 @@ const MOVIE_INFO = {
     trailer: "https://www.youtube.com/watch?v=htnkOpknGok",
     audience: null
   },
+  "Masters of the Universe": {
+    poster: "https://www.navymwr.org/nmps-image/8990D321088F54C010CABF0CD6F55560D86C3ACB.jpg",
+    rating: "PG-13", runtime: "2h 12m", genre: "Action · Adventure · Fantasy",
+    studio: "TSI", released: "Jun 5, 2026",
+    synopsis: "A young man on Earth discovers a fabulous secret legacy as the prince of an alien planet and must recover a magic sword and return home to protect his kingdom from Skeletor.",
+    cast: "Nicholas Galitzine, Camila Mendes, Idris Elba, Jared Leto, Alison Brie",
+    trailer: "https://www.youtube.com/watch?v=X21JsHLHnY8",
+    audience: 86
+  },
   "Disclosure Day": {
     poster: "https://www.navymwr.org/nmps-image/6BEB08F354F2BE4729AC13A8FC8CE18F9F25B7BC.jpg",
     rating: "PG-13", runtime: "2h 25m", genre: "Sci-Fi · Drama · Thriller",
@@ -243,6 +225,15 @@ const MOVIE_INFO = {
     cast: "Chiwetel Ejiofor, Renate Reinsve, Mark Duplass, Finn Bennett, Lukita Maxwell",
     trailer: "https://www.youtube.com/watch?v=0HjdiohVOik",
     audience: 74
+  },
+  "Scary Movie": {
+    poster: "https://www.navymwr.org/nmps-image/2B164D01F27B16773A483BDE3D4E97593C3C5D7C.jpg",
+    rating: "R", runtime: "1h 36m", genre: "Comedy · Horror",
+    studio: "Paramount", released: "Jun 5, 2026",
+    synopsis: "Two friends find themselves caught up in mayhem involving killers, monsters and supernatural creatures once again, as the Wayans family reclaims the spoof franchise they built.",
+    cast: "Marlon Wayans, Shawn Wayans, Anna Faris, Regina Hall, Teyana Taylor",
+    trailer: "https://www.youtube.com/watch?v=0fZ58S-7QP0",
+    audience: 65
   },
   "The Odyssey": {
     poster: "https://www.navymwr.org/nmps-image/E01BC0F57012026EC2B2C0EA9D7B439A8A5266B5.jpg",
@@ -283,19 +274,6 @@ const MOVIE_INFO = {
 };
 
 const schedule = [
-  { date: "Fri, Jul 3", dom: "3", dow: "Fri", month: 7, shows: [
-    { time: "6:00", period: "PM", title: "Masters of the Universe", runtime: "2h 12m", rating: "PG-13", free: false },
-    { time: "8:30", period: "PM", title: "Scary Movie", runtime: "1h 36m", rating: "R", free: false }
-  ]},
-  { date: "Sat, Jul 4", dom: "4", dow: "Sat", month: 7, shows: [
-    { time: "4:00", period: "PM", title: "Masters of the Universe", runtime: "2h 12m", rating: "PG-13", free: false },
-    { time: "6:30", period: "PM", title: "Young Washington", runtime: "2h 5m", rating: "PG-13", free: false },
-    { time: "9:00", period: "PM", title: "Scary Movie", runtime: "1h 36m", rating: "R", free: false }
-  ]},
-  { date: "Sun, Jul 5", dom: "5", dow: "Sun", month: 7, shows: [
-    { time: "4:00", period: "PM", title: "Young Washington", runtime: "2h 5m", rating: "PG-13", free: false },
-    { time: "6:30", period: "PM", title: "Masters of the Universe", runtime: "2h 12m", rating: "PG-13", free: false }
-  ]},
   { date: "Tue, Jul 7", dom: "7", dow: "Tue", month: 7, shows: [
     { time: "6:00", period: "PM", title: "Obsession", runtime: "1h 48m", rating: "R", free: false }
   ]},
