@@ -15,6 +15,15 @@ v2 additions:
     table (time + movie link pairs). The old position-based guess shifted
     every day by one on the live page. A new cross-check gate aborts if
     tables and metadata blocks ever disagree.
+  * v2.2 FIX (2026-07-21 incident): the 07-20 run wrote raw multi-line page
+    HTML into synopsis strings (JS SyntaxError -> blank site) and empty
+    poster/studio/genre/date fields after navymwr.org changed its detail
+    markup. Detail parsing is now label-based on tag-stripped text, every
+    string is forced to a single sanitised line at write time (js_str),
+    and new hard gates (quote parity per line, no HTML fragments, every
+    schedule title has an entry, runtime format) abort the run before
+    index.html is touched. A node --check step in the workflow is the
+    final gate before any commit.
 
 Safety rules (unchanged from v1):
   * Bad schedule parse -> ABORT, index.html untouched, workflow fails loudly.
@@ -68,11 +77,40 @@ def minutes_to_runtime(mins):
 
 
 def js_str(s):
-    return s.replace("\\", "\\\\").replace('"', '\\"')
+    """Make ANY value safe inside a double-quoted, single-line JS string.
+    Collapsing whitespace here makes multi-line output impossible no
+    matter how badly upstream parsing goes wrong."""
+    s = re.sub(r"\s+", " ", str(s)).strip()
+    return s.replace("\\", "\\\\").replace('"', '\\"').replace("</", "<\\/")
 
 
 def _norm(s):
     return re.sub(r"[^a-z0-9]+", " ", s.lower()).strip()
+
+
+LABELS = (r"(?:Rating|Rated|Genres?|Studio|Release Date|Released|Cast|"
+          r"Synopsis|Runtime|Running Time|Show ?times?)")
+
+
+def strip_tags(page):
+    """HTML -> plain text, one element per line, entities unescaped."""
+    t = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", page)
+    t = re.sub(r"(?s)<[^>]+>", "\n", t)
+    t = html.unescape(t)
+    t = re.sub(r"[ \t\r\f\v ]+", " ", t)
+    t = re.sub(r"\n\s*", "\n", t)
+    return t
+
+
+def clean_text(s, max_len=600):
+    """Single line, no double quotes, sensible length (cut at a sentence)."""
+    s = re.sub(r"\s+", " ", str(s)).strip().strip(" :;,–— ")
+    s = s.replace('"', "'")
+    if len(s) > max_len:
+        cut = s[:max_len]
+        dot = cut.rfind(". ")
+        s = (cut[:dot + 1] if dot > 40 else cut).strip()
+    return s
 
 
 # ──────────────────────── MWR schedule parse ───────────────────────
@@ -173,29 +211,119 @@ def parse_schedule(page):
 # ────────────────────── movie detail scraping ──────────────────────
 
 def parse_detail(page, title):
-    text = html.unescape(page)
+    """v2.2: label-based parsing on tag-stripped text.
 
-    def grab(pat, default=""):
-        m = re.search(pat, text, re.S)
-        return m.group(1).strip() if m else default
+    Immune to markup changes leaking HTML into output: fields are read
+    from plain text, forced to a single line, and anything unparsable
+    falls back to a safe placeholder instead of garbage.
+    """
+    raw = page
+    text = strip_tags(page)
+    month_pat = "|".join(MONTHS)
 
-    poster = grab(r'(https://www\.navymwr\.org/nmps-image/[0-9A-Fa-f]+\.jpg)')
+    def field(label_pat, max_len=200):
+        m = re.search(rf"(?im)^\s*(?:{label_pat})\s*:\s*(.*)$", text)
+        if not m:
+            return ""
+        val = m.group(1).strip()
+        if not val:  # value sits on the following line(s)
+            for line in text[m.end():m.end() + 400].split("\n"):
+                line = line.strip()
+                if not line:
+                    continue
+                if re.match(rf"(?i)^{LABELS}\s*:?\s*$", line) or \
+                   re.match(rf"(?i)^{LABELS}\s*:", line):
+                    break
+                val = line
+                break
+        val = re.split(rf"(?i)\b{LABELS}\s*:", val)[0]
+        return clean_text(val, max_len)
+
+    # poster \u2014 absolute, protocol-relative, or relative nmps-image URL
+    poster = ""
+    pm = re.search(r"(?i)(?:https?:)?(?://www\.navymwr\.org)?/?"
+                   r"(nmps-image/[0-9A-Fa-f]+\.(?:jpe?g|png))", raw)
+    if pm:
+        poster = "https://www.navymwr.org/" + pm.group(1)
+
+    # release date \u2014 accepts 04/01/2026 or "April 1, 2026"
     released = ""
-    m = re.search(r'(\d{2})/(\d{2})/(\d{4})',
-                  grab(r'Release Date:\s*<?/?[^>]*>?\s*([\d/]+)') or "")
+    rel_raw = field(r"Release Date|Released", 80)
+    m = re.search(r"(\d{1,2})/(\d{1,2})/(\d{4})", rel_raw)
     if m:
         mo, dd, yy = int(m.group(1)), int(m.group(2)), int(m.group(3))
-        released = f"{date(yy, mo, dd):%b} {dd}, {yy}"
-    genre_raw = grab(r'Genre:\s*<?/?[^>]*>?\s*([A-Za-z \-]+?)\s*(?:Studio:|<)')
-    genre = " \u00b7 ".join(genre_raw.split()[:3]) if genre_raw else "Feature"
-    studio = grab(r'Studio:\s*<?/?[^>]*>?\s*([A-Za-z0-9 &\-\.]+?)\s*(?:Cast:|<)') or "\u2014"
-    cast_raw = grab(r'Cast:\s*(.*?)(?:###|Synopsis|<h3)', "")
-    cast = ", ".join(re.findall(r"[A-Z][\w'\.\-]+(?: [A-Z][\w'\.\-]+)+", cast_raw)[:5]) or "\u2014"
-    synopsis = (grab(r'Synopsis\s*</?h?3?>?\s*(.{20,600}?)(?:\n\n|###|<h3)')
-                .replace('"', "'").strip()
-                or f"{title} \u2014 now showing at the Epicenter Theater.")
-    return {"poster": poster, "genre": genre, "studio": studio,
-            "released": released or "\u2014", "synopsis": synopsis, "cast": cast}
+        try:
+            released = f"{date(yy, mo, dd):%b} {dd}, {yy}"
+        except ValueError:
+            pass
+    else:
+        m = re.search(rf"(?i)\b({month_pat})\.?\s+(\d{{1,2}}),?\s+(\d{{4}})", rel_raw)
+        if m:
+            released = f"{m.group(1)[:3].title()} {int(m.group(2))}, {m.group(3)}"
+
+    # genre(s) \u2014 "Genres: A, B, C" or "Genre: Documentary Comedy"
+    graw = field(r"Genres?", 120)
+    parts = ([p.strip() for p in graw.split(",")] if "," in graw else graw.split())
+    parts = [p for p in parts if re.fullmatch(r"[A-Za-z][A-Za-z\-]{1,19}", p)][:3]
+    genre = " \u00b7 ".join(parts) if parts else "Feature"
+
+    # studio
+    studio = re.sub(r"[^A-Za-z0-9 &\-\.]", "", field(r"Studio", 60)).strip() or "\u2014"
+
+    # cast \u2014 comma-separated on one line, or one name per line
+    cast_names = []
+    cm = re.search(r"(?i)\bCast\b\s*:?", text)
+    if cm:
+        for line in text[cm.end():cm.end() + 800].split("\n"):
+            line = line.strip(" ,\u00b7")
+            if not line:
+                if cast_names:
+                    break
+                continue
+            if re.match(rf"(?i)^{LABELS}\s*:?", line):
+                break
+            if "," in line:
+                cast_names += [c.strip() for c in line.split(",") if c.strip()]
+                break
+            if not re.fullmatch(r"[A-Za-z\u00c0-\u024f'\u2019\. \-]{2,40}", line):
+                break
+            cast_names.append(line)
+            if len(cast_names) >= 8:
+                break
+    cast = clean_text(", ".join(cast_names[:5]), 200) or "\u2014"
+
+    # synopsis \u2014 first prose block after the Synopsis label
+    syn = ""
+    sm = re.search(r"(?i)\bSynopsis\b\s*:?", text)
+    if sm:
+        lines = []
+        for line in text[sm.end():sm.end() + 2000].split("\n"):
+            line = line.strip()
+            if not line:
+                if lines:
+                    break
+                continue
+            if re.match(rf"(?i)^{LABELS}\s*:?", line):
+                break
+            lines.append(line)
+            if sum(len(x) for x in lines) > 900:
+                break
+        syn = clean_text(" ".join(lines), 600)
+    if len(syn) < 20:
+        syn = f"{title} \u2014 now showing at the Epicenter Theater."
+
+    det = {"poster": poster, "genre": genre, "studio": studio,
+           "released": released or "\u2014", "synopsis": syn, "cast": cast}
+    # hard sanitation: single line, never any angle brackets
+    for k, v in det.items():
+        v = re.sub(r"<[^>]*>", " ", str(v)).replace("<", " ").replace(">", " ")
+        det[k] = re.sub(r"\s+", " ", v).strip()
+    if not re.fullmatch(r"https://www\.navymwr\.org/nmps-image/"
+                        r"[0-9A-Fa-f]+\.(?:jpe?g|png)", det["poster"]):
+        det["poster"] = ""
+    if len(det["synopsis"]) < 20:
+        det["synopsis"] = f"{title} \u2014 now showing at the Epicenter Theater."
+    return det
 
 
 # ─────────────────── trailer + audience resolvers ──────────────────
@@ -356,12 +484,12 @@ def new_movie_entry(title, det, rating, runtime):
         print(f"  [rt] unexpected error for {title!r}: {e}")
     aud_js = str(audience) if audience is not None else "null"
     return (f'"{js_str(title)}": {{\n'
-            f'    poster: "{det["poster"]}",\n'
-            f'    rating: "{rating}", runtime: "{runtime}", genre: "{js_str(det["genre"])}",\n'
-            f'    studio: "{js_str(det["studio"])}", released: "{det["released"]}",\n'
+            f'    poster: "{js_str(det["poster"])}",\n'
+            f'    rating: "{js_str(rating)}", runtime: "{js_str(runtime)}", genre: "{js_str(det["genre"])}",\n'
+            f'    studio: "{js_str(det["studio"])}", released: "{js_str(det["released"])}",\n'
             f'    synopsis: "{js_str(det["synopsis"])}",\n'
             f'    cast: "{js_str(det["cast"])}",\n'
-            f'    trailer: "{trailer}",\n'
+            f'    trailer: "{js_str(trailer)}",\n'
             f'    audience: {aud_js}\n'
             f'  }}'), audience is None
 
@@ -453,6 +581,27 @@ def main():
         seg = content[b0:b1]
         if seg.count(o) != seg.count(c_):
             sys.exit(f"ABORT: unbalanced {blk[:-4]} block. index.html NOT modified.")
+
+    # ── v2.2 value-level gates (the 2026-07-20 failure could not pass these) ──
+    m0b, m1b = extract_block(content, "const MOVIE_INFO = {", "{", "}")
+    info_block = content[m0b:m1b]
+    for ln in info_block.split("\n"):
+        if len(re.findall(r'(?<!\\)"', ln)) % 2:
+            sys.exit("ABORT: unbalanced quotes in MOVIE_INFO (multi-line string?). "
+                     "index.html NOT modified.")
+    if "</" in info_block.replace("<\\/", "") or "<script" in info_block.lower():
+        sys.exit("ABORT: HTML fragments inside MOVIE_INFO strings. "
+                 "index.html NOT modified.")
+    entry_keys = set(extract_movie_entries(info_block))
+    missing = [t for t in sched_movies
+               if t not in entry_keys and js_str(t) not in entry_keys]
+    if missing:
+        sys.exit(f"ABORT: schedule titles without MOVIE_INFO entry: {missing}. "
+                 "index.html NOT modified.")
+    bad_rt = [r for r in re.findall(r'runtime: "([^"]*)"', content)
+              if not re.fullmatch(r"\d+h \d+m", r)]
+    if bad_rt:
+        sys.exit(f"ABORT: malformed runtimes {bad_rt}. index.html NOT modified.")
 
     open(INDEX_PATH, "w", encoding="utf-8").write(content)
     print(f"index.html updated: {len(days)} dates, "
