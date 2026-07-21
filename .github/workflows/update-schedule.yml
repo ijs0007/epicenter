@@ -2,8 +2,8 @@ name: Update Epicenter Schedule
 
 on:
   schedule:
-    # Every Monday at 13:00 UTC (~8:00 AM Central)
-    - cron: "0 13 * * 1"
+    # Every Tuesday at 13:00 UTC (~8:00 AM Central)
+    - cron: "0 13 * * 2"
   workflow_dispatch: {}   # manual "Run workflow" button in the Actions tab
 
 permissions:
