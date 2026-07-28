@@ -148,7 +148,7 @@
   <div id="showList"></div>
 </div>
 <div class="footer">
-  Schedule updated Jul 21, 2026 &nbsp;·&nbsp;
+  Schedule updated Jul 28, 2026 &nbsp;·&nbsp;
   <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -181,15 +181,6 @@
 const PLAY_ICON = `<svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L10 6 L0 12 Z"/></svg>`;
 
 const MOVIE_INFO = {
-  "Disclosure Day": {
-    poster: "https://www.navymwr.org/nmps-image/6BEB08F354F2BE4729AC13A8FC8CE18F9F25B7BC.jpg",
-    rating: "PG-13", runtime: "2h 25m", genre: "Sci-Fi · Drama · Thriller",
-    studio: "Universal", released: "Jun 12, 2026",
-    synopsis: "If you found out we weren’t alone — if someone showed you, proved it to you — would that frighten you? Steven Spielberg returns to science fiction with a meteorologist confronting an unexplained alien phenomenon.",
-    cast: "Emily Blunt, Josh O’Connor, Colin Firth, Eve Hewson, Colman Domingo",
-    trailer: "https://www.youtube.com/watch?v=6WnDRZr-Ox8",
-    audience: 73
-  },
   "Backrooms": {
     poster: "https://www.navymwr.org/nmps-image/712E8DF217A3134103D66C5CBA839789DF9C608E.jpg",
     rating: "R", runtime: "1h 50m", genre: "Horror · Sci-Fi · Thriller",
@@ -198,42 +189,6 @@ const MOVIE_INFO = {
     cast: "Chiwetel Ejiofor, Renate Reinsve, Mark Duplass, Finn Bennett, Lukita Maxwell",
     trailer: "https://www.youtube.com/watch?v=0HjdiohVOik",
     audience: 74
-  },
-  "The Super Mario Galaxy Movie": {
-    poster: "https://www.navymwr.org/nmps-image/3E996249F1CF7339E4437C18C950A08743664948.jpg",
-    rating: "PG", runtime: "1h 38m", genre: "Animation · Adventure · Comedy",
-    studio: "Universal", released: "Apr 1, 2026",
-    synopsis: "Mario ventures into space, exploring cosmic worlds and tackling galactic challenges far from the familiar Mushroom Kingdom.",
-    cast: "Chris Pratt, Anya Taylor-Joy, Jack Black, Brie Larson, Benny Safdie",
-    trailer: "https://www.youtube.com/watch?v=FdL2GorGdKc",
-    audience: 88
-  },
-  "Supergirl": {
-    poster: "https://www.navymwr.org/nmps-image/B6CFC2F5BF4B5D4425986ACA82BA20EAF8725ECB.jpg",
-    rating: "PG-13", runtime: "1h 50m", genre: "Action · Adventure · Sci-Fi",
-    studio: "Warner Bros.", released: "Jun 26, 2026",
-    synopsis: "Kara Zor-El, aka Supergirl, joins forces with an unlikely companion on an interstellar journey of vengeance and justice when an unexpected adversary strikes too close to home.",
-    cast: "Milly Alcock, Eve Ridley, Matthias Schoenaerts, Jason Momoa, David Corenswet",
-    trailer: "https://www.youtube.com/watch?v=s1-pfiVMKAs",
-    audience: 75
-  },
-  "Jackass: Best and Last": {
-    poster: "https://www.navymwr.org/nmps-image/E037069ACE3572771B9DFEE04996D8979849795D.jpg",
-    rating: "R", runtime: "1h 32m", genre: "Documentary · Comedy",
-    studio: "Paramount", released: "Jun 26, 2026",
-    synopsis: "Follows the Jackass crew as they perform their final series of dangerous stunts and pranks, marking the end of the franchise.",
-    cast: "Johnny Knoxville, Steve-O, Chris Pontius, Jason 'Wee Man' Acuna, Preston Lacy",
-    trailer: "https://www.youtube.com/watch?v=sNwzFhGwA94",
-    audience: 85
-  },
-  "Toy Story 5": {
-    poster: "https://www.navymwr.org/nmps-image/D667517677AA69EDE282BB9EA12AD33448A97F4D.jpg",
-    rating: "PG", runtime: "1h 42m", genre: "Animation · Adventure · Comedy",
-    studio: "Buena Vista", released: "Jun 19, 2026",
-    synopsis: "Woody, Buzz, Jessie and the rest of the gang’s jobs are challenged when they’re introduced to electronics — a new threat to playtime.",
-    cast: "Tom Hanks, Tim Allen, Joan Cusack, Keanu Reeves, Annie Potts",
-    trailer: "https://www.youtube.com/watch?v=c51ND9Hdbw0",
-    audience: 95
   },
   "The Death of Robin Hood": {
     poster: "https://www.navymwr.org/nmps-image/3990C5E8C10A9A9769ECBCA2833B00C9B79BF1C8.jpg",
@@ -244,6 +199,15 @@ const MOVIE_INFO = {
     trailer: "https://www.youtube.com/watch?v=OlEgQL_4ZWE",
     audience: 67
   },
+  "Supergirl": {
+    poster: "https://www.navymwr.org/nmps-image/B6CFC2F5BF4B5D4425986ACA82BA20EAF8725ECB.jpg",
+    rating: "PG-13", runtime: "1h 50m", genre: "Action · Adventure · Sci-Fi",
+    studio: "Warner Bros.", released: "Jun 26, 2026",
+    synopsis: "Kara Zor-El, aka Supergirl, joins forces with an unlikely companion on an interstellar journey of vengeance and justice when an unexpected adversary strikes too close to home.",
+    cast: "Milly Alcock, Eve Ridley, Matthias Schoenaerts, Jason Momoa, David Corenswet",
+    trailer: "https://www.youtube.com/watch?v=s1-pfiVMKAs",
+    audience: 75
+  },
   "Spider-Man: Brand New Day": {
     poster: "https://www.navymwr.org/nmps-image/DBEF2810D22DF40B2F43B3076F05973153381EC2.jpg",
     rating: "PG-13", runtime: "2h 25m", genre: "Action · Adventure · Fantasy",
@@ -253,6 +217,15 @@ const MOVIE_INFO = {
     trailer: "https://www.youtube.com/watch?v=8TZMtslA3UY",
     audience: null
   },
+  "Jackass: Best and Last": {
+    poster: "https://www.navymwr.org/nmps-image/E037069ACE3572771B9DFEE04996D8979849795D.jpg",
+    rating: "R", runtime: "1h 32m", genre: "Documentary · Comedy",
+    studio: "Paramount", released: "Jun 26, 2026",
+    synopsis: "Follows the Jackass crew as they perform their final series of dangerous stunts and pranks, marking the end of the franchise.",
+    cast: "Johnny Knoxville, Steve-O, Chris Pontius, Jason 'Wee Man' Acuna, Preston Lacy",
+    trailer: "https://www.youtube.com/watch?v=sNwzFhGwA94",
+    audience: 85
+  },
   "Minions & Monsters": {
     poster: "https://www.navymwr.org/nmps-image/CC03CC4995A35A9D2BD7C1959DC93331562E6773.jpg",
     rating: "PG", runtime: "1h 30m", genre: "Animation · Adventure · Comedy",
@@ -261,32 +234,19 @@ const MOVIE_INFO = {
     cast: "Zoey Deutch, Bobby Moynihan, Allison Janney, Jeff Bridges, Christoph Waltz",
     trailer: "https://www.youtube.com/watch?v=ZSdOwt-G49w",
     audience: 76
+  },
+  "Toy Story 5": {
+    poster: "https://www.navymwr.org/nmps-image/D667517677AA69EDE282BB9EA12AD33448A97F4D.jpg",
+    rating: "PG", runtime: "1h 42m", genre: "Animation · Adventure · Comedy",
+    studio: "Buena Vista", released: "Jun 19, 2026",
+    synopsis: "Woody, Buzz, Jessie and the rest of the gang’s jobs are challenged when they’re introduced to electronics — a new threat to playtime.",
+    cast: "Tom Hanks, Tim Allen, Joan Cusack, Keanu Reeves, Annie Potts",
+    trailer: "https://www.youtube.com/watch?v=c51ND9Hdbw0",
+    audience: 95
   }
 };
 
 const schedule = [
-  { date: "Tue, Jul 21", dom: "21", dow: "Tue", month: 7, shows: [
-    { time: "6:00", period: "PM", title: "Disclosure Day", runtime: "2h 25m", rating: "PG-13", free: false }
-  ]},
-  { date: "Wed, Jul 22", dom: "22", dow: "Wed", month: 7, shows: [
-    { time: "6:00", period: "PM", title: "Backrooms", runtime: "1h 50m", rating: "R", free: false }
-  ]},
-  { date: "Thu, Jul 23", dom: "23", dow: "Thu", month: 7, shows: [
-    { time: "5:00", period: "PM", title: "The Super Mario Galaxy Movie", runtime: "1h 38m", rating: "PG", free: true }
-  ]},
-  { date: "Fri, Jul 24", dom: "24", dow: "Fri", month: 7, shows: [
-    { time: "6:00", period: "PM", title: "Supergirl", runtime: "1h 50m", rating: "PG-13", free: false },
-    { time: "8:30", period: "PM", title: "Jackass: Best and Last", runtime: "1h 32m", rating: "R", free: false }
-  ]},
-  { date: "Sat, Jul 25", dom: "25", dow: "Sat", month: 7, shows: [
-    { time: "4:00", period: "PM", title: "Toy Story 5", runtime: "1h 42m", rating: "PG", free: false },
-    { time: "6:10", period: "PM", title: "Supergirl", runtime: "1h 50m", rating: "PG-13", free: false },
-    { time: "8:30", period: "PM", title: "The Death of Robin Hood", runtime: "2h 2m", rating: "R", free: false }
-  ]},
-  { date: "Sun, Jul 26", dom: "26", dow: "Sun", month: 7, shows: [
-    { time: "4:00", period: "PM", title: "Supergirl", runtime: "1h 50m", rating: "PG-13", free: false },
-    { time: "6:20", period: "PM", title: "Jackass: Best and Last", runtime: "1h 32m", rating: "R", free: false }
-  ]},
   { date: "Tue, Jul 28", dom: "28", dow: "Tue", month: 7, shows: [
     { time: "6:00", period: "PM", title: "Backrooms", runtime: "1h 50m", rating: "R", free: false }
   ]},
@@ -308,6 +268,15 @@ const schedule = [
   { date: "Sun, Aug 2", dom: "2", dow: "Sun", month: 8, shows: [
     { time: "4:00", period: "PM", title: "Minions & Monsters", runtime: "1h 30m", rating: "PG", free: false },
     { time: "6:00", period: "PM", title: "Spider-Man: Brand New Day", runtime: "2h 25m", rating: "PG-13", free: false }
+  ]},
+  { date: "Tue, Aug 4", dom: "4", dow: "Tue", month: 8, shows: [
+    { time: "6:00", period: "PM", title: "Spider-Man: Brand New Day", runtime: "2h 25m", rating: "PG-13", free: false }
+  ]},
+  { date: "Wed, Aug 5", dom: "5", dow: "Wed", month: 8, shows: [
+    { time: "6:00", period: "PM", title: "Supergirl", runtime: "1h 50m", rating: "PG-13", free: false }
+  ]},
+  { date: "Thu, Aug 6", dom: "6", dow: "Thu", month: 8, shows: [
+    { time: "6:00", period: "PM", title: "Jackass: Best and Last", runtime: "1h 32m", rating: "R", free: false }
   ]}
 ];
 
