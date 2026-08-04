@@ -8,345 +8,403 @@
 <meta http-equiv="expires" content="0">
 <title>Epicenter Theater</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root { --gold: #c9a84c; --gold-light: #e2c97e; --bg: #0e0e10; --surface: #18181c; --surface2: #212126; --text: #f0ede6; --text-muted: #888; --radius: 12px; }
-  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Georgia', serif; -webkit-font-smoothing: antialiased; }
-  .header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px 14px; border-bottom: 1px solid #222; }
-  .logo { font-size: 1.7rem; font-weight: 700; color: var(--gold); letter-spacing: -0.5px; font-style: italic; }
-  .sub { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; font-family: 'Helvetica Neue', sans-serif; }
-  .price-badge { background: var(--surface2); border: 1px solid #333; border-radius: 999px; padding: 5px 14px; font-size: 0.8rem; color: var(--gold); font-family: 'Helvetica Neue', sans-serif; }
-  .date-scroller-wrap { padding: 16px 0 0; border-bottom: 1px solid #222; }
-  .date-scroller { display: flex; gap: 10px; overflow-x: auto; padding: 0 20px 14px; scrollbar-width: none; }
-  .date-scroller::-webkit-scrollbar { display: none; }
-  .date-btn { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 54px; height: 64px; border-radius: 12px; background: var(--surface); border: 1.5px solid transparent; cursor: pointer; transition: all 0.15s; font-family: 'Helvetica Neue', sans-serif; }
-  .date-btn:active { transform: scale(0.94); }
-  .date-btn.active { background: var(--gold); border-color: var(--gold); }
-  .date-btn .dow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); font-weight: 600; }
-  .date-btn.active .dow { color: #3a2d00; }
-  .date-btn .dom { font-size: 1.35rem; font-weight: 700; color: var(--text); margin-top: 2px; }
-  .date-btn.active .dom { color: #1a1000; }
-  .main { padding: 22px 20px 40px; max-width: 600px; margin: 0 auto; }
-  .day-heading { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 18px; font-family: 'Helvetica Neue', sans-serif; font-weight: 400; letter-spacing: 0.03em; }
-  .show-card { display: flex; align-items: center; gap: 16px; background: var(--surface); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 12px; border: 1px solid #252525; animation: fadeUp 0.25s ease both; transition: border-color 0.18s, background 0.18s; -webkit-tap-highlight-color: transparent; position: relative; overflow: hidden; }
-  .show-card:hover { border-color: rgba(201,168,76,0.2); background: #1c1c1f; }
-  .show-card:active { transform: scale(0.98); }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-  .time-block { text-align: center; min-width: 44px; font-family: 'Helvetica Neue', sans-serif; }
-  .time-num { font-size: 1.25rem; font-weight: 700; color: var(--gold); line-height: 1; }
-  .time-period { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
-  .vline { width: 1px; height: 40px; background: #333; flex-shrink: 0; }
-  .movie-block { flex: 1; min-width: 0; }
-  .movie-title { font-size: 1rem; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 6px; font-family: Georgia, serif; }
-  .movie-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-family: 'Helvetica Neue', sans-serif; }
-  .runtime { font-size: 0.75rem; color: var(--text-muted); }
-  .rating-badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; background: #2a2a2a; border: 1px solid #444; border-radius: 4px; padding: 1px 6px; color: #bbb; text-transform: uppercase; }
-  .free-tag { font-size: 0.7rem; font-weight: 700; color: #4caf88; background: rgba(76,175,136,0.12); border-radius: 999px; padding: 2px 9px; }
-  .price { font-size: 0.72rem; color: var(--text-muted); }
-  .advance-tag { font-size: 0.65rem; font-weight: 700; color: var(--gold); background: rgba(201,168,76,0.12); border-radius: 999px; padding: 2px 9px; }
-  .audience-score { font-size: 0.82rem; font-weight: 700; font-family: 'Helvetica Neue', sans-serif; color: #e8c96a; }
-  .now-playing-badge { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: #c9a84c; color: #1a1000; border-radius: 999px; padding: 2px 8px; margin-left: 6px; vertical-align: middle; font-family: 'Helvetica Neue', sans-serif; white-space: nowrap; }
-  @media (orientation: portrait) {
-    .movie-title { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
-    .movie-title .now-playing-badge { margin-left: 0; }
-  }
-  @media (orientation: landscape) {
-    .movie-title { display: inline; }
-    .movie-title .now-playing-badge { margin-left: 6px; }
-  }
-  @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0), 0 0 0 2px rgba(201,168,76,0.5); }
-    50% { box-shadow: 0 0 14px 3px rgba(201,168,76,0.22), 0 0 0 2px rgba(201,168,76,0.95); }
-  }
-  @keyframes sweep {
-    0% { left: -60%; opacity: 0; }
-    10% { opacity: 1; }
-    60% { opacity: 0.7; }
-    100% { left: 130%; opacity: 0; }
-  }
-  .show-card.now-playing { animation: pulseGlow 2.2s ease-in-out infinite; border-color: rgba(201,168,76,0.5); }
-  .show-card.now-playing::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.13), transparent); animation: sweep 3s ease-in-out infinite; }
-  .show-card.ended .time-block, .show-card.ended .vline, .show-card.ended .movie-block, .show-card.ended .card-actions { opacity: 0.38; }
-  .ended-card-label { font-style: normal; font-size: 0.68rem; color: var(--text-muted); margin-left: 6px; font-family: 'Helvetica Neue', sans-serif; }
-  .card-actions { display: flex; flex-direction: row; gap: 8px; flex-shrink: 0; align-items: center; }
-  .trailer-btn, .info-btn { flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; transition: background 0.15s, border-color 0.15s; -webkit-tap-highlight-color: transparent; }
-  .trailer-btn { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.28); }
-  .trailer-btn:hover { background: rgba(201,168,76,0.22); }
-  .trailer-btn svg { width: 14px; height: 14px; fill: var(--gold); margin-left: 2px; }
-  .info-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); font-family: Georgia, serif; font-style: italic; font-size: 1.1rem; font-weight: 700; color: var(--text-muted); line-height: 1; }
-  .info-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: var(--text); }
-  .status-msg { text-align: center; color: var(--text-muted); padding: 40px 0; font-family: 'Helvetica Neue', sans-serif; }
-  .footer { text-align: center; padding: 0 20px 30px; font-size: 0.72rem; color: #444; font-family: 'Helvetica Neue', sans-serif; }
-  .footer a { color: #555; text-decoration: underline; }
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: flex-end; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal-sheet { background: var(--surface); border-radius: 20px 20px 0 0; width: 100%; max-width: 600px; max-height: 88vh; overflow-y: auto; transform: translateY(40px); transition: transform 0.3s cubic-bezier(.32,1,.45,1); scrollbar-width: none; }
-  .modal-sheet::-webkit-scrollbar { display: none; }
-  .modal-overlay.open .modal-sheet { transform: translateY(0); }
-  .modal-handle { width: 40px; height: 4px; background: #444; border-radius: 99px; margin: 14px auto 0; }
-  .modal-hero { position: relative; width: 100%; overflow: hidden; background: var(--surface2); }
-  .modal-hero img { width: 100%; height: auto; display: block; }
-  .modal-hero-fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem; }
-  .modal-hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(to bottom, transparent, var(--surface)); }
-  .modal-hero-title { position: absolute; bottom: 12px; left: 20px; right: 20px; z-index: 2; font-size: 1.4rem; font-weight: 700; font-family: Georgia, serif; color: var(--text); line-height: 1.2; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
-  .modal-close { position: absolute; top: 14px; right: 14px; z-index: 3; width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,0.5); border: none; color: #ccc; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
-  .modal-body { padding: 6px 20px 36px; }
-  .modal-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; margin-top: 4px; font-family: 'Helvetica Neue', sans-serif; }
-  .chip { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; background: var(--surface2); border: 1px solid #333; border-radius: 999px; padding: 4px 12px; color: var(--text-muted); }
-  .chip.gold { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.3); color: var(--gold); }
-  .chip.green { background: rgba(76,175,136,0.12); border-color: rgba(76,175,136,0.3); color: #4caf88; }
-  .modal-section-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; margin-top: 20px; font-family: 'Helvetica Neue', sans-serif; }
-  .modal-synopsis { font-size: 0.92rem; line-height: 1.65; color: #ccc; font-family: Georgia, serif; }
-  .modal-cast { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; font-family: 'Helvetica Neue', sans-serif; }
-  .modal-showtimes { display: flex; gap: 8px; flex-wrap: wrap; }
-  .modal-showtime-pill { background: var(--surface2); border: 1px solid #333; border-radius: 999px; padding: 6px 14px; font-size: 0.8rem; font-family: 'Helvetica Neue', sans-serif; color: var(--text); }
-  .modal-showtime-pill span { color: var(--gold); font-weight: 700; margin-right: 4px; }
-  .modal-showtime-pill.past { opacity: 0.38; text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(255,255,255,0.6); }
-  .modal-showtime-pill.past span { color: var(--text-muted); }
-  .modal-showtime-pill.now-playing { border-color: rgba(201,168,76,0.6); color: var(--gold); font-weight: 700; }
-  .ended-label { font-style: normal; font-size: 0.68rem; color: var(--text-muted); margin-left: 4px; text-decoration: none; display: inline-block; }
-  .modal-trailer-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 24px; padding: 14px; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); border-radius: var(--radius); color: var(--gold); font-family: 'Helvetica Neue', sans-serif; font-size: 0.9rem; font-weight: 600; text-decoration: none; letter-spacing: 0.03em; transition: background 0.15s; }
-  .modal-trailer-btn:hover { background: rgba(201,168,76,0.18); }
-  .modal-trailer-btn svg { width: 12px; height: 12px; fill: var(--gold); }
-  .modal-divider { border: none; border-top: 1px solid #2a2a2a; margin: 20px 0 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --gold: #c9a84c; --gold-light: #e2c97e; --bg: #0e0e10; --surface: #18181c; --surface2: #212126; --text: #f0ede6; --text-muted: #888; --radius: 12px; }
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Georgia', serif; -webkit-font-smoothing: antialiased; }
+.header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px 14px; border-bottom: 1px solid #222; }
+.logo { font-size: 1.7rem; font-weight: 700; color: var(--gold); letter-spacing: -0.5px; font-style: italic; }
+.sub { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; font-family: 'Helvetica Neue', sans-serif; }
+.price-badge { background: var(--surface2); border: 1px solid #333; border-radius: 999px; padding: 5px 14px; font-size: 0.8rem; color: var(--gold); font-family: 'Helvetica Neue', sans-serif; }
+.date-scroller-wrap { padding: 16px 0 0; border-bottom: 1px solid #222; }
+.date-scroller { display: flex; gap: 10px; overflow-x: auto; padding: 0 20px 14px; scrollbar-width: none; }
+.date-scroller::-webkit-scrollbar { display: none; }
+.date-btn { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 54px; height: 64px; border-radius: 12px; background: var(--surface); border: 1.5px solid transparent; cursor: pointer; transition: all 0.15s; font-family: 'Helvetica Neue', sans-serif; }
+.date-btn:active { transform: scale(0.94); }
+.date-btn.active { background: var(--gold); border-color: var(--gold); }
+.date-btn .dow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); font-weight: 600; }
+.date-btn.active .dow { color: #3a2d00; }
+.date-btn .dom { font-size: 1.35rem; font-weight: 700; color: var(--text); margin-top: 2px; }
+.date-btn.active .dom { color: #1a1000; }
+.main { padding: 22px 20px 40px; max-width: 600px; margin: 0 auto; }
+.day-heading { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 18px; font-family: 'Helvetica Neue', sans-serif; font-weight: 400; letter-spacing: 0.03em; }
+.show-card { display: flex; align-items: center; gap: 16px; background: var(--surface); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 12px; border: 1px solid #252525; animation: fadeUp 0.25s ease both; transition: border-color 0.18s, background 0.18s; -webkit-tap-highlight-color: transparent; position: relative; overflow: hidden; }
+.show-card:hover { border-color: rgba(201,168,76,0.2); background: #1c1c1f; }
+.show-card:active { transform: scale(0.98); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.time-block { text-align: center; min-width: 44px; font-family: 'Helvetica Neue', sans-serif; }
+.time-num { font-size: 1.25rem; font-weight: 700; color: var(--gold); line-height: 1; }
+.time-period { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+.vline { width: 1px; height: 40px; background: #333; flex-shrink: 0; }
+.movie-block { flex: 1; min-width: 0; }
+.movie-title { font-size: 1rem; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 6px; font-family: Georgia, serif; }
+.movie-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-family: 'Helvetica Neue', sans-serif; }
+.runtime { font-size: 0.75rem; color: var(--text-muted); }
+.rating-badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; background: #2a2a2a; border: 1px solid #444; border-radius: 4px; padding: 1px 6px; color: #bbb; text-transform: uppercase; }
+.free-tag { font-size: 0.7rem; font-weight: 700; color: #4caf88; background: rgba(76,175,136,0.12); border-radius: 999px; padding: 2px 9px; }
+.price { font-size: 0.72rem; color: var(--text-muted); }
+.advance-tag { font-size: 0.65rem; font-weight: 700; color: var(--gold); background: rgba(201,168,76,0.12); border-radius: 999px; padding: 2px 9px; }
+.audience-score { font-size: 0.82rem; font-weight: 700; font-family: 'Helvetica Neue', sans-serif; color: #e8c96a; }
+.now-playing-badge { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: #c9a84c; color: #1a1000; border-radius: 999px; padding: 2px 8px; margin-left: 6px; vertical-align: middle; font-family: 'Helvetica Neue', sans-serif; white-space: nowrap; }
+@media (orientation: portrait) {
+.movie-title { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
+.movie-title .now-playing-badge { margin-left: 0; }
+}
+@media (orientation: landscape) {
+.movie-title { display: inline; }
+.movie-title .now-playing-badge { margin-left: 6px; }
+}
+@keyframes pulseGlow {
+0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0), 0 0 0 2px rgba(201,168,76,0.5); }
+50% { box-shadow: 0 0 14px 3px rgba(201,168,76,0.22), 0 0 0 2px rgba(201,168,76,0.95); }
+}
+@keyframes sweep {
+0% { left: -60%; opacity: 0; }
+10% { opacity: 1; }
+60% { opacity: 0.7; }
+100% { left: 130%; opacity: 0; }
+}
+.show-card.now-playing { animation: pulseGlow 2.2s ease-in-out infinite; border-color: rgba(201,168,76,0.5); }
+.show-card.now-playing::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.13), transparent); animation: sweep 3s ease-in-out infinite; }
+.show-card.ended .time-block, .show-card.ended .vline, .show-card.ended .movie-block, .show-card.ended .card-actions { opacity: 0.38; }
+.ended-card-label { font-style: normal; font-size: 0.68rem; color: var(--text-muted); margin-left: 6px; font-family: 'Helvetica Neue', sans-serif; }
+.card-actions { display: flex; flex-direction: row; gap: 8px; flex-shrink: 0; align-items: center; }
+.trailer-btn, .info-btn { flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; transition: background 0.15s, border-color 0.15s; -webkit-tap-highlight-color: transparent; }
+.trailer-btn { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.28); }
+.trailer-btn:hover { background: rgba(201,168,76,0.22); }
+.trailer-btn svg { width: 14px; height: 14px; fill: var(--gold); margin-left: 2px; }
+.info-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); font-family: Georgia, serif; font-style: italic; font-size: 1.1rem; font-weight: 700; color: var(--text-muted); line-height: 1; }
+.info-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: var(--text); }
+.status-msg { text-align: center; color: var(--text-muted); padding: 40px 0; font-family: 'Helvetica Neue', sans-serif; }
+.footer { text-align: center; padding: 0 20px 30px; font-size: 0.72rem; color: #444; font-family: 'Helvetica Neue', sans-serif; }
+.footer a { color: #555; text-decoration: underline; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: flex-end; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal-sheet { background: var(--surface); border-radius: 20px 20px 0 0; width: 100%; max-width: 600px; max-height: 88vh; overflow-y: auto; transform: translateY(40px); transition: transform 0.3s cubic-bezier(.32,1,.45,1); scrollbar-width: none; }
+.modal-sheet::-webkit-scrollbar { display: none; }
+.modal-overlay.open .modal-sheet { transform: translateY(0); }
+.modal-handle { width: 40px; height: 4px; background: #444; border-radius: 99px; margin: 14px auto 0; }
+.modal-hero { position: relative; width: 100%; overflow: hidden; background: var(--surface2); }
+.modal-hero img { width: 100%; height: auto; display: block; }
+.modal-hero-fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+.modal-hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(to bottom, transparent, var(--surface)); }
+.modal-hero-title { position: absolute; bottom: 12px; left: 20px; right: 20px; z-index: 2; font-size: 1.4rem; font-weight: 700; font-family: Georgia, serif; color: var(--text); line-height: 1.2; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
+.modal-close { position: absolute; top: 14px; right: 14px; z-index: 3; width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,0.5); border: none; color: #ccc; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.modal-body { padding: 6px 20px 36px; }
+.modal-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; margin-top: 4px; font-family: 'Helvetica Neue', sans-serif; }
+.chip { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; background: var(--surface2); border: 1px solid #333; border-radius: 999px; padding: 4px 12px; color: var(--text-muted); }
+.chip.gold { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.3); color: var(--gold); }
+.chip.green { background: rgba(76,175,136,0.12); border-color: rgba(76,175,136,0.3); color: #4caf88; }
+.modal-section-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; margin-top: 20px; font-family: 'Helvetica Neue', sans-serif; }
+.modal-synopsis { font-size: 0.92rem; line-height: 1.65; color: #ccc; font-family: Georgia, serif; }
+.modal-cast { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; font-family: 'Helvetica Neue', sans-serif; }
+.modal-showtimes { display: flex; gap: 8px; flex-wrap: wrap; }
+.modal-showtime-pill { background: var(--surface2); border: 1px solid #333; border-radius: 999px; padding: 6px 14px; font-size: 0.8rem; font-family: 'Helvetica Neue', sans-serif; color: var(--text); }
+.modal-showtime-pill span { color: var(--gold); font-weight: 700; margin-right: 4px; }
+.modal-showtime-pill.past { opacity: 0.38; text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(255,255,255,0.6); }
+.modal-showtime-pill.past span { color: var(--text-muted); }
+.modal-showtime-pill.now-playing { border-color: rgba(201,168,76,0.6); color: var(--gold); font-weight: 700; }
+.ended-label { font-style: normal; font-size: 0.68rem; color: var(--text-muted); margin-left: 4px; text-decoration: none; display: inline-block; }
+.modal-trailer-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 24px; padding: 14px; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); border-radius: var(--radius); color: var(--gold); font-family: 'Helvetica Neue', sans-serif; font-size: 0.9rem; font-weight: 600; text-decoration: none; letter-spacing: 0.03em; transition: background 0.15s; }
+.modal-trailer-btn:hover { background: rgba(201,168,76,0.18); }
+.modal-trailer-btn svg { width: 12px; height: 12px; fill: var(--gold); }
+.modal-divider { border: none; border-top: 1px solid #2a2a2a; margin: 20px 0 0; }
 </style>
 <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAKuklEQVR42u3WwQkAMAwDMe+/dLtFPieDFkih3LY9ACDHEQBAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAA4AgAIAAAAAEAAAgAAEAAAAACgHNm1p5/EAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkJAASAIwgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsDMBAA4gAAwMwGAAEAAmJkAQAAgAMxMACAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgAAWBmAgAEgAAwMwEAAkAAmJkAAAEgAMxMAIAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsDMBAACAAHggwMQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAN4ZQAAgAAAQAAgAAASAABAAAAgAASAAABAAAkAAACAABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAAACAAEAAACAABIAAAEAACQAAAIAAEgAAAQAAIAAEAIAAcQQAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACAAABgAAAQAAIAAEAgAAQAAIAAAEgAAQAAAJAAAgAABxAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAIAAAGAAABAAAgAAQCAABAAAgAAASAABAAAAkAACAAABIAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIB3BhAACAAABIAAMDNBCQJAAJiZAAABIADMTACAABAAZgLAvwECQACYCQAQAAgAMwEAAgABYCYAQAAgAMwEAAgABICZAAABgAAwEwAgABAAZgIABAACwEwAgABAAJgJABAACAAzAQACAAFgJgBAACAAzAQACAAEgJkAAAGA39xMAIAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsBMAIAAQACYCQAQAAgAMwEAAgABYCYAQAAgAMwEAAgABICZAAABgAAwEwAgABAAZgIABAACwEwAgABAAJgJABAACAAzAQACAAFgJgBAACAAzAQACAAEgJkAAAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkAAAHgCALATACAAEAAmAkAEAAIADMBAAIAAWAmAEAAIADMBAAIAASAmQAAAYAAMBMAIAAQAGYCAAQAAsBMAIAAQACYCQAQAAgAMwEAAgABYCYAQAAQCgDvDCAAEAAACAAEAAACQAAIAAAEgAAQAAAIAAEgAAAQAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAAQAAgAAASAABAAAAgAASAAABAAAkAAACAABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAAACAAEAAACAABIAAAEAACQAAAIAAEgAAAQAAIAAEAgAMIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAAIAAQAAAIAAEgAAAQAAJAAAAgAASAAABAAAgAAQCAABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAAABAACAAABAAAkAAACAABIAAAEAACAABAIAAEAACAAABIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAZiaQEQAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAwMwEAAgAAWBmAgAEgAAwMwEAAkAAmJkAAAEgAMxMACAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYCYA/IMIAAFgZgIABIAAMDMBAAJAAJiZAAABIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAQACYmQBAACAAzEwAIAAQAGYmABAACAAzEwAIAASAmQkABAACwMwEAAIAAWBmAgABIADMTACAABAAZiYAQAAIADMTACAABICZCQBwAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAQACYmQBAACAAzEwAIAAAAAEAAAgAAEAAAAACAAAQAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAAOAAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAKPrwgNqN48yEjgAAAABJRU5ErkJggg==">
 <link rel="icon" type="image/png" sizes="512x512" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAKuklEQVR42u3WwQkAMAwDMe+/dLtFPieDFkih3LY9ACDHEQBAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAA4AgAIAAAAAEAAAgAAEAAAAACgHNm1p5/EAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkJAASAIwgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsDMBAA4gAAwMwGAAEAAmJkAQAAgAMxMACAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgAAWBmAgAEgAAwMwEAAkAAmJkAAAEgAMxMAIAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsDMBAACAAHggwMQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAN4ZQAAgAAAQAAgAAASAABAAAAgAASAAABAAAkAAACAABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAAACAAEAAACAABIAAAEAACQAAAIAAEgAAAQAAIAAEAIAAcQQAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACAAABgAAAQAAIAAEAgAAQAAIAAAEgAAQAAAJAAAgAABxAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAIAAAGAAABAAAgAAQCAABAAAgAAASAABAAAAkAACAAABIAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIB3BhAACAAABIAAMDNBCQJAAJiZAAABIADMTACAABAAZgLAvwECQACYCQAQAAgAMwEAAgABYCYAQAAgAMwEAAgABICZAAABgAAwEwAgABAAZgIABAACwEwAgABAAJgJABAACAAzAQACAAFgJgBAACAAzAQACAAEgJkAAAGA39xMAIAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsBMAIAAQACYCQAQAAgAMwEAAgABYCYAQAAgAMwEAAgABICZAAABgAAwEwAgABAAZgIABAACwEwAgABAAJgJABAACAAzAQACAAFgJgBAACAAzAQACAAEgJkAAAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkAAAHgCALATACAAEAAmAkAEAAIADMBAAIAAWAmAEAAIADMBAAIAASAmQAAAYAAMBMAIAAQAGYCAAQAAsBMAIAAQACYCQAQAAgAMwEAAgABYCYAQAAQCgDvDCAAEAAACAAEAAACQAAIAAAEgAAQAAAIAAEgAAAQAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAAQAAgAAASAABAAAAgAASAAABAAAkAAACAABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAAACAAEAAACAABIAAAEAACQAAAIAAEgAAAQAAIAAEAgAMIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAAIAAQAAAIAAEgAAAQAAJAAAAgAASAAABAAAgAAQCAABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAAABAACAAABAAAkAAACAABIAAAEAACAABAIAAEAACAAABIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAZiaQEQAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAwMwEAAgAAWBmAgAEgAAwMwEAAkAAmJkAAAEgAMxMACAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYCYA/IMIAAFgZgIABIAAMDMBAAJAAJiZAAABIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAQACYmQBAACAAzEwAIAAQAGYmABAACAAzEwAIAASAmQkABAACwMwEAAIAAWBmAgABIADMTACAABAAZiYAQAAIADMTACAABICZCQBwAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAQACYmQBAACAAzEwAIAAAAAEAAAgAAEAAAAACAAAQAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAAOAAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAKPrwgNqN48yEjgAAAABJRU5ErkJggg==">
 <script>
-  (function() {
-    var iconB64 = "iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAKuklEQVR42u3WwQkAMAwDMe+/dLtFPieDFkih3LY9ACDHEQBAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAA4AgAIAAAAAEAAAgAAEAAAAACgHNm1p5/EAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkJAASAIwgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsDMBAA4gAAwMwGAAEAAmJkAQAAgAMxMACAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgAAWBmAgAEgAAwMwEAAkAAmJkAAAEgAMxMAIAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsDMBAACAAHggwMQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAN4ZQAAgAAAQAAgAAASAABAAAAgAASAAABAAAkAAACAABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAAACAAEAAACAABIAAAEAACQAAAIAAEgAAAQAAIAAEAIAAcQQAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACAAABgAAAQAAIAAEAgAAQAAIAAAEgAAQAAAJAAAgAABxAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAIAAAGAAABAAAgAAQCAABAAAgAAASAABAAAAkAACAAABIAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIB3BhAACAAABIAAMDNBCQJAAJiZAAABIADMTACAABAAZgLAvwECQACYCQAQAAgAMwEAAgABYCYAQAAgAMwEAAgABICZAAABgAAwEwAgABAAZgIABAACwEwAgABAAJgJABAACAAzAQACAAFgJgBAACAAzAQACAAEgJkAAAGA39xMAIAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsBMAIAAQACYCQAQAAgAMwEAAgABYCYAQAAgAMwEAAgABICZAAABgAAwEwAgABAAZgIABAACwEwAgABAAJgJABAACAAzAQACAAFgJgBAACAAzAQACAAEgJkAAAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkAAAHgCALATACAAEAAmAkAEAAIADMBAAIAAWAmAEAAIADMBAAIAASAmQAAAYAAMBMAIAAQAGYCAAQAAsBMAIAAQACYCQAQAAgAMwEAAgABYCYAQAAQCgDvDCAAEAAACAAEAAACQAAIAAAEgAAQAAAIAAEgAAAQAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAAQAAgAAASAABAAAAgAASAAABAAAkAAACAABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAAACAAEAAACAABIAAAEAACQAAAIAAEgAAAQAAIAAEAgAMIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAAIAAQAAAIAAEgAAAQAAJAAAAgAASAAABAAAgAAQCAABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAAABAACAAABAAAkAAACAABIAAAEAACAABAIAAEAACAAABIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAZiaQEQAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAwMwEAAgAAWBmAgAEgAAwMwEAAkAAmJkAAAEgAMxMACAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYCYA/IMIAAFgZgIABIAAMDMBAAJAAJiZAAABIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAQACYmQBAACAAzEwAIAAQAGYmABAACAAzEwAIAASAmQkABAACwMwEAAIAAWBmAgABIADMTACAABAAZiYAQAAIADMTACAABICZCQBwAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAQACYmQBAACAAzEwAIAAAAAEAAAgAAEAAAAACAAAQAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAAOAAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAKPrwgNqN48yEjgAAAABJRU5ErkJggg==";
-    var manifest = {
-      name: "Epicenter Theater",
-      short_name: "Epicenter",
-      display: "standalone",
-      background_color: "#000000",
-      theme_color: "#000000",
-      start_url: "/epicenter/",
-      icons: [{src: "data:image/png;base64," + iconB64, sizes: "512x512", type: "image/png", purpose: "any maskable"}]
-    };
-    var blob = new Blob([JSON.stringify(manifest)], {type: "application/manifest+json"});
-    var url = URL.createObjectURL(blob);
-    var link = document.createElement("link");
-    link.rel = "manifest";
-    link.href = url;
-    document.head.appendChild(link);
-  })();
+(function() {
+var iconB64 = "iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAKuklEQVR42u3WwQkAMAwDMe+/dLtFPieDFkih3LY9ACDHEQBAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAA4AgAIAAAAAEAAAgAAEAAAAACgHNm1p5/EAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkJAASAIwgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsDMBAA4gAAwMwGAAEAAmJkAQAAgAMxMACAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgAAWBmAgAEgAAwMwEAAkAAmJkAAAEgAMxMAIAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsDMBAACAAHggwMQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAN4ZQAAgAAAQAAgAAASAABAAAAgAASAAABAAAkAAACAABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAAACAAEAAACAABIAAAEAACQAAAIAAEgAAAQAAIAAEAIAAcQQAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACAAABgAAAQAAIAAEAgAAQAAIAAAEgAAQAAAJAAAgAABxAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAIAAAGAAABAAAgAAQCAABAAAgAAASAABAAAAkAACAAABIAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIB3BhAACAAABIAAMDNBCQJAAJiZAAABIADMTACAABAAZgLAvwECQACYCQAQAAgAMwEAAgABYCYAQAAgAMwEAAgABICZAAABgAAwEwAgABAAZgIABAACwEwAgABAAJgJABAACAAzAQACAAFgJgBAACAAzAQACAAEgJkAAAGA39xMAIAAEABmJgBAAAgAMxMAIAAEgJkJABAAAsBMAIAAQACYCQAQAAgAMwEAAgABYCYAQAAgAMwEAAgABICZAAABgAAwEwAgABAAZgIABAACwEwAgABAAJgJABAACAAzAQACAAFgJgBAACAAzAQACAAEgJkAAAEgAMxMAIAAEABmJgBAAAgAMxMAIAAEgJkAAAHgCALATACAAEAAmAkAEAAIADMBAAIAAWAmAEAAIADMBAAIAASAmQAAAYAAMBMAIAAQAGYCAAQAAsBMAIAAQACYCQAQAAgAMwEAAgABYCYAQAAQCgDvDCAAEAAACAAEAAACQAAIAAAEgAAQAAAIAAEgAAAQAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAAQAAgAAASAABAAAAgAASAAABAAAkAAACAABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAAgBAACAABACAAEAAACAAEAAACAABIAAAEAACQAAAIAAEgAAAQAAIAAEAgAMIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAABAAAAIAASAAAAQAAkAAAAgABIAAABAACAABACAAEAACAEAAIAAEAIAAQAAAIAAQAAAIAAEgAAAQAAJAAAAgAASAAABAAAgAAQCAABAAAgBAACAABACAAEAACAAAAYAAEAAAAgABIAAABAACQAAACAAEgAAAEAAIAAEAIAAQAAIAQAAgAAQAgABAAAgAAAGAAABAACAAABAAAkAAACAABIAAAEAACAABAIAAEAACAAABIAAEAIAAQAAIAAABgAAQAAACAAEgAAAEAAJAAAAIAASAAAAQAAgAAQAgABAAZiaQEQAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAwMwEAAgAAWBmAgAEgAAwMwEAAkAAmJkAAAEgAMxMACAAEABmJgAQAAgAMxMACAAEgJkJAAQAAsDMBAACAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYCYA/IMIAAFgZgIABIAAMDMBAAJAAJiZAAABIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAQACYmQBAACAAzEwAIAAQAGYmABAACAAzEwAIAASAmQkABAACwMwEAAIAAWBmAgABIADMTACAABAAZiYAQAAIADMTACAABICZCQBwAAFgZgIAAYAAMDMBgABAAJiZAEAAIADMTAAgABAAZiYAEAAIADMTAAgABICZCQAEAALAzAQAAgABYGYCAAGAADAzAYAAQACYmQBAACAAzEwAIAAAAAEAAAgAAEAAAAACAAAQAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAAOAAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAKPrwgNqN48yEjgAAAABJRU5ErkJggg==";
+var manifest = {
+name: "Epicenter Theater",
+short_name: "Epicenter",
+display: "standalone",
+background_color: "#000000",
+theme_color: "#000000",
+start_url: "/epicenter/",
+icons: [{src: "data:image/png;base64," + iconB64, sizes: "512x512", type: "image/png", purpose: "any maskable"}]
+};
+var blob = new Blob([JSON.stringify(manifest)], {type: "application/manifest+json"});
+var url = URL.createObjectURL(blob);
+var link = document.createElement("link");
+link.rel = "manifest";
+link.href = url;
+document.head.appendChild(link);
+})();
 </script>
 </head>
 <body>
 <div class="header">
-  <div>
-    <div class="logo">Epicenter</div>
-    <div class="sub">NS Great Lakes · Bldg. 525</div>
-  </div>
-  <div class="price-badge">Mil $5.25 · Kids $3.25</div>
+<div>
+<div class="logo">Epicenter</div>
+<div class="sub">NS Great Lakes · Bldg. 525</div>
+</div>
+<div class="price-badge">Mil $5.25 · Kids $3.25</div>
 </div>
 <div class="date-scroller-wrap">
-  <div class="date-scroller" id="dateScroll"></div>
+<div class="date-scroller" id="dateScroll"></div>
 </div>
 <div class="main">
-  <div class="day-heading" id="dayHeading"></div>
-  <div id="showList"></div>
+<div class="day-heading" id="dayHeading"></div>
+<div id="showList"></div>
 </div>
 <div class="footer">
-  Schedule updated Jul 28, 2026 &nbsp;·&nbsp;
-  <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
+Schedule updated Aug 4, 2026 &nbsp;·&nbsp;
+<a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
-  <div class="modal-sheet" id="modalSheet">
-    <div class="modal-handle"></div>
-    <div class="modal-hero" id="modalHero">
-      <button class="modal-close" onclick="closeModal()">✕</button>
-      <div id="modalPoster"></div>
-      <div class="modal-hero-title" id="modalTitle"></div>
-    </div>
-    <div class="modal-body">
-      <div class="modal-chips" id="modalChips"></div>
-      <div class="modal-section-label">Synopsis</div>
-      <div class="modal-synopsis" id="modalSynopsis"></div>
-      <div id="modalCastSection">
-        <div class="modal-section-label">Cast</div>
-        <div class="modal-cast" id="modalCast"></div>
-      </div>
-      <hr class="modal-divider">
-      <div class="modal-section-label" style="margin-top:20px">Upcoming Showtimes</div>
-      <div class="modal-showtimes" id="modalShowtimes"></div>
-      <a class="modal-trailer-btn" id="modalTrailerBtn" href="#" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg>
-        Watch Official Trailer
-      </a>
-    </div>
-  </div>
+<div class="modal-sheet" id="modalSheet">
+<div class="modal-handle"></div>
+<div class="modal-hero" id="modalHero">
+<button class="modal-close" onclick="closeModal()">✕</button>
+<div id="modalPoster"></div>
+<div class="modal-hero-title" id="modalTitle"></div>
+</div>
+<div class="modal-body">
+<div class="modal-chips" id="modalChips"></div>
+<div class="modal-section-label">Synopsis</div>
+<div class="modal-synopsis" id="modalSynopsis"></div>
+<div id="modalCastSection">
+<div class="modal-section-label">Cast</div>
+<div class="modal-cast" id="modalCast"></div>
+</div>
+<hr class="modal-divider">
+<div class="modal-section-label" style="margin-top:20px">Upcoming Showtimes</div>
+<div class="modal-showtimes" id="modalShowtimes"></div>
+<a class="modal-trailer-btn" id="modalTrailerBtn" href="#" target="_blank" rel="noopener noreferrer">
+<svg viewBox="0 0 10 12"><path d="M0 0 L10 6 L0 12 Z"/></svg>
+Watch Official Trailer
+</a>
+</div>
+</div>
 </div>
 <script>
 const PLAY_ICON = `<svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L10 6 L0 12 Z"/></svg>`;
 
 const MOVIE_INFO = {
-  "Backrooms": {
-    poster: "https://www.navymwr.org/nmps-image/712E8DF217A3134103D66C5CBA839789DF9C608E.jpg",
-    rating: "R", runtime: "1h 50m", genre: "Horror · Sci-Fi · Thriller",
-    studio: "A24", released: "May 29, 2026",
-    synopsis: "After a therapist’s patient disappears into a dimension beyond reality, she must venture into the unknown to save him. From 20-year-old director Kane Parsons, based on his viral YouTube horror universe.",
-    cast: "Chiwetel Ejiofor, Renate Reinsve, Mark Duplass, Finn Bennett, Lukita Maxwell",
-    trailer: "https://www.youtube.com/watch?v=0HjdiohVOik",
-    audience: 74
-  },
-  "The Death of Robin Hood": {
-    poster: "https://www.navymwr.org/nmps-image/3990C5E8C10A9A9769ECBCA2833B00C9B79BF1C8.jpg",
-    rating: "R", runtime: "2h 2m", genre: "Action · Adventure · Drama",
-    studio: "A24", released: "Jun 19, 2026",
-    synopsis: "Grappling with his past after a life of crime and murder, Robin Hood finds himself gravely injured after a battle he thought would be his last. In the hands of a mysterious woman, he is offered a chance at salvation.",
-    cast: "Hugh Jackman, Jodie Comer, Bill Skarsgard, Jade Croot, Katie Breen",
-    trailer: "https://www.youtube.com/watch?v=OlEgQL_4ZWE",
-    audience: 67
-  },
-  "Supergirl": {
-    poster: "https://www.navymwr.org/nmps-image/B6CFC2F5BF4B5D4425986ACA82BA20EAF8725ECB.jpg",
-    rating: "PG-13", runtime: "1h 50m", genre: "Action · Adventure · Sci-Fi",
-    studio: "Warner Bros.", released: "Jun 26, 2026",
-    synopsis: "Kara Zor-El, aka Supergirl, joins forces with an unlikely companion on an interstellar journey of vengeance and justice when an unexpected adversary strikes too close to home.",
-    cast: "Milly Alcock, Eve Ridley, Matthias Schoenaerts, Jason Momoa, David Corenswet",
-    trailer: "https://www.youtube.com/watch?v=s1-pfiVMKAs",
-    audience: 75
-  },
-  "Spider-Man: Brand New Day": {
-    poster: "https://www.navymwr.org/nmps-image/DBEF2810D22DF40B2F43B3076F05973153381EC2.jpg",
-    rating: "PG-13", runtime: "2h 25m", genre: "Action · Adventure · Fantasy",
-    studio: "Sony", released: "Jul 31, 2026",
-    synopsis: "A forgotten Peter Parker lives alone as a full-time Spider-Man until mounting pressure triggers a dangerous change and a powerful new enemy emerges.",
-    cast: "Tom Holland, Zendaya, Sadie Sink, Jacob Batalon, Jon Bernthal",
-    trailer: "https://www.youtube.com/watch?v=8TZMtslA3UY",
-    audience: null
-  },
-  "Jackass: Best and Last": {
-    poster: "https://www.navymwr.org/nmps-image/E037069ACE3572771B9DFEE04996D8979849795D.jpg",
-    rating: "R", runtime: "1h 32m", genre: "Documentary · Comedy",
-    studio: "Paramount", released: "Jun 26, 2026",
-    synopsis: "Follows the Jackass crew as they perform their final series of dangerous stunts and pranks, marking the end of the franchise.",
-    cast: "Johnny Knoxville, Steve-O, Chris Pontius, Jason 'Wee Man' Acuna, Preston Lacy",
-    trailer: "https://www.youtube.com/watch?v=sNwzFhGwA94",
-    audience: 85
-  },
-  "Minions & Monsters": {
-    poster: "https://www.navymwr.org/nmps-image/CC03CC4995A35A9D2BD7C1959DC93331562E6773.jpg",
-    rating: "PG", runtime: "1h 30m", genre: "Animation · Adventure · Comedy",
-    studio: "Universal", released: "Jul 1, 2026",
-    synopsis: "Follows the Minions in 1920s Hollywood as they search for frightening creatures for their monster movie, partner with a green creature, and must save the planet after unleashing monsters.",
-    cast: "Zoey Deutch, Bobby Moynihan, Allison Janney, Jeff Bridges, Christoph Waltz",
-    trailer: "https://www.youtube.com/watch?v=ZSdOwt-G49w",
-    audience: 76
-  },
-  "Toy Story 5": {
-    poster: "https://www.navymwr.org/nmps-image/D667517677AA69EDE282BB9EA12AD33448A97F4D.jpg",
-    rating: "PG", runtime: "1h 42m", genre: "Animation · Adventure · Comedy",
-    studio: "Buena Vista", released: "Jun 19, 2026",
-    synopsis: "Woody, Buzz, Jessie and the rest of the gang’s jobs are challenged when they’re introduced to electronics — a new threat to playtime.",
-    cast: "Tom Hanks, Tim Allen, Joan Cusack, Keanu Reeves, Annie Potts",
-    trailer: "https://www.youtube.com/watch?v=c51ND9Hdbw0",
-    audience: 95
-  }
+"Backrooms": {
+poster: "https://www.navymwr.org/nmps-image/712E8DF217A3134103D66C5CBA839789DF9C608E.jpg",
+rating: "R", runtime: "1h 50m", genre: "Horror · Sci-Fi · Thriller",
+studio: "A24", released: "May 29, 2026",
+synopsis: "After a therapist’s patient disappears into a dimension beyond reality, she must venture into the unknown to save him. From 20-year-old director Kane Parsons, based on his viral YouTube horror universe.",
+cast: "Chiwetel Ejiofor, Renate Reinsve, Mark Duplass, Finn Bennett, Lukita Maxwell",
+trailer: "https://www.youtube.com/watch?v=0HjdiohVOik",
+audience: 74
+},
+"The Death of Robin Hood": {
+poster: "https://www.navymwr.org/nmps-image/3990C5E8C10A9A9769ECBCA2833B00C9B79BF1C8.jpg",
+rating: "R", runtime: "2h 2m", genre: "Action · Adventure · Drama",
+studio: "A24", released: "Jun 19, 2026",
+synopsis: "Grappling with his past after a life of crime and murder, Robin Hood finds himself gravely injured after a battle he thought would be his last. In the hands of a mysterious woman, he is offered a chance at salvation.",
+cast: "Hugh Jackman, Jodie Comer, Bill Skarsgard, Jade Croot, Katie Breen",
+trailer: "https://www.youtube.com/watch?v=OlEgQL_4ZWE",
+audience: 67
+},
+"Supergirl": {
+poster: "https://www.navymwr.org/nmps-image/B6CFC2F5BF4B5D4425986ACA82BA20EAF8725ECB.jpg",
+rating: "PG-13", runtime: "1h 50m", genre: "Action · Adventure · Sci-Fi",
+studio: "Warner Bros.", released: "Jun 26, 2026",
+synopsis: "Kara Zor-El, aka Supergirl, joins forces with an unlikely companion on an interstellar journey of vengeance and justice when an unexpected adversary strikes too close to home.",
+cast: "Milly Alcock, Eve Ridley, Matthias Schoenaerts, Jason Momoa, David Corenswet",
+trailer: "https://www.youtube.com/watch?v=s1-pfiVMKAs",
+audience: 73
+},
+"Spider-Man: Brand New Day": {
+poster: "https://www.navymwr.org/nmps-image/DBEF2810D22DF40B2F43B3076F05973153381EC2.jpg",
+rating: "PG-13", runtime: "2h 25m", genre: "Action · Adventure · Fantasy",
+studio: "Sony", released: "Jul 31, 2026",
+synopsis: "A forgotten Peter Parker lives alone as a full-time Spider-Man until mounting pressure triggers a dangerous change and a powerful new enemy emerges.",
+cast: "Tom Holland, Zendaya, Sadie Sink, Jacob Batalon, Jon Bernthal",
+trailer: "https://www.youtube.com/watch?v=8TZMtslA3UY",
+audience: 98
+},
+"Jackass: Best and Last": {
+poster: "https://www.navymwr.org/nmps-image/E037069ACE3572771B9DFEE04996D8979849795D.jpg",
+rating: "R", runtime: "1h 32m", genre: "Documentary · Comedy",
+studio: "Paramount", released: "Jun 26, 2026",
+synopsis: "Follows the Jackass crew as they perform their final series of dangerous stunts and pranks, marking the end of the franchise.",
+cast: "Johnny Knoxville, Steve-O, Chris Pontius, Jason 'Wee Man' Acuna, Preston Lacy",
+trailer: "https://www.youtube.com/watch?v=sNwzFhGwA94",
+audience: 83
+},
+"Minions & Monsters": {
+poster: "https://www.navymwr.org/nmps-image/CC03CC4995A35A9D2BD7C1959DC93331562E6773.jpg",
+rating: "PG", runtime: "1h 30m", genre: "Animation · Adventure · Comedy",
+studio: "Universal", released: "Jul 1, 2026",
+synopsis: "Follows the Minions in 1920s Hollywood as they search for frightening creatures for their monster movie, partner with a green creature, and must save the planet after unleashing monsters.",
+cast: "Zoey Deutch, Bobby Moynihan, Allison Janney, Jeff Bridges, Christoph Waltz",
+trailer: "https://www.youtube.com/watch?v=ZSdOwt-G49w",
+audience: 75
+},
+"Toy Story 5": {
+poster: "https://www.navymwr.org/nmps-image/D667517677AA69EDE282BB9EA12AD33448A97F4D.jpg",
+rating: "PG", runtime: "1h 42m", genre: "Animation · Adventure · Comedy",
+studio: "Buena Vista", released: "Jun 19, 2026",
+synopsis: "Woody, Buzz, Jessie and the rest of the gang’s jobs are challenged when they’re introduced to electronics — a new threat to playtime.",
+cast: "Tom Hanks, Tim Allen, Joan Cusack, Keanu Reeves, Annie Potts",
+trailer: "https://www.youtube.com/watch?v=c51ND9Hdbw0",
+audience: 95
+},
+"Moana (2026)": {
+poster: "https://www.navymwr.org/nmps-image/BB32CE19FAE74D601D417AD32D66E33F83BBB643.jpg",
+rating: "PG", runtime: "1h 55m", genre: "Action · Adventure · Comedy",
+studio: "Buena Vista", released: "Jul 10, 2026",
+synopsis: "Live-action adaptation of the 2016 Disney animated film 'Moana'.",
+cast: "Catherine Laga'aia, Dwayne Johnson, John Tui, Frankie Adams, Rena Owen",
+trailer: "https://www.youtube.com/watch?v=Pqgr56ze0U4",
+audience: 88
+},
+"Evil Dead Burn": {
+poster: "https://www.navymwr.org/nmps-image/80C4B7D25A387E3BF85C6DDEC0510B66E56F028F.jpg",
+rating: "R", runtime: "1h 50m", genre: "Horror",
+studio: "Warner Brothers", released: "Jul 10, 2026",
+synopsis: "After the loss of her husband, a woman seeks solace with her in-laws. As one by one they transform into deadites, she comes to discover that the vows she took in life survive even in death.",
+cast: "Souheila Yacoub, Tandi Wright, Hunter Doohan, Luciane Buchanan, Erroll Shand",
+trailer: "https://www.youtube.com/watch?v=wS-mseruMqQ",
+audience: 74
+},
+"Avatar Aang: The Last Airbender": {
+poster: "https://www.navymwr.org/nmps-image/418B454308E11767BDC84B2AE4E35461206D979A.jpg",
+rating: "PG", runtime: "1h 39m", genre: "Animation · Action · Adventure",
+studio: "Paramount", released: "Jul 25, 2026",
+synopsis: "Avatar Aang, the world's last Airbender, learns of an ancient power that could save his culture from extinction. With the help of his friends, he embarks on a global quest to find it before it falls into the wrong hands.",
+cast: "Eric Nam, Dave Bautista, Jessica Matten, Roman Zaragoza, Steven Yeun",
+trailer: "https://www.youtube.com/watch?v=7b20GRFZBFE",
+audience: 99
+},
+"The Odyssey": {
+poster: "https://www.navymwr.org/nmps-image/E01BC0F57012026EC2B2C0EA9D7B439A8A5266B5.jpg",
+rating: "R", runtime: "2h 52m", genre: "Adventure · Drama · Fantasy",
+studio: "Universal", released: "Jul 17, 2026",
+synopsis: "After the Trojan War, Odysseus faces a dangerous voyage back to Ithaca, meeting creatures like the Cyclops Polyphemus, Sirens, and Calypso along the way.",
+cast: "Matt Damon, Tom Holland, Anne Hathaway, Robert Pattinson, Lupita Nyong'o",
+trailer: "https://www.youtube.com/watch?v=Qd9TZxh5Dyw",
+audience: 97
+},
+"Mutiny": {
+poster: "https://www.navymwr.org/nmps-image/2D2BC882BE6121AF7BD6B079A8C0EE12C420EA14.jpg",
+rating: "R", runtime: "1h 35m", genre: "Action · Crime · Thriller",
+studio: "Lionsgate", released: "Aug 21, 2026",
+synopsis: "After his billionaire industrialist boss is murdered in front of him, Cole Reed is set up to take the fall for the crime, leaving him on the run as he works to uncover an international conspiracy.",
+cast: "Jason Statham, Annabelle Wallis, Adrian Lester, Ramon Tikaram, Arnas Fedaravicius",
+trailer: "https://www.youtube.com/watch?v=FKSdXH89jbo",
+audience: null
+}
 };
 
 const schedule = [
-  { date: "Tue, Jul 28", dom: "28", dow: "Tue", month: 7, shows: [
-    { time: "6:00", period: "PM", title: "Backrooms", runtime: "1h 50m", rating: "R", free: false }
-  ]},
-  { date: "Wed, Jul 29", dom: "29", dow: "Wed", month: 7, shows: [
-    { time: "6:00", period: "PM", title: "The Death of Robin Hood", runtime: "2h 2m", rating: "R", free: false }
-  ]},
-  { date: "Thu, Jul 30", dom: "30", dow: "Thu", month: 7, shows: [
-    { time: "6:00", period: "PM", title: "Supergirl", runtime: "1h 50m", rating: "PG-13", free: false }
-  ]},
-  { date: "Fri, Jul 31", dom: "31", dow: "Fri", month: 7, shows: [
-    { time: "6:00", period: "PM", title: "Spider-Man: Brand New Day", runtime: "2h 25m", rating: "PG-13", free: false },
-    { time: "8:50", period: "PM", title: "Jackass: Best and Last", runtime: "1h 32m", rating: "R", free: false }
-  ]},
-  { date: "Sat, Aug 1", dom: "1", dow: "Sat", month: 8, shows: [
-    { time: "4:00", period: "PM", title: "Minions & Monsters", runtime: "1h 30m", rating: "PG", free: false },
-    { time: "6:00", period: "PM", title: "Toy Story 5", runtime: "1h 42m", rating: "PG", free: false },
-    { time: "8:10", period: "PM", title: "Spider-Man: Brand New Day", runtime: "2h 25m", rating: "PG-13", free: false }
-  ]},
-  { date: "Sun, Aug 2", dom: "2", dow: "Sun", month: 8, shows: [
-    { time: "4:00", period: "PM", title: "Minions & Monsters", runtime: "1h 30m", rating: "PG", free: false },
-    { time: "6:00", period: "PM", title: "Spider-Man: Brand New Day", runtime: "2h 25m", rating: "PG-13", free: false }
-  ]},
-  { date: "Tue, Aug 4", dom: "4", dow: "Tue", month: 8, shows: [
-    { time: "6:00", period: "PM", title: "Spider-Man: Brand New Day", runtime: "2h 25m", rating: "PG-13", free: false }
-  ]},
-  { date: "Wed, Aug 5", dom: "5", dow: "Wed", month: 8, shows: [
-    { time: "6:00", period: "PM", title: "Supergirl", runtime: "1h 50m", rating: "PG-13", free: false }
-  ]},
-  { date: "Thu, Aug 6", dom: "6", dow: "Thu", month: 8, shows: [
-    { time: "6:00", period: "PM", title: "Jackass: Best and Last", runtime: "1h 32m", rating: "R", free: false }
-  ]}
+{ date: "Tue, Aug 4", dom: "4", dow: "Tue", month: 8, shows: [
+{ time: "6:00", period: "PM", title: "Spider-Man: Brand New Day", runtime: "2h 25m", rating: "PG-13", free: false }
+]},
+{ date: "Wed, Aug 5", dom: "5", dow: "Wed", month: 8, shows: [
+{ time: "6:00", period: "PM", title: "Supergirl", runtime: "1h 50m", rating: "PG-13", free: false }
+]},
+{ date: "Thu, Aug 6", dom: "6", dow: "Thu", month: 8, shows: [
+{ time: "6:00", period: "PM", title: "Jackass: Best and Last", runtime: "1h 32m", rating: "R", free: false }
+]},
+{ date: "Fri, Aug 7", dom: "7", dow: "Fri", month: 8, shows: [
+{ time: "6:00", period: "PM", title: "Moana (2026)", runtime: "1h 55m", rating: "PG", free: false },
+{ time: "8:30", period: "PM", title: "Evil Dead Burn", runtime: "1h 50m", rating: "R", free: false }
+]},
+{ date: "Sat, Aug 8", dom: "8", dow: "Sat", month: 8, shows: [
+{ time: "4:00", period: "PM", title: "Minions & Monsters", runtime: "1h 30m", rating: "PG", free: false },
+{ time: "6:00", period: "PM", title: "Moana (2026)", runtime: "1h 55m", rating: "PG", free: false },
+{ time: "8:30", period: "PM", title: "Evil Dead Burn", runtime: "1h 50m", rating: "R", free: false }
+]},
+{ date: "Sun, Aug 9", dom: "9", dow: "Sun", month: 8, shows: [
+{ time: "4:00", period: "PM", title: "Minions & Monsters", runtime: "1h 30m", rating: "PG", free: false },
+{ time: "6:00", period: "PM", title: "Spider-Man: Brand New Day", runtime: "2h 25m", rating: "PG-13", free: false }
+]},
+{ date: "Tue, Aug 11", dom: "11", dow: "Tue", month: 8, shows: [
+{ time: "6:00", period: "PM", title: "Spider-Man: Brand New Day", runtime: "2h 25m", rating: "PG-13", free: false }
+]},
+{ date: "Wed, Aug 12", dom: "12", dow: "Wed", month: 8, shows: [
+{ time: "6:00", period: "PM", title: "Moana (2026)", runtime: "1h 55m", rating: "PG", free: false }
+]},
+{ date: "Thu, Aug 13", dom: "13", dow: "Thu", month: 8, shows: [
+{ time: "6:00", period: "PM", title: "Evil Dead Burn", runtime: "1h 50m", rating: "R", free: false }
+]},
+{ date: "Fri, Aug 14", dom: "14", dow: "Fri", month: 8, shows: [
+{ time: "5:30", period: "PM", title: "Avatar Aang: The Last Airbender", runtime: "1h 39m", rating: "PG", free: false },
+{ time: "7:40", period: "PM", title: "The Odyssey", runtime: "2h 52m", rating: "R", free: false }
+]},
+{ date: "Sat, Aug 15", dom: "15", dow: "Sat", month: 8, shows: [
+{ time: "4:00", period: "PM", title: "Avatar Aang: The Last Airbender", runtime: "1h 39m", rating: "PG", free: false },
+{ time: "6:30", period: "PM", title: "Mutiny", runtime: "1h 35m", rating: "R", free: false },
+{ time: "8:40", period: "PM", title: "Moana (2026)", runtime: "1h 55m", rating: "PG", free: false }
+]},
+{ date: "Sun, Aug 16", dom: "16", dow: "Sun", month: 8, shows: [
+{ time: "4:00", period: "PM", title: "Avatar Aang: The Last Airbender", runtime: "1h 39m", rating: "PG", free: false },
+{ time: "6:00", period: "PM", title: "The Odyssey", runtime: "2h 52m", rating: "R", free: false }
+]}
 ];
 
 let selected = 0;
 
 function openModal(title) {
-  const info = MOVIE_INFO[title];
-  if (!info) return;
-  const posterEl = document.getElementById('modalPoster');
-  if (info.poster) {
-    posterEl.innerHTML = `<img src="${info.poster}" alt="${title} poster" onerror="this.parentElement.innerHTML='<div class=\\'modal-hero-fallback\\'>🎬</div>'">`;
-  } else {
-    posterEl.innerHTML = `<div class="modal-hero-fallback">🎬</div>`;
-  }
-  document.getElementById('modalTitle').textContent = title;
-  const chips = document.getElementById('modalChips');
-  const freeInfo = getFreeInfo(title);
-  const audienceChip = info.audience !== null ? `<span class="chip">🍿 ${info.audience}% audience</span>` : '';
-  chips.innerHTML = `
-    <span class="chip gold">${info.rating}</span>
-    <span class="chip">${info.runtime}</span>
-    <span class="chip">${info.genre}</span>
-    <span class="chip">${info.studio}</span>
-    ${audienceChip}
-    ${freeInfo ? `<span class="chip green">${freeInfo}</span>` : ''}
-  `;
-  document.getElementById('modalSynopsis').textContent = info.synopsis;
-  const castSection = document.getElementById('modalCastSection');
-  if (info.cast) { document.getElementById('modalCast').textContent = info.cast; castSection.style.display = ''; }
-  else { castSection.style.display = 'none'; }
-  const now = new Date();
-  const showPills = document.getElementById('modalShowtimes');
-  const pills = [];
-  schedule.forEach(day => {
-    const cutoff = new Date(2026, day.month - 1, parseInt(day.dom) + 1, 3, 0, 0);
-    if (cutoff < now) return;
-    day.shows.forEach(s => {
-      if (s.title !== title) return;
-      const [rawHour, rawMin] = s.time.split(':').map(Number);
-      const hour24 = (s.period === 'PM' && rawHour !== 12) ? rawHour + 12 : (s.period === 'AM' && rawHour === 12 ? 0 : rawHour);
-      const showDate = new Date(2026, day.month - 1, parseInt(day.dom), hour24, rawMin);
-      const rtStr2 = info.runtime || '2h 0m';
-      const rtHM = rtStr2.match(/(\d+)h/);
-      const rtMM = rtStr2.match(/(\d+)m/);
-      const rtMins = (rtHM ? parseInt(rtHM[1]) * 60 : 0) + (rtMM ? parseInt(rtMM[1]) : 0);
-      const showEnd = new Date(showDate.getTime() + rtMins * 60000);
-      const isNP = now >= showDate && now < showEnd;
-      const isEnded = now >= showEnd;
-      let pillClass = '';
-      let suffix = '';
-      if (isNP) { pillClass = ' now-playing'; suffix = ' <em class="now-playing-badge" style="font-style:normal">Now Playing</em>'; }
-      else if (isEnded) { pillClass = ' past'; suffix = ' <em class="ended-label">ended</em>'; }
-      pills.push(`<div class="modal-showtime-pill${pillClass}"><span>${s.time}</span>${s.period} · ${day.date}${suffix}</div>`);
-    });
-  });
-  showPills.innerHTML = pills.length ? pills.join('') : '<div style="color:var(--text-muted);font-size:0.85rem;font-family:\'Helvetica Neue\',sans-serif">No upcoming showtimes.</div>';
-  const trailerBtn = document.getElementById('modalTrailerBtn');
-  if (info.trailer) { trailerBtn.href = info.trailer; trailerBtn.style.display = 'flex'; }
-  else { trailerBtn.style.display = 'none'; }
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+const info = MOVIE_INFO[title];
+if (!info) return;
+const posterEl = document.getElementById('modalPoster');
+if (info.poster) {
+posterEl.innerHTML = `<img src="${info.poster}" alt="${title} poster" onerror="this.parentElement.innerHTML='<div class=\\'modal-hero-fallback\\'>🎬</div>'">`;
+} else {
+posterEl.innerHTML = `<div class="modal-hero-fallback">🎬</div>`;
+}
+document.getElementById('modalTitle').textContent = title;
+const chips = document.getElementById('modalChips');
+const freeInfo = getFreeInfo(title);
+const audienceChip = info.audience !== null ? `<span class="chip">🍿 ${info.audience}% audience</span>` : '';
+chips.innerHTML = `
+<span class="chip gold">${info.rating}</span>
+<span class="chip">${info.runtime}</span>
+<span class="chip">${info.genre}</span>
+<span class="chip">${info.studio}</span>
+${audienceChip}
+${freeInfo ? `<span class="chip green">${freeInfo}</span>` : ''}
+`;
+document.getElementById('modalSynopsis').textContent = info.synopsis;
+const castSection = document.getElementById('modalCastSection');
+if (info.cast) { document.getElementById('modalCast').textContent = info.cast; castSection.style.display = ''; }
+else { castSection.style.display = 'none'; }
+const now = new Date();
+const showPills = document.getElementById('modalShowtimes');
+const pills = [];
+schedule.forEach(day => {
+const cutoff = new Date(2026, day.month - 1, parseInt(day.dom) + 1, 3, 0, 0);
+if (cutoff < now) return;
+day.shows.forEach(s => {
+if (s.title !== title) return;
+const [rawHour, rawMin] = s.time.split(':').map(Number);
+const hour24 = (s.period === 'PM' && rawHour !== 12) ? rawHour + 12 : (s.period === 'AM' && rawHour === 12 ? 0 : rawHour);
+const showDate = new Date(2026, day.month - 1, parseInt(day.dom), hour24, rawMin);
+const rtStr2 = info.runtime || '2h 0m';
+const rtHM = rtStr2.match(/(\d+)h/);
+const rtMM = rtStr2.match(/(\d+)m/);
+const rtMins = (rtHM ? parseInt(rtHM[1]) * 60 : 0) + (rtMM ? parseInt(rtMM[1]) : 0);
+const showEnd = new Date(showDate.getTime() + rtMins * 60000);
+const isNP = now >= showDate && now < showEnd;
+const isEnded = now >= showEnd;
+let pillClass = '';
+let suffix = '';
+if (isNP) { pillClass = ' now-playing'; suffix = ' <em class="now-playing-badge" style="font-style:normal">Now Playing</em>'; }
+else if (isEnded) { pillClass = ' past'; suffix = ' <em class="ended-label">ended</em>'; }
+pills.push(`<div class="modal-showtime-pill${pillClass}"><span>${s.time}</span>${s.period} · ${day.date}${suffix}</div>`);
+});
+});
+showPills.innerHTML = pills.length ? pills.join('') : '<div style="color:var(--text-muted);font-size:0.85rem;font-family:\'Helvetica Neue\',sans-serif">No upcoming showtimes.</div>';
+const trailerBtn = document.getElementById('modalTrailerBtn');
+if (info.trailer) { trailerBtn.href = info.trailer; trailerBtn.style.display = 'flex'; }
+else { trailerBtn.style.display = 'none'; }
+document.getElementById('modalOverlay').classList.add('open');
+document.body.style.overflow = 'hidden';
 }
 
 function getFreeInfo(title) {
-  for (const day of schedule) {
-    for (const s of day.shows) {
-      if (s.title === title && s.free) return s.advance ? 'Free · Advance Screening' : 'Free';
-    }
-  }
-  return null;
+for (const day of schedule) {
+for (const s of day.shows) {
+if (s.title === title && s.free) return s.advance ? 'Free · Advance Screening' : 'Free';
+}
+}
+return null;
 }
 
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
@@ -354,77 +412,77 @@ function handleOverlayClick(e) { if (e.target === document.getElementById('modal
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 function init() {
-  const today = new Date();
-  const todayMonth = today.getMonth() + 1;
-  const todayDom = today.getDate();
-  let defaultIdx = 0, found = false;
-  schedule.forEach((d, i) => {
-    if (!found && (d.month > todayMonth || (d.month === todayMonth && parseInt(d.dom) >= todayDom))) { defaultIdx = i; found = true; }
-  });
-  selected = defaultIdx;
-  render();
+const today = new Date();
+const todayMonth = today.getMonth() + 1;
+const todayDom = today.getDate();
+let defaultIdx = 0, found = false;
+schedule.forEach((d, i) => {
+if (!found && (d.month > todayMonth || (d.month === todayMonth && parseInt(d.dom) >= todayDom))) { defaultIdx = i; found = true; }
+});
+selected = defaultIdx;
+render();
 }
 
 function render() {
-  const scroll = document.getElementById('dateScroll');
-  scroll.innerHTML = '';
-  const nowBtn = new Date();
-  schedule.forEach((d, i) => {
-    const cutoffBtn = new Date(2026, d.month - 1, parseInt(d.dom) + 1, 3, 0, 0);
-    if (cutoffBtn < nowBtn) return;
-    const btn = document.createElement('div');
-    btn.className = 'date-btn' + (i === selected ? ' active' : '');
-    btn.innerHTML = `<span class="dow">${d.dow}</span><span class="dom">${d.dom}</span>`;
-    btn.onclick = () => { selected = i; render(); };
-    scroll.appendChild(btn);
-    if (i === selected) setTimeout(() => btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }), 50);
-  });
-  const day = schedule[selected];
-  document.getElementById('dayHeading').textContent = day.date;
-  const list = document.getElementById('showList');
-  list.innerHTML = '';
-  if (!day.shows || !day.shows.length) { list.innerHTML = '<div class="status-msg">No shows scheduled.</div>'; return; }
-  day.shows.forEach((s, idx) => {
-    const info = MOVIE_INFO[s.title];
-    const trailerUrl = info ? info.trailer : null;
-    const now = new Date();
-    const [rawHour, rawMin] = s.time.split(':').map(Number);
-    const hour24 = (s.period === 'PM' && rawHour !== 12) ? rawHour + 12 : (s.period === 'AM' && rawHour === 12 ? 0 : rawHour);
-    const showStart = new Date(2026, day.month - 1, parseInt(day.dom), hour24, rawMin);
-    const info2 = MOVIE_INFO[s.title];
-    const rtStr = info2 ? info2.runtime : '2h 0m';
-    const rtHMatch = rtStr.match(/(\d+)h/);
-    const rtMMatch = rtStr.match(/(\d+)m/);
-    const runtimeMins = (rtHMatch ? parseInt(rtHMatch[1]) * 60 : 0) + (rtMMatch ? parseInt(rtMMatch[1]) : 0);
-    const showEnd = new Date(showStart.getTime() + runtimeMins * 60000);
-    const isNowPlaying = now >= showStart && now < showEnd;
-    const isEnded = now >= showEnd;
+const scroll = document.getElementById('dateScroll');
+scroll.innerHTML = '';
+const nowBtn = new Date();
+schedule.forEach((d, i) => {
+const cutoffBtn = new Date(2026, d.month - 1, parseInt(d.dom) + 1, 3, 0, 0);
+if (cutoffBtn < nowBtn) return;
+const btn = document.createElement('div');
+btn.className = 'date-btn' + (i === selected ? ' active' : '');
+btn.innerHTML = `<span class="dow">${d.dow}</span><span class="dom">${d.dom}</span>`;
+btn.onclick = () => { selected = i; render(); };
+scroll.appendChild(btn);
+if (i === selected) setTimeout(() => btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }), 50);
+});
+const day = schedule[selected];
+document.getElementById('dayHeading').textContent = day.date;
+const list = document.getElementById('showList');
+list.innerHTML = '';
+if (!day.shows || !day.shows.length) { list.innerHTML = '<div class="status-msg">No shows scheduled.</div>'; return; }
+day.shows.forEach((s, idx) => {
+const info = MOVIE_INFO[s.title];
+const trailerUrl = info ? info.trailer : null;
+const now = new Date();
+const [rawHour, rawMin] = s.time.split(':').map(Number);
+const hour24 = (s.period === 'PM' && rawHour !== 12) ? rawHour + 12 : (s.period === 'AM' && rawHour === 12 ? 0 : rawHour);
+const showStart = new Date(2026, day.month - 1, parseInt(day.dom), hour24, rawMin);
+const info2 = MOVIE_INFO[s.title];
+const rtStr = info2 ? info2.runtime : '2h 0m';
+const rtHMatch = rtStr.match(/(\d+)h/);
+const rtMMatch = rtStr.match(/(\d+)m/);
+const runtimeMins = (rtHMatch ? parseInt(rtHMatch[1]) * 60 : 0) + (rtMMatch ? parseInt(rtMMatch[1]) : 0);
+const showEnd = new Date(showStart.getTime() + runtimeMins * 60000);
+const isNowPlaying = now >= showStart && now < showEnd;
+const isEnded = now >= showEnd;
 
-    const card = document.createElement('div');
-    card.className = 'show-card' + (isNowPlaying ? ' now-playing' : isEnded ? ' ended' : '');
-    card.style.animationDelay = (idx * 0.06) + 's';
-    const metaRight = s.free
-      ? (s.advance ? '<span class="advance-tag">Advance Screening</span><span class="free-tag">Free</span>' : '<span class="free-tag">Free</span>')
-      : '<span class="price">$5.25 mil</span>';
-    const audienceHtml = (info && info.audience !== null) ? `<span class="audience-score">🍿 ${info.audience}%</span>` : '';
-    const trailerBtnHtml = trailerUrl ? `<a class="trailer-btn" href="${trailerUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${PLAY_ICON}</a>` : '';
-    const infoBtnHtml = info ? `<button class="info-btn" onclick="event.stopPropagation(); openModal('${s.title.replace(/'/g, "\\'")}')">i</button>` : '';
-    const actionsHtml = (trailerBtnHtml || infoBtnHtml) ? `<div class="card-actions">${trailerBtnHtml}${infoBtnHtml}</div>` : '';
-    card.innerHTML = `
-      <div class="time-block"><div class="time-num">${s.time}</div><div class="time-period">${s.period}</div></div>
-      <div class="vline"></div>
-      <div class="movie-block">
-        <div class="movie-title">${s.title}${isNowPlaying ? '<span class="now-playing-badge">Now Playing</span>' : isEnded ? '<span class="ended-card-label">ended</span>' : ''}</div>
-        <div class="movie-meta">
-          <span class="runtime">${s.runtime}</span>
-          <span class="rating-badge">${s.rating}</span>
-          ${audienceHtml}
-          ${metaRight}
-        </div>
-      </div>
-      ${actionsHtml}`;
-    list.appendChild(card);
-  });
+const card = document.createElement('div');
+card.className = 'show-card' + (isNowPlaying ? ' now-playing' : isEnded ? ' ended' : '');
+card.style.animationDelay = (idx * 0.06) + 's';
+const metaRight = s.free
+? (s.advance ? '<span class="advance-tag">Advance Screening</span><span class="free-tag">Free</span>' : '<span class="free-tag">Free</span>')
+: '<span class="price">$5.25 mil</span>';
+const audienceHtml = (info && info.audience !== null) ? `<span class="audience-score">🍿 ${info.audience}%</span>` : '';
+const trailerBtnHtml = trailerUrl ? `<a class="trailer-btn" href="${trailerUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${PLAY_ICON}</a>` : '';
+const infoBtnHtml = info ? `<button class="info-btn" onclick="event.stopPropagation(); openModal('${s.title.replace(/'/g, "\\'")}')">i</button>` : '';
+const actionsHtml = (trailerBtnHtml || infoBtnHtml) ? `<div class="card-actions">${trailerBtnHtml}${infoBtnHtml}</div>` : '';
+card.innerHTML = `
+<div class="time-block"><div class="time-num">${s.time}</div><div class="time-period">${s.period}</div></div>
+<div class="vline"></div>
+<div class="movie-block">
+<div class="movie-title">${s.title}${isNowPlaying ? '<span class="now-playing-badge">Now Playing</span>' : isEnded ? '<span class="ended-card-label">ended</span>' : ''}</div>
+<div class="movie-meta">
+<span class="runtime">${s.runtime}</span>
+<span class="rating-badge">${s.rating}</span>
+${audienceHtml}
+${metaRight}
+</div>
+</div>
+${actionsHtml}`;
+list.appendChild(card);
+});
 }
 
 init();
