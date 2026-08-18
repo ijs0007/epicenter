@@ -148,7 +148,7 @@ document.head.appendChild(link);
 <div id="showList"></div>
 </div>
 <div class="footer">
-Schedule updated Aug 11, 2026 &nbsp;·&nbsp;
+Schedule updated Aug 18, 2026 &nbsp;·&nbsp;
 <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -181,42 +181,6 @@ Watch Official Trailer
 const PLAY_ICON = `<svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L10 6 L0 12 Z"/></svg>`;
 
 const MOVIE_INFO = {
-  "Spider-Man: Brand New Day": {
-poster: "https://www.navymwr.org/nmps-image/DBEF2810D22DF40B2F43B3076F05973153381EC2.jpg",
-rating: "PG-13", runtime: "2h 25m", genre: "Action · Adventure · Fantasy",
-studio: "Sony", released: "Jul 31, 2026",
-synopsis: "A forgotten Peter Parker lives alone as a full-time Spider-Man until mounting pressure triggers a dangerous change and a powerful new enemy emerges.",
-cast: "Tom Holland, Zendaya, Sadie Sink, Jacob Batalon, Jon Bernthal",
-trailer: "https://www.youtube.com/watch?v=8TZMtslA3UY",
-audience: 98
-},
-  "Moana (2026)": {
-poster: "https://www.navymwr.org/nmps-image/BB32CE19FAE74D601D417AD32D66E33F83BBB643.jpg",
-rating: "PG", runtime: "1h 55m", genre: "Action · Adventure · Comedy",
-studio: "Buena Vista", released: "Jul 10, 2026",
-synopsis: "Live-action adaptation of the 2016 Disney animated film 'Moana'.",
-cast: "Catherine Laga'aia, Dwayne Johnson, John Tui, Frankie Adams, Rena Owen",
-trailer: "https://www.youtube.com/watch?v=Pqgr56ze0U4",
-audience: 88
-},
-  "Evil Dead Burn": {
-poster: "https://www.navymwr.org/nmps-image/80C4B7D25A387E3BF85C6DDEC0510B66E56F028F.jpg",
-rating: "R", runtime: "1h 50m", genre: "Horror",
-studio: "Warner Brothers", released: "Jul 10, 2026",
-synopsis: "After the loss of her husband, a woman seeks solace with her in-laws. As one by one they transform into deadites, she comes to discover that the vows she took in life survive even in death.",
-cast: "Souheila Yacoub, Tandi Wright, Hunter Doohan, Luciane Buchanan, Erroll Shand",
-trailer: "https://www.youtube.com/watch?v=wS-mseruMqQ",
-audience: 74
-},
-  "Avatar Aang: The Last Airbender": {
-poster: "https://www.navymwr.org/nmps-image/418B454308E11767BDC84B2AE4E35461206D979A.jpg",
-rating: "PG", runtime: "1h 39m", genre: "Animation · Action · Adventure",
-studio: "Paramount", released: "Jul 25, 2026",
-synopsis: "Avatar Aang, the world's last Airbender, learns of an ancient power that could save his culture from extinction. With the help of his friends, he embarks on a global quest to find it before it falls into the wrong hands.",
-cast: "Eric Nam, Dave Bautista, Jessica Matten, Roman Zaragoza, Steven Yeun",
-trailer: "https://www.youtube.com/watch?v=7b20GRFZBFE",
-audience: 99
-},
   "The Odyssey": {
 poster: "https://www.navymwr.org/nmps-image/E01BC0F57012026EC2B2C0EA9D7B439A8A5266B5.jpg",
 rating: "R", runtime: "2h 52m", genre: "Adventure · Drama · Fantasy",
@@ -226,14 +190,23 @@ cast: "Matt Damon, Tom Holland, Anne Hathaway, Robert Pattinson, Lupita Nyong'o"
 trailer: "https://www.youtube.com/watch?v=Qd9TZxh5Dyw",
 audience: 97
 },
-  "Mutiny": {
-poster: "https://www.navymwr.org/nmps-image/2D2BC882BE6121AF7BD6B079A8C0EE12C420EA14.jpg",
-rating: "R", runtime: "1h 35m", genre: "Action · Crime · Thriller",
-studio: "Lionsgate", released: "Aug 21, 2026",
-synopsis: "After his billionaire industrialist boss is murdered in front of him, Cole Reed is set up to take the fall for the crime, leaving him on the run as he works to uncover an international conspiracy.",
-cast: "Jason Statham, Annabelle Wallis, Adrian Lester, Ramon Tikaram, Arnas Fedaravicius",
-trailer: "https://www.youtube.com/watch?v=FKSdXH89jbo",
-audience: null
+  "Minions & Monsters": {
+    poster: "https://www.navymwr.org/nmps-image/CC03CC4995A35A9D2BD7C1959DC93331562E6773.jpg",
+    rating: "PG", runtime: "1h 30m", genre: "Animation · Adventure · Comedy",
+    studio: "Universal", released: "Jul 1, 2026",
+    synopsis: "Follows the Minions in 1920s Hollywood as they search for frightening creatures for their monster movie, partner with a green creature, and must save the planet after unleashing monsters. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Zoey Deutch, Bobby Moynihan, Allison Janney, Jeff Bridges, Christoph Waltz",
+    trailer: "https://www.youtube.com/watch?v=ZSdOwt-G49w",
+    audience: null
+  },
+  "Avatar Aang: The Last Airbender": {
+poster: "https://www.navymwr.org/nmps-image/418B454308E11767BDC84B2AE4E35461206D979A.jpg",
+rating: "PG", runtime: "1h 39m", genre: "Animation · Action · Adventure",
+studio: "Paramount", released: "Jul 25, 2026",
+synopsis: "Avatar Aang, the world's last Airbender, learns of an ancient power that could save his culture from extinction. With the help of his friends, he embarks on a global quest to find it before it falls into the wrong hands.",
+cast: "Eric Nam, Dave Bautista, Jessica Matten, Roman Zaragoza, Steven Yeun",
+trailer: "https://www.youtube.com/watch?v=7b20GRFZBFE",
+audience: 99
 },
   "Motor City": {
     poster: "https://www.navymwr.org/nmps-image/7C859033FC3C573D0C305C27F001DD56FE78EE13.jpg",
@@ -261,37 +234,33 @@ audience: null
     cast: "Anna Faris, Isla Fisher, Leslie Mann, Adam Demos, Michelle Buteau",
     trailer: "https://www.youtube.com/watch?v=9p7j3UvpEQQ",
     audience: null
+  },
+  "Insidious: Out of the Further": {
+    poster: "https://www.navymwr.org/nmps-image/D9A1FF4C3A6D85519F48DEA1301803AFD325D36F.jpg",
+    rating: "PG-13", runtime: "1h 46m", genre: "Horror · Mystery · Thriller",
+    studio: "Sony", released: "Aug 21, 2026",
+    synopsis: "Gemma, a young mother raising her daughter in the house she grew up in, discovers she can travel into The Further, where she possesses and ability to bring what lives there back to the real world. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Lin Shaye, Sam Spruell, Amelia Eve, Maisie Richardson-Sellers, Brandon Perea",
+    trailer: "https://www.youtube.com/watch?v=jxU8FU3o75A",
+    audience: null
+  },
+  "The Invite": {
+    poster: "https://www.navymwr.org/nmps-image/1023ED6F8609A31671052F1BE0D7F71D0316280A.jpg",
+    rating: "R", runtime: "1h 47m", genre: "Comedy · Drama · Romance",
+    studio: "Anuvu", released: "Jul 10, 2026",
+    synopsis: "Joe and Angela's marriage is on thin ice. When they invite their enigmatic upstairs neighbors for a dinner party, the night spirals into unexpected places. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Seth Rogan, Olivia Wilde, Penelope Cruz, Edward Norton, Skip Howland",
+    trailer: "https://www.youtube.com/watch?v=OJ19I9q_hOQ",
+    audience: null
   }
 };
 
 const schedule = [
-  { date: "Tue, Aug 11", dom: "11", dow: "Tue", month: 8, shows: [
-    { time: "6:00", period: "PM", title: "Spider-Man: Brand New Day", runtime: "2h 25m", rating: "PG-13", free: false }
-  ]},
-  { date: "Wed, Aug 12", dom: "12", dow: "Wed", month: 8, shows: [
-    { time: "6:00", period: "PM", title: "Moana (2026)", runtime: "1h 55m", rating: "PG", free: false }
-  ]},
-  { date: "Thu, Aug 13", dom: "13", dow: "Thu", month: 8, shows: [
-    { time: "6:00", period: "PM", title: "Evil Dead Burn", runtime: "1h 50m", rating: "R", free: false }
-  ]},
-  { date: "Fri, Aug 14", dom: "14", dow: "Fri", month: 8, shows: [
-    { time: "5:30", period: "PM", title: "Avatar Aang: The Last Airbender", runtime: "1h 39m", rating: "PG", free: false },
-    { time: "7:40", period: "PM", title: "The Odyssey", runtime: "2h 52m", rating: "R", free: false }
-  ]},
-  { date: "Sat, Aug 15", dom: "15", dow: "Sat", month: 8, shows: [
-    { time: "4:00", period: "PM", title: "Avatar Aang: The Last Airbender", runtime: "1h 39m", rating: "PG", free: false },
-    { time: "6:30", period: "PM", title: "Mutiny", runtime: "1h 35m", rating: "R", free: true, advance: true },
-    { time: "8:40", period: "PM", title: "Moana (2026)", runtime: "1h 55m", rating: "PG", free: false }
-  ]},
-  { date: "Sun, Aug 16", dom: "16", dow: "Sun", month: 8, shows: [
-    { time: "4:00", period: "PM", title: "Avatar Aang: The Last Airbender", runtime: "1h 39m", rating: "PG", free: false },
-    { time: "6:00", period: "PM", title: "The Odyssey", runtime: "2h 52m", rating: "R", free: false }
-  ]},
   { date: "Tue, Aug 18", dom: "18", dow: "Tue", month: 8, shows: [
     { time: "5:30", period: "PM", title: "The Odyssey", runtime: "2h 52m", rating: "R", free: false }
   ]},
   { date: "Wed, Aug 19", dom: "19", dow: "Wed", month: 8, shows: [
-    { time: "6:00", period: "PM", title: "Evil Dead Burn", runtime: "1h 50m", rating: "R", free: false }
+    { time: "6:00", period: "PM", title: "Minions & Monsters", runtime: "1h 30m", rating: "PG", free: false }
   ]},
   { date: "Thu, Aug 20", dom: "20", dow: "Thu", month: 8, shows: [
     { time: "6:00", period: "PM", title: "Avatar Aang: The Last Airbender", runtime: "1h 39m", rating: "PG", free: false }
@@ -311,6 +280,25 @@ const schedule = [
   ]},
   { date: "Tue, Aug 25", dom: "25", dow: "Tue", month: 8, shows: [
     { time: "6:00", period: "PM", title: "Motor City", runtime: "1h 43m", rating: "R", free: false }
+  ]},
+  { date: "Wed, Aug 26", dom: "26", dow: "Wed", month: 8, shows: [
+    { time: "6:00", period: "PM", title: "Avatar Aang: The Last Airbender", runtime: "1h 39m", rating: "PG", free: false }
+  ]},
+  { date: "Thu, Aug 27", dom: "27", dow: "Thu", month: 8, shows: [
+    { time: "6:00", period: "PM", title: "The Odyssey", runtime: "2h 52m", rating: "R", free: false }
+  ]},
+  { date: "Fri, Aug 28", dom: "28", dow: "Fri", month: 8, shows: [
+    { time: "6:00", period: "PM", title: "Insidious: Out of the Further", runtime: "1h 46m", rating: "PG-13", free: false },
+    { time: "8:10", period: "PM", title: "The Invite", runtime: "1h 47m", rating: "R", free: false }
+  ]},
+  { date: "Sat, Aug 29", dom: "29", dow: "Sat", month: 8, shows: [
+    { time: "3:30", period: "PM", title: "The Magic Faraway Tree", runtime: "1h 50m", rating: "PG", free: false },
+    { time: "6:00", period: "PM", title: "Insidious: Out of the Further", runtime: "1h 46m", rating: "PG-13", free: false },
+    { time: "8:10", period: "PM", title: "Spa Weekend", runtime: "1h 37m", rating: "R", free: false }
+  ]},
+  { date: "Sun, Aug 30", dom: "30", dow: "Sun", month: 8, shows: [
+    { time: "4:10", period: "PM", title: "The Magic Faraway Tree", runtime: "1h 50m", rating: "PG", free: false },
+    { time: "6:30", period: "PM", title: "The Invite", runtime: "1h 47m", rating: "R", free: false }
   ]}
 ];
 
