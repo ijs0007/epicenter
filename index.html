@@ -148,7 +148,7 @@ document.head.appendChild(link);
 <div id="showList"></div>
 </div>
 <div class="footer">
-Schedule updated Sep 29, 2026 &nbsp;·&nbsp;
+Schedule updated Oct 6, 2026 &nbsp;·&nbsp;
 <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -181,13 +181,13 @@ Watch Official Trailer
 const PLAY_ICON = `<svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L10 6 L0 12 Z"/></svg>`;
 
 const MOVIE_INFO = {
-  "Buddy": {
-    poster: "https://www.navymwr.org/nmps-image/311BE7813D7152DBEA5D980AB05259BC5420C53A.jpg",
-    rating: "R", runtime: "1h 36m", genre: "Fantasy · Horror · Thriller",
-    studio: "Horizon Distribution", released: "Aug 28, 2026",
-    synopsis: "A brave girl and her friends must escape a kids television show. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Cristin Milioti, Delaney Quinn, Topher Grace, Caleb Williams, Bennie Taylor",
-    trailer: "https://www.youtube.com/watch?v=O1fNEHX9tSM",
+  "By Any Means": {
+    poster: "https://www.navymwr.org/nmps-image/19A44267852C7E8757E8EBED6183BF5DB3F67212.jpg",
+    rating: "R", runtime: "1h 47m", genre: "Action · Crime · Thriller",
+    studio: "Paramount", released: "Sep 4, 2026",
+    synopsis: "A notorious mafia hitman and a young Black FBI agent team up to investigate the murders of civil rights leaders in 1966 Mississippi. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Yahya Abdul-Mateen II, Mark Wahlberg, Nicole Beharie, David Strathairn, Josh Lucas",
+    trailer: "https://www.youtube.com/watch?v=ej8pjisr0Pc",
     audience: null
   },
   "The Dog Stars": {
@@ -208,24 +208,6 @@ const MOVIE_INFO = {
     trailer: "https://www.youtube.com/watch?v=mNd1gb19A-c",
     audience: null
   },
-  "Fall 2: Deadpoint": {
-    poster: "https://www.navymwr.org/nmps-image/ACC806D97E23E896DE8A2E02610B3995A4EDBDDB.jpg",
-    rating: "PG-13", runtime: "1h 38m", genre: "Adventure · Drama · Thriller",
-    studio: "Lionsgate", released: "Sep 2, 2026",
-    synopsis: "Grieving her sister Shiloh's death, Jax Hunter bonds with Shiloh's bold friend Luce. Together they tackle dangerous Mount Kwan in Thailand. When a rockslide traps them on a narrow plank 4,000 feet up, Jax must face her fears to survive. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Harriet Slater, Arsema Thomas, Tom Brittney, Virginia Gardner, Sahajak Boonthanakit",
-    trailer: "https://www.youtube.com/watch?v=Krs0VDIjhmE",
-    audience: null
-  },
-  "By Any Means": {
-    poster: "https://www.navymwr.org/nmps-image/19A44267852C7E8757E8EBED6183BF5DB3F67212.jpg",
-    rating: "R", runtime: "1h 47m", genre: "Action · Crime · Thriller",
-    studio: "Paramount", released: "Sep 4, 2026",
-    synopsis: "A notorious mafia hitman and a young Black FBI agent team up to investigate the murders of civil rights leaders in 1966 Mississippi. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Yahya Abdul-Mateen II, Mark Wahlberg, Nicole Beharie, David Strathairn, Josh Lucas",
-    trailer: "https://www.youtube.com/watch?v=ej8pjisr0Pc",
-    audience: null
-  },
   "Practical Magic 2": {
     poster: "https://www.navymwr.org/nmps-image/E8D7B921B8ED6464D4EC70BC7B39C9F554C6684C.jpg",
     rating: "PG-13", runtime: "2h 10m", genre: "Comedy · Fantasy · Romance",
@@ -243,32 +225,37 @@ const MOVIE_INFO = {
     cast: "Betty Gilpin, Jeremy Allen White, Mikey Madison, Billy Magnussen, Jeremy Strong",
     trailer: "https://www.youtube.com/watch?v=gM4LkaXwGuY",
     audience: null
+  },
+  "Buddy": {
+    poster: "https://www.navymwr.org/nmps-image/311BE7813D7152DBEA5D980AB05259BC5420C53A.jpg",
+    rating: "R", runtime: "1h 36m", genre: "Fantasy · Horror · Thriller",
+    studio: "Horizon Distribution", released: "Aug 28, 2026",
+    synopsis: "A brave girl and her friends must escape a kids television show. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Cristin Milioti, Delaney Quinn, Topher Grace, Caleb Williams, Bennie Taylor",
+    trailer: "https://www.youtube.com/watch?v=O1fNEHX9tSM",
+    audience: null
+  },
+  "Fall 2: Deadpoint": {
+    poster: "https://www.navymwr.org/nmps-image/ACC806D97E23E896DE8A2E02610B3995A4EDBDDB.jpg",
+    rating: "PG-13", runtime: "1h 38m", genre: "Adventure · Drama · Thriller",
+    studio: "Lionsgate", released: "Sep 2, 2026",
+    synopsis: "Grieving her sister Shiloh's death, Jax Hunter bonds with Shiloh's bold friend Luce. Together they tackle dangerous Mount Kwan in Thailand. When a rockslide traps them on a narrow plank 4,000 feet up, Jax must face her fears to survive. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Harriet Slater, Arsema Thomas, Tom Brittney, Virginia Gardner, Sahajak Boonthanakit",
+    trailer: "https://www.youtube.com/watch?v=Krs0VDIjhmE",
+    audience: null
+  },
+  "The Weight": {
+    poster: "https://www.navymwr.org/nmps-image/8EBDC0C46D4EB00746FDEC07DDA3136E4AE81F83.jpg",
+    rating: "R", runtime: "1h 53m", genre: "Action · Adventure · Crime",
+    studio: "Horizon Distribution", released: "Sep 18, 2026",
+    synopsis: "Desperate to save what is left of his family, during the height of the Great Depression, a battle-scarred veteran is hired to help smuggle a fortune in gold across 100 miles of impenetrable wilderness. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Ethan Hawke, Russell Crowe, Julia Jones, Austin Amelio, Avi Nash",
+    trailer: "https://www.youtube.com/watch?v=7YpuMymmiJ8",
+    audience: null
   }
 };
 
 const schedule = [
-  { date: "Tue, Sep 29", dom: "29", dow: "Tue", month: 9, shows: [
-    { time: "6:00", period: "PM", title: "Buddy", runtime: "1h 36m", rating: "R", free: false }
-  ]},
-  { date: "Wed, Sep 30", dom: "30", dow: "Wed", month: 9, shows: [
-    { time: "6:00", period: "PM", title: "The Dog Stars", runtime: "1h 58m", rating: "R", free: false }
-  ]},
-  { date: "Thu, Oct 1", dom: "1", dow: "Thu", month: 10, shows: [
-    { time: "6:00", period: "PM", title: "Resident Evil", runtime: "1h 30m", rating: "R", free: false }
-  ]},
-  { date: "Fri, Oct 2", dom: "2", dow: "Fri", month: 10, shows: [
-    { time: "6:00", period: "PM", title: "Fall 2: Deadpoint", runtime: "1h 38m", rating: "PG-13", free: false },
-    { time: "8:30", period: "PM", title: "By Any Means", runtime: "1h 47m", rating: "R", free: false }
-  ]},
-  { date: "Sat, Oct 3", dom: "3", dow: "Sat", month: 10, shows: [
-    { time: "4:00", period: "PM", title: "Fall 2: Deadpoint", runtime: "1h 38m", rating: "PG-13", free: false },
-    { time: "6:10", period: "PM", title: "Buddy", runtime: "1h 36m", rating: "R", free: false },
-    { time: "8:30", period: "PM", title: "By Any Means", runtime: "1h 47m", rating: "R", free: false }
-  ]},
-  { date: "Sun, Oct 4", dom: "4", dow: "Sun", month: 10, shows: [
-    { time: "4:00", period: "PM", title: "Fall 2: Deadpoint", runtime: "1h 38m", rating: "PG-13", free: false },
-    { time: "6:00", period: "PM", title: "Resident Evil", runtime: "1h 30m", rating: "R", free: false }
-  ]},
   { date: "Tue, Oct 6", dom: "6", dow: "Tue", month: 10, shows: [
     { time: "6:00", period: "PM", title: "By Any Means", runtime: "1h 47m", rating: "R", free: false }
   ]},
@@ -290,6 +277,19 @@ const schedule = [
   { date: "Sun, Oct 11", dom: "11", dow: "Sun", month: 10, shows: [
     { time: "4:00", period: "PM", title: "Practical Magic 2", runtime: "2h 10m", rating: "PG-13", free: false },
     { time: "6:40", period: "PM", title: "Buddy", runtime: "1h 36m", rating: "R", free: false }
+  ]},
+  { date: "Tue, Oct 13", dom: "13", dow: "Tue", month: 10, shows: [
+    { time: "6:00", period: "PM", title: "The Social Reckoning", runtime: "1h 52m", rating: "R", free: false }
+  ]},
+  { date: "Wed, Oct 14", dom: "14", dow: "Wed", month: 10, shows: [
+    { time: "6:00", period: "PM", title: "Fall 2: Deadpoint", runtime: "1h 38m", rating: "PG-13", free: false }
+  ]},
+  { date: "Thu, Oct 15", dom: "15", dow: "Thu", month: 10, shows: [
+    { time: "6:00", period: "PM", title: "By Any Means", runtime: "1h 47m", rating: "R", free: false }
+  ]},
+  { date: "Fri, Oct 16", dom: "16", dow: "Fri", month: 10, shows: [
+    { time: "6:00", period: "PM", title: "Fall 2: Deadpoint", runtime: "1h 38m", rating: "PG-13", free: false },
+    { time: "8:00", period: "PM", title: "The Weight", runtime: "1h 53m", rating: "R", free: false }
   ]}
 ];
 
