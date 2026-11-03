@@ -148,7 +148,7 @@ document.head.appendChild(link);
 <div id="showList"></div>
 </div>
 <div class="footer">
-Schedule updated Oct 27, 2026 &nbsp;·&nbsp;
+Schedule updated Nov 3, 2026 &nbsp;·&nbsp;
 <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -190,24 +190,6 @@ const MOVIE_INFO = {
     trailer: "https://www.youtube.com/watch?v=xZe27iaD2_8",
     audience: null
   },
-  "Klara and the Sun": {
-    poster: "https://www.navymwr.org/nmps-image/DF076954BBB0FB27BA5431321967098BDB875F76.jpg",
-    rating: "PG-13", runtime: "1h 56m", genre: "Sci-Fi",
-    studio: "Sony", released: "Oct 23, 2026",
-    synopsis: "A robot girl designed to prevent loneliness tries to save a heartbroken family of humans. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Jenna Ortega, Amy Adams, Aran Murphy, Steve Buscemi, Natasha Lyonne",
-    trailer: "https://www.youtube.com/watch?v=wixzainceAE",
-    audience: null
-  },
-  "The Weight": {
-    poster: "https://www.navymwr.org/nmps-image/8EBDC0C46D4EB00746FDEC07DDA3136E4AE81F83.jpg",
-    rating: "R", runtime: "1h 53m", genre: "Action · Adventure · Crime",
-    studio: "Horizon Distribution", released: "Sep 18, 2026",
-    synopsis: "Desperate to save what is left of his family, during the height of the Great Depression, a battle-scarred veteran is hired to help smuggle a fortune in gold across 100 miles of impenetrable wilderness. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Ethan Hawke, Russell Crowe, Julia Jones, Austin Amelio, Avi Nash",
-    trailer: "https://www.youtube.com/watch?v=7YpuMymmiJ8",
-    audience: null
-  },
   "Verity": {
     poster: "https://www.navymwr.org/nmps-image/714DFFCE62011FA9E0572C9F1B91AAA73EEEF9B9.jpg",
     rating: "R", runtime: "1h 57m", genre: "Crime · Drama · Mystery",
@@ -224,15 +206,6 @@ const MOVIE_INFO = {
     synopsis: "The most powerful man in the world embarks on a frantic mission to prove he is humanity's savior before the disaster he's unleashed destroys everything. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
     cast: "Tom Cruise, Riz Ahmed, John Goodman, Sandra Huller, Michael Stuhlbarg",
     trailer: "https://www.youtube.com/watch?v=job8V254NAE",
-    audience: null
-  },
-  "Forgotten Island": {
-    poster: "https://www.navymwr.org/nmps-image/925EFDF46D29A449FD0D048F1B8470F04D8D4FF1.jpg",
-    rating: "PG", runtime: "1h 49m", genre: "AnimationAction · Adventure · Comedy",
-    studio: "Universal", released: "Sep 25, 2026",
-    synopsis: "Two best friends become stranded on the mystical world of Nakali, where their only escape might cost them their shared lifetime of memories. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "H.E.R, Liza Soberano, Dave Franco, Jenny Slate, Manny Jacinto",
-    trailer: "https://www.youtube.com/watch?v=a8RHqN93qfo",
     audience: null
   },
   "Jimmy": {
@@ -261,32 +234,28 @@ const MOVIE_INFO = {
     cast: "Caleb McLaughlin, Gabrielle Union, Nick Kroll, Nicola Coughlan, David Harbour",
     trailer: "https://www.youtube.com/watch?v=5r-7eWDBc40",
     audience: null
+  },
+  "The Weight": {
+    poster: "https://www.navymwr.org/nmps-image/8EBDC0C46D4EB00746FDEC07DDA3136E4AE81F83.jpg",
+    rating: "R", runtime: "1h 53m", genre: "Action · Adventure · Crime",
+    studio: "Horizon Distribution", released: "Sep 18, 2026",
+    synopsis: "Desperate to save what is left of his family, during the height of the Great Depression, a battle-scarred veteran is hired to help smuggle a fortune in gold across 100 miles of impenetrable wilderness. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Ethan Hawke, Russell Crowe, Julia Jones, Austin Amelio, Avi Nash",
+    trailer: "https://www.youtube.com/watch?v=7YpuMymmiJ8",
+    audience: null
+  },
+  "Forgotten Island": {
+    poster: "https://www.navymwr.org/nmps-image/925EFDF46D29A449FD0D048F1B8470F04D8D4FF1.jpg",
+    rating: "PG", runtime: "1h 49m", genre: "AnimationAction · Adventure · Comedy",
+    studio: "Universal", released: "Sep 25, 2026",
+    synopsis: "Two best friends become stranded on the mystical world of Nakali, where their only escape might cost them their shared lifetime of memories. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "H.E.R, Liza Soberano, Dave Franco, Jenny Slate, Manny Jacinto",
+    trailer: "https://www.youtube.com/watch?v=a8RHqN93qfo",
+    audience: null
   }
 };
 
 const schedule = [
-  { date: "Tue, Oct 27", dom: "27", dow: "Tue", month: 10, shows: [
-    { time: "6:00", period: "PM", title: "Heart of the Beast", runtime: "1h 41m", rating: "PG-13", free: false }
-  ]},
-  { date: "Wed, Oct 28", dom: "28", dow: "Wed", month: 10, shows: [
-    { time: "6:00", period: "PM", title: "Klara and the Sun", runtime: "1h 56m", rating: "PG-13", free: false }
-  ]},
-  { date: "Thu, Oct 29", dom: "29", dow: "Thu", month: 10, shows: [
-    { time: "6:00", period: "PM", title: "The Weight", runtime: "1h 53m", rating: "R", free: false }
-  ]},
-  { date: "Fri, Oct 30", dom: "30", dow: "Fri", month: 10, shows: [
-    { time: "6:00", period: "PM", title: "Verity", runtime: "1h 57m", rating: "R", free: false },
-    { time: "8:30", period: "PM", title: "Digger", runtime: "2h 8m", rating: "R", free: false }
-  ]},
-  { date: "Sat, Oct 31", dom: "31", dow: "Sat", month: 10, shows: [
-    { time: "4:00", period: "PM", title: "Forgotten Island", runtime: "1h 49m", rating: "PG", free: false },
-    { time: "6:20", period: "PM", title: "Verity", runtime: "1h 57m", rating: "R", free: false },
-    { time: "8:50", period: "PM", title: "Heart of the Beast", runtime: "1h 41m", rating: "PG-13", free: false }
-  ]},
-  { date: "Sun, Nov 1", dom: "1", dow: "Sun", month: 11, shows: [
-    { time: "4:00", period: "PM", title: "Forgotten Island", runtime: "1h 49m", rating: "PG", free: false },
-    { time: "6:20", period: "PM", title: "Digger", runtime: "2h 8m", rating: "R", free: false }
-  ]},
   { date: "Tue, Nov 3", dom: "3", dow: "Tue", month: 11, shows: [
     { time: "6:00", period: "PM", title: "Heart of the Beast", runtime: "1h 41m", rating: "PG-13", free: false }
   ]},
