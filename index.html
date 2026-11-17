@@ -148,7 +148,7 @@ document.head.appendChild(link);
 <div id="showList"></div>
 </div>
 <div class="footer">
-Schedule updated Nov 10, 2026 &nbsp;·&nbsp;
+Schedule updated Nov 17, 2026 &nbsp;·&nbsp;
 <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -181,33 +181,6 @@ Watch Official Trailer
 const PLAY_ICON = `<svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L10 6 L0 12 Z"/></svg>`;
 
 const MOVIE_INFO = {
-  "Other Mommy": {
-    poster: "https://www.navymwr.org/nmps-image/4F87482FFB52E32E811AB1EECD21F84B5BFE7E2D.jpg",
-    rating: "R", runtime: "1h 33m", genre: "Horror · Thriller",
-    studio: "Universal", released: "Oct 9, 2026",
-    synopsis: "Bela, an 8-year-old girl living in a home with marital problems, confronts a sinister entity which comes out of her closet. The presence, whom she calls 'Other Mommy,' becomes increasingly threatening to her and her family. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Jessica Chastain, Jay Duplass, Arabella Olivia Clark, Karen Allen, Arian Moayed",
-    trailer: "https://www.youtube.com/watch?v=bEpTgowZ1dI",
-    audience: null
-  },
-  "Heart of the Beast": {
-    poster: "https://www.navymwr.org/nmps-image/71E0AEFAAAB4440B3D45B259993EA1AC7DF95945.jpg",
-    rating: "PG-13", runtime: "1h 41m", genre: "Action · Adventure · Drama",
-    studio: "Paramount", released: "Sep 25, 2026",
-    synopsis: "After a harrowing plane crash, a Special Forces officer and his combat dog find themselves stranded deep in the Alaskan wilderness. Together, they are forced into a brutal fight for survival against the elements. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Brad Pitt, J.K. Simmons, Anna Lambe",
-    trailer: "https://www.youtube.com/watch?v=xZe27iaD2_8",
-    audience: null
-  },
-  "Digger": {
-    poster: "https://www.navymwr.org/nmps-image/E1F748485512039F3E3B460588B8EA42091D2CF7.jpg",
-    rating: "R", runtime: "2h 8m", genre: "Comedy · Drama",
-    studio: "Warner Brothers", released: "Oct 2, 2026",
-    synopsis: "The most powerful man in the world embarks on a frantic mission to prove he is humanity's savior before the disaster he's unleashed destroys everything. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Tom Cruise, Riz Ahmed, John Goodman, Sandra Huller, Michael Stuhlbarg",
-    trailer: "https://www.youtube.com/watch?v=job8V254NAE",
-    audience: null
-  },
   "Ghost Soldier": {
     poster: "https://www.navymwr.org/nmps-image/9F8ABFD41FE43471328960A1A612EAA9EE833486.jpg",
     rating: "PG-13", runtime: "1h 30m", genre: "Action · Thriller",
@@ -215,15 +188,6 @@ const MOVIE_INFO = {
     synopsis: "A weapon systems engineer and former Green Beret protects his Wyoming neighbors against a ruthless corporation threatening their rural community. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
     cast: "Jim Caviezel, Garret Dillahunt, Olivia Thirlby, Shea Whigham, Beau Knapp",
     trailer: "https://www.youtube.com/watch?v=l0pTZqZWs-c",
-    audience: null
-  },
-  "Street Fighter": {
-    poster: "https://www.navymwr.org/nmps-image/CA7614D4C2F5C11C80EC6439528EFEF5742B881E.jpg",
-    rating: "PG-13", runtime: "2h 5m", genre: "Action",
-    studio: "Paramount", released: "Oct 16, 2026",
-    synopsis: "Street Fighters Ryu and Ken reunite when Chun-Li recruits them for the World Warrior Tournament. As they face a hidden conspiracy, they must confront each other and their past-or face destruction. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Jason Momoa, Callina Liang, David Dastmalchian, Noah Centineo, Oliver Richters",
-    trailer: "https://www.youtube.com/watch?v=Xt4X4FvXk2A",
     audience: null
   },
   "Jimmy": {
@@ -252,32 +216,37 @@ const MOVIE_INFO = {
     cast: "Tom Rhys Harries, Tim Faraday, Naomi Todd, Melanie-Joyce Bermudez, Emma Monnickendam",
     trailer: "https://www.youtube.com/watch?v=OGO4Mqvo3jI",
     audience: null
+  },
+  "Street Fighter": {
+    poster: "https://www.navymwr.org/nmps-image/CA7614D4C2F5C11C80EC6439528EFEF5742B881E.jpg",
+    rating: "PG-13", runtime: "2h 5m", genre: "Action",
+    studio: "Paramount", released: "Oct 16, 2026",
+    synopsis: "Street Fighters Ryu and Ken reunite when Chun-Li recruits them for the World Warrior Tournament. As they face a hidden conspiracy, they must confront each other and their past-or face destruction. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Jason Momoa, Callina Liang, David Dastmalchian, Noah Centineo, Oliver Richters",
+    trailer: "https://www.youtube.com/watch?v=Xt4X4FvXk2A",
+    audience: null
+  },
+  "Wicker": {
+    poster: "https://www.navymwr.org/nmps-image/1B152EC0F8A9F50D1F9BFC1B2AAE5A6DD147A104.jpg",
+    rating: "R", runtime: "1h 45m", genre: "Comedy · Drama · Fantasy",
+    studio: "TSI", released: "Oct 30, 2026",
+    synopsis: "An ostracized fisherwoman commissions the local basketmaker to weave her a husband, but when her wicker creation proves unexpectedly extraordinary, his presence ignites jealousy and upheaval that threatens their quiet village. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Olivia Coleman, Alexander Skarsgard, Elizabeth Debicki, Peter Dinklage, Gustav Lindh",
+    trailer: "https://www.youtube.com/watch?v=JH25LjG7R7k",
+    audience: null
+  },
+  "Christmas at the Kringles": {
+    poster: "https://www.navymwr.org/nmps-image/E16F3670D392B79227D788F181967A73B6C7FE3C.jpg",
+    rating: "R", runtime: "1h 40m", genre: "Action · Comedy · Horror",
+    studio: "Horizon Distribution", released: "Oct 30, 2026",
+    synopsis: "The Severson family moves into a suburban neighborhood where their neighbors, the Kringles, celebrate Christmas year-round and harbor sinister intentions to hypnotize and indoctrinate them. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Ron Livingston, Rachel Bilson, Rob Riggle, Thomas Lennon, Arden Myrin",
+    trailer: "https://www.youtube.com/watch?v=IsGccGqcNNE",
+    audience: null
   }
 };
 
 const schedule = [
-  { date: "Tue, Nov 10", dom: "10", dow: "Tue", month: 11, shows: [
-    { time: "6:00", period: "PM", title: "Other Mommy", runtime: "1h 33m", rating: "R", free: false }
-  ]},
-  { date: "Wed, Nov 11", dom: "11", dow: "Wed", month: 11, shows: [
-    { time: "6:00", period: "PM", title: "Heart of the Beast", runtime: "1h 41m", rating: "PG-13", free: false }
-  ]},
-  { date: "Thu, Nov 12", dom: "12", dow: "Thu", month: 11, shows: [
-    { time: "6:00", period: "PM", title: "Digger", runtime: "2h 8m", rating: "R", free: false }
-  ]},
-  { date: "Fri, Nov 13", dom: "13", dow: "Fri", month: 11, shows: [
-    { time: "6:00", period: "PM", title: "Ghost Soldier", runtime: "1h 30m", rating: "PG-13", free: false },
-    { time: "8:00", period: "PM", title: "Street Fighter", runtime: "2h 5m", rating: "PG-13", free: false }
-  ]},
-  { date: "Sat, Nov 14", dom: "14", dow: "Sat", month: 11, shows: [
-    { time: "4:00", period: "PM", title: "Street Fighter", runtime: "2h 5m", rating: "PG-13", free: false },
-    { time: "6:30", period: "PM", title: "Ghost Soldier", runtime: "1h 30m", rating: "PG-13", free: false },
-    { time: "8:30", period: "PM", title: "Other Mommy", runtime: "1h 33m", rating: "R", free: false }
-  ]},
-  { date: "Sun, Nov 15", dom: "15", dow: "Sun", month: 11, shows: [
-    { time: "4:00", period: "PM", title: "Street Fighter", runtime: "2h 5m", rating: "PG-13", free: false },
-    { time: "6:30", period: "PM", title: "Other Mommy", runtime: "1h 33m", rating: "R", free: false }
-  ]},
   { date: "Tue, Nov 17", dom: "17", dow: "Tue", month: 11, shows: [
     { time: "6:00", period: "PM", title: "Ghost Soldier", runtime: "1h 30m", rating: "PG-13", free: false }
   ]},
@@ -299,6 +268,19 @@ const schedule = [
   { date: "Sun, Nov 22", dom: "22", dow: "Sun", month: 11, shows: [
     { time: "4:00", period: "PM", title: "Wildwood", runtime: "2h 10m", rating: "PG-13", free: false },
     { time: "6:40", period: "PM", title: "Clayface", runtime: "1h 48m", rating: "R", free: false }
+  ]},
+  { date: "Tue, Nov 24", dom: "24", dow: "Tue", month: 11, shows: [
+    { time: "6:00", period: "PM", title: "Clayface", runtime: "1h 48m", rating: "R", free: false }
+  ]},
+  { date: "Wed, Nov 25", dom: "25", dow: "Wed", month: 11, shows: [
+    { time: "6:00", period: "PM", title: "Street Fighter", runtime: "2h 5m", rating: "PG-13", free: false }
+  ]},
+  { date: "Thu, Nov 26", dom: "26", dow: "Thu", month: 11, shows: [
+    { time: "6:00", period: "PM", title: "Ghost Soldier", runtime: "1h 30m", rating: "PG-13", free: false }
+  ]},
+  { date: "Fri, Nov 27", dom: "27", dow: "Fri", month: 11, shows: [
+    { time: "6:00", period: "PM", title: "Wicker", runtime: "1h 45m", rating: "R", free: false },
+    { time: "8:30", period: "PM", title: "Christmas at the Kringles", runtime: "1h 40m", rating: "R", free: false }
   ]}
 ];
 
