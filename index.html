@@ -148,7 +148,7 @@ document.head.appendChild(link);
 <div id="showList"></div>
 </div>
 <div class="footer">
-Schedule updated Nov 17, 2026 &nbsp;·&nbsp;
+Schedule updated Nov 24, 2026 &nbsp;·&nbsp;
 <a href="https://www.navymwrgreatlakes.com/programs/ed66a539-aa5c-44c5-9ae2-31c484dd5ab2" target="_blank">Full MWR Schedule</a>
 </div>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
@@ -181,33 +181,6 @@ Watch Official Trailer
 const PLAY_ICON = `<svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L10 6 L0 12 Z"/></svg>`;
 
 const MOVIE_INFO = {
-  "Ghost Soldier": {
-    poster: "https://www.navymwr.org/nmps-image/9F8ABFD41FE43471328960A1A612EAA9EE833486.jpg",
-    rating: "PG-13", runtime: "1h 30m", genre: "Action · Thriller",
-    studio: "Sony", released: "Nov 11, 2026",
-    synopsis: "A weapon systems engineer and former Green Beret protects his Wyoming neighbors against a ruthless corporation threatening their rural community. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Jim Caviezel, Garret Dillahunt, Olivia Thirlby, Shea Whigham, Beau Knapp",
-    trailer: "https://www.youtube.com/watch?v=l0pTZqZWs-c",
-    audience: null
-  },
-  "Jimmy": {
-    poster: "https://www.navymwr.org/nmps-image/AB9E0E262AD9592F10D34DC8BACFE44F9418C463.jpg",
-    rating: "PG-13", runtime: "2h 0m", genre: "Biography · Drama · War",
-    studio: "TSI", released: "Nov 6, 2026",
-    synopsis: "America's most-beloved actor and the iconic role that saved him. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "KJ Apa, Max Casella, Kara Killmer, Neal McDonough, Julian Works",
-    trailer: "https://www.youtube.com/watch?v=EURriesRel0",
-    audience: null
-  },
-  "Wildwood": {
-    poster: "https://www.navymwr.org/nmps-image/A719B2D8BA1178852FFAC4D3DFF6B04FDCB36FC2.jpg",
-    rating: "PG-13", runtime: "2h 10m", genre: "Animation · Adventure · Fantasy",
-    studio: "TSI", released: "Oct 23, 2026",
-    synopsis: "A headstrong teenager sets off to a forest outside Portland to find her kidnapped brother and navigates a world of talking animals, bandits, and powerful figures driven by grief and ambition. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
-    cast: "Peyton Elizabeth Lee, Jacob Tremblay, Carey Mulligan, Tantoo Cardinal, Marc Evan Jackson",
-    trailer: "https://www.youtube.com/watch?v=dtr5JL1zkiM",
-    audience: null
-  },
   "Clayface": {
     poster: "https://www.navymwr.org/nmps-image/5B4ED6C14ACB5EC08E8010AA818BF4412F13F2E3.jpg",
     rating: "R", runtime: "1h 48m", genre: "Horror · Sci-Fi · Thriller",
@@ -224,6 +197,15 @@ const MOVIE_INFO = {
     synopsis: "Street Fighters Ryu and Ken reunite when Chun-Li recruits them for the World Warrior Tournament. As they face a hidden conspiracy, they must confront each other and their past-or face destruction. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
     cast: "Jason Momoa, Callina Liang, David Dastmalchian, Noah Centineo, Oliver Richters",
     trailer: "https://www.youtube.com/watch?v=Xt4X4FvXk2A",
+    audience: null
+  },
+  "Ghost Soldier": {
+    poster: "https://www.navymwr.org/nmps-image/9F8ABFD41FE43471328960A1A612EAA9EE833486.jpg",
+    rating: "PG-13", runtime: "1h 30m", genre: "Action · Thriller",
+    studio: "Sony", released: "Nov 11, 2026",
+    synopsis: "A weapon systems engineer and former Green Beret protects his Wyoming neighbors against a ruthless corporation threatening their rural community. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Jim Caviezel, Garret Dillahunt, Olivia Thirlby, Shea Whigham, Beau Knapp",
+    trailer: "https://www.youtube.com/watch?v=l0pTZqZWs-c",
     audience: null
   },
   "Wicker": {
@@ -243,32 +225,46 @@ const MOVIE_INFO = {
     cast: "Ron Livingston, Rachel Bilson, Rob Riggle, Thomas Lennon, Arden Myrin",
     trailer: "https://www.youtube.com/watch?v=IsGccGqcNNE",
     audience: null
+  },
+  "Wildwood": {
+    poster: "https://www.navymwr.org/nmps-image/A719B2D8BA1178852FFAC4D3DFF6B04FDCB36FC2.jpg",
+    rating: "PG-13", runtime: "2h 10m", genre: "Animation · Adventure · Fantasy",
+    studio: "TSI", released: "Oct 23, 2026",
+    synopsis: "A headstrong teenager sets off to a forest outside Portland to find her kidnapped brother and navigates a world of talking animals, bandits, and powerful figures driven by grief and ambition. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Peyton Elizabeth Lee, Jacob Tremblay, Carey Mulligan, Tantoo Cardinal, Marc Evan Jackson",
+    trailer: "https://www.youtube.com/watch?v=dtr5JL1zkiM",
+    audience: null
+  },
+  "Home Alone": {
+    poster: "https://www.navymwr.org/nmps-image/D0595D187CCA34423779378A76B9D19819CD0233.jpeg",
+    rating: "PG", runtime: "1h 43m", genre: "Comedy · Family",
+    studio: "Fox", released: "Nov 16, 1990",
+    synopsis: "An eight-year-old troublemaker, mistakenly left home alone, must defend his home against a pair of burglars on Christmas eve. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Macaulay Culkin, Joe Pesci, Daniel Stern, John Heard, Roberts Blossom",
+    trailer: "https://www.youtube.com/watch?v=dzdpqRGA1qc",
+    audience: null
+  },
+  "Drummer Boy": {
+    poster: "https://www.navymwr.org/nmps-image/1CD7DF725E0D8A2A0D7992DF496AE2319DF30784.jpg",
+    rating: "PG-13", runtime: "2h 8m", genre: "Family · Musical · Romance",
+    studio: "Angel Studio", released: "Nov 6, 2026",
+    synopsis: "As America's fight for independence begins, a young drummer boy, an enslaved woman, and a divided family search for freedom. Through battle and loss, music carries hope in a deeply human story of faith and forgiveness. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Joel David Smallbone, Lucas Leach, India Brown, Melora Hardin, Charles Esten",
+    trailer: "https://www.youtube.com/watch?v=rXaR4nXRvOY",
+    audience: null
+  },
+  "The Cat in the Hat": {
+    poster: "https://www.navymwr.org/nmps-image/428B3DCE4B70D36D15764E1EEE60A18A3B638362.jpg",
+    rating: "PG", runtime: "1h 47m", genre: "Animation · Adventure",
+    studio: "Warner Brothers", released: "Nov 6, 2026",
+    synopsis: "Meet the Cat in the Hat you don't know in an all-new, epic adventure where mischief, magic and mayhem reign supreme. Navy Resources Resources CNIC Homepage Freedom of Information Act Navy Recruiting Official Navy Website Accessibility/Section 508 U.S. Navy FAQs Contact Webmaster Help & Emergency Assistance Resources Safe Help Line Tipline Military Crisis Hotline Dial 988 then Press 1 -- This is an Official U.S. Navy Website Commander, Navy Installations Command. Back to top",
+    cast: "Bill Hader, Xochitl Gomez, Tiago Martinez, Quinta Brunson, America Ferrera",
+    trailer: "https://www.youtube.com/watch?v=jz8pLlPhSeY",
+    audience: null
   }
 };
 
 const schedule = [
-  { date: "Tue, Nov 17", dom: "17", dow: "Tue", month: 11, shows: [
-    { time: "6:00", period: "PM", title: "Ghost Soldier", runtime: "1h 30m", rating: "PG-13", free: false }
-  ]},
-  { date: "Wed, Nov 18", dom: "18", dow: "Wed", month: 11, shows: [
-    { time: "6:00", period: "PM", title: "Jimmy", runtime: "2h 0m", rating: "PG-13", free: false }
-  ]},
-  { date: "Thu, Nov 19", dom: "19", dow: "Thu", month: 11, shows: [
-    { time: "6:00", period: "PM", title: "Ghost Soldier", runtime: "1h 30m", rating: "PG-13", free: false }
-  ]},
-  { date: "Fri, Nov 20", dom: "20", dow: "Fri", month: 11, shows: [
-    { time: "6:00", period: "PM", title: "Wildwood", runtime: "2h 10m", rating: "PG-13", free: false },
-    { time: "8:40", period: "PM", title: "Clayface", runtime: "1h 48m", rating: "R", free: false }
-  ]},
-  { date: "Sat, Nov 21", dom: "21", dow: "Sat", month: 11, shows: [
-    { time: "4:00", period: "PM", title: "Wildwood", runtime: "2h 10m", rating: "PG-13", free: false },
-    { time: "6:40", period: "PM", title: "Clayface", runtime: "1h 48m", rating: "R", free: false },
-    { time: "9:00", period: "PM", title: "Ghost Soldier", runtime: "1h 30m", rating: "PG-13", free: false }
-  ]},
-  { date: "Sun, Nov 22", dom: "22", dow: "Sun", month: 11, shows: [
-    { time: "4:00", period: "PM", title: "Wildwood", runtime: "2h 10m", rating: "PG-13", free: false },
-    { time: "6:40", period: "PM", title: "Clayface", runtime: "1h 48m", rating: "R", free: false }
-  ]},
   { date: "Tue, Nov 24", dom: "24", dow: "Tue", month: 11, shows: [
     { time: "6:00", period: "PM", title: "Clayface", runtime: "1h 48m", rating: "R", free: false }
   ]},
@@ -281,6 +277,37 @@ const schedule = [
   { date: "Fri, Nov 27", dom: "27", dow: "Fri", month: 11, shows: [
     { time: "6:00", period: "PM", title: "Wicker", runtime: "1h 45m", rating: "R", free: false },
     { time: "8:30", period: "PM", title: "Christmas at the Kringles", runtime: "1h 40m", rating: "R", free: false }
+  ]},
+  { date: "Sat, Nov 28", dom: "28", dow: "Sat", month: 11, shows: [
+    { time: "4:00", period: "PM", title: "Wildwood", runtime: "2h 10m", rating: "PG-13", free: false },
+    { time: "6:40", period: "PM", title: "Clayface", runtime: "1h 48m", rating: "R", free: false },
+    { time: "9:00", period: "PM", title: "Christmas at the Kringles", runtime: "1h 40m", rating: "R", free: false }
+  ]},
+  { date: "Sun, Nov 29", dom: "29", dow: "Sun", month: 11, shows: [
+    { time: "4:00", period: "PM", title: "Ghost Soldier", runtime: "1h 30m", rating: "PG-13", free: false },
+    { time: "6:00", period: "PM", title: "Christmas at the Kringles", runtime: "1h 40m", rating: "R", free: false }
+  ]},
+  { date: "Tue, Dec 1", dom: "1", dow: "Tue", month: 12, shows: [
+    { time: "4:00", period: "PM", title: "Wicker", runtime: "1h 45m", rating: "R", free: false }
+  ]},
+  { date: "Wed, Dec 2", dom: "2", dow: "Wed", month: 12, shows: [
+    { time: "6:00", period: "PM", title: "Street Fighter", runtime: "2h 5m", rating: "PG-13", free: false }
+  ]},
+  { date: "Thu, Dec 3", dom: "3", dow: "Thu", month: 12, shows: [
+    { time: "6:00", period: "PM", title: "Clayface", runtime: "1h 48m", rating: "R", free: false }
+  ]},
+  { date: "Fri, Dec 4", dom: "4", dow: "Fri", month: 12, shows: [
+    { time: "4:00", period: "PM", title: "Home Alone", runtime: "1h 43m", rating: "PG", free: true },
+    { time: "7:00", period: "PM", title: "Drummer Boy", runtime: "2h 8m", rating: "PG-13", free: false }
+  ]},
+  { date: "Sat, Dec 5", dom: "5", dow: "Sat", month: 12, shows: [
+    { time: "4:00", period: "PM", title: "The Cat in the Hat", runtime: "1h 47m", rating: "PG", free: false },
+    { time: "6:30", period: "PM", title: "Christmas at the Kringles", runtime: "1h 40m", rating: "R", free: false },
+    { time: "8:40", period: "PM", title: "Drummer Boy", runtime: "2h 8m", rating: "PG-13", free: false }
+  ]},
+  { date: "Sun, Dec 6", dom: "6", dow: "Sun", month: 12, shows: [
+    { time: "4:00", period: "PM", title: "The Cat in the Hat", runtime: "1h 47m", rating: "PG", free: false },
+    { time: "6:30", period: "PM", title: "Wicker", runtime: "1h 45m", rating: "R", free: false }
   ]}
 ];
 
